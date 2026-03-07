@@ -1,0 +1,38 @@
+.custom-navbar {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+.brand-text {
+  color: #1f2937;
+  font-size: 1.3rem;
+  letter-spacing: 0.4px;
+}
+
+.nav-link {
+  color: #374151;
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #0d6efd;
+}
+
+.btn-hire {
+  background-color: #0d6efd;
+  color: #fff;
+  border-radius: 30px;
+  padding: 10px 22px;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.btn-hire:hover {
+  background-color: #0b5ed7;
+  color: #fff;
+}

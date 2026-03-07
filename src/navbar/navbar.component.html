@@ -1,0 +1,49 @@
+<nav class="navbar navbar-expand-lg custom-navbar sticky-top">
+  <div class="container">
+    <a class="navbar-brand fw-bold brand-text" routerLink="/">
+      Sue Raisianz
+    </a>
+
+    <button
+      class="navbar-toggler border-0 shadow-none"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#mainNavbar"
+      aria-controls="mainNavbar"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item">
+          <a class="nav-link px-3" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link px-3" routerLink="/about" routerLinkActive="active">
+            About Me
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link px-3" routerLink="/projects" routerLinkActive="active">
+            Projects
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link px-3" routerLink="/contact" routerLinkActive="active">
+            Contact Me
+          </a>
+        </li>
+        <li class="nav-item ms-lg-3 mt-3 mt-lg-0">
+          <a class="btn btn-hire" routerLink="/contact">
+            Hire Me
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
