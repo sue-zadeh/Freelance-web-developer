@@ -1,0 +1,26 @@
+.site-footer {
+  background-color: #111827;
+  color: #f9fafb;
+  padding: 28px 0;
+}
+
+.footer-brand {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.footer-text {
+  color: #d1d5db;
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+.footer-link {
+  color: #f9fafb;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #60a5fa;
+}
