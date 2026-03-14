@@ -1,0 +1,79 @@
+<section class="projects-page">
+  <div class="projects-overlay"></div>
+
+  <div class="container position-relative projects-content">
+    <div class="projects-header text-center fade-up">
+      <span class="projects-badge">Selected Work</span>
+      <h1 class="projects-title mt-3">Projects designed for real business needs</h1>
+      <p class="projects-text">
+        A selection of business websites, dashboards, and custom web applications
+        focused on usability, structure, and practical results.
+      </p>
+    </div>
+
+    <div class="filter-row fade-up">
+      @for (category of categories; track category) {
+        <button
+          class="filter-btn"
+          [class.active]="selectedCategory === category"
+          (click)="setCategory(category)"
+        >
+          {{ category }}
+        </button>
+      }
+    </div>
+
+    <div class="row g-4 project-grid">
+      @for (project of filteredProjects; track project.title) {
+        <div class="col-md-6 col-xl-4">
+          <div
+            class="project-card fade-up"
+            [class.secure-card]="project.secureOnly"
+            (click)="openProject(project)"
+          >
+            <div class="project-image-wrap">
+              <img
+                [src]="project.image"
+                [alt]="project.title"
+                class="project-image"
+              />
+
+              <div class="project-overlay-card">
+                <span class="project-type">{{ project.category }}</span>
+                <h3>{{ project.title }}</h3>
+                <p>{{ project.hoverDescription }}</p>
+
+                @if (project.secureOnly) {
+                  <div class="project-note">
+                    Preview only. Live access is restricted for security.
+                  </div>
+                } @else {
+                  <div class="project-note">
+                    Click to view the live website.
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="project-body">
+              <div class="project-top-row">
+                <h3 class="project-name">{{ project.title }}</h3>
+                @if (project.secureOnly) {
+                  <span class="security-badge">Preview Only</span>
+                }
+              </div>
+
+              <p class="project-description">{{ project.shortDescription }}</p>
+
+              <div class="project-tags">
+                @for (tag of project.tags; track tag) {
+                  <span>{{ tag }}</span>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
