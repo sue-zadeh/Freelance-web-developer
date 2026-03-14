@@ -13,17 +13,17 @@ export class HomeComponent {
     {
       title: 'Business Websites',
       description:
-        'Professional websites designed to present your brand clearly, build trust, and support your business goals.',
+        'Professional websites designed to present your brand clearly, build trust, and support your business growth.',
     },
     {
       title: 'Admin Dashboards',
       description:
-        'Clean and practical dashboard interfaces for managing data, users, workflows, and internal business operations.',
+        'Clean dashboard interfaces for managing users, data, processes, and internal operations with clarity.',
     },
     {
       title: 'Custom Web Apps & APIs',
       description:
-        'Web applications with frontend, backend, and API integration built for real functionality, scalability, and ease of use.',
+        'Freelance web developer creating modern websites, dashboards, and custom web applications.',
     },
   ];
 }

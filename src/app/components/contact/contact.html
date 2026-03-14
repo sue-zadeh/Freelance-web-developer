@@ -1,0 +1,200 @@
+<section class="contact-section">
+  <div class="contact-overlay"></div>
+
+  <div class="container position-relative contact-content">
+    <div class="row align-items-center g-5">
+
+      <!-- Left side -->
+      <div class="col-lg-5">
+        <div class="contact-info fade-up">
+          <span class="contact-badge">Get In Touch</span>
+
+          <h1 class="contact-title mt-3">
+            Let’s talk about your project
+          </h1>
+
+          <p class="contact-text mt-4">
+            Need a business website, admin dashboard, or custom web application?
+            Share a few details and the right solution can take shape from there.
+          </p>
+
+          <p class="contact-text-secondary">
+            Clear communication, practical planning, and digital solutions designed
+            around real business goals.
+          </p>
+
+          <div class="info-list mt-4">
+            <div class="info-item">
+              <span class="info-icon">✉</span>
+              <div>
+                <h3>Email</h3>
+                <p>raisianz@email.com</p>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <span class="info-icon">⌂</span>
+              <div>
+                <h3>Location</h3>
+                <p>Auckland, New Zealand</p>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <span class="info-icon">⌁</span>
+              <div>
+                <h3>Availability</h3>
+                <p>Available for freelance projects</p>
+              </div>
+            </div>
+          </div>
+
+          <p class="reply-note mt-4">
+            Usually replies within 1 to 2 business days.
+          </p>
+        </div>
+      </div>
+
+      <!-- Right side -->
+      <div class="col-lg-7">
+        <div class="contact-form-card fade-up">
+          <form #contactForm="ngForm" (ngSubmit)="onSubmit()">
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="name">Your Name *</label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    class="form-control custom-input"
+                    [(ngModel)]="formData.name"
+                    required
+                    placeholder="Your Name"
+                  />
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="email">Email Address *</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    class="form-control custom-input"
+                    [(ngModel)]="formData.email"
+                    required
+                    placeholder="Your Email"
+                  />
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="company">Company / Business</label>
+                  <input
+                    type="text"
+                    id="company"
+                    name="company"
+                    class="form-control custom-input"
+                    [(ngModel)]="formData.company"
+                    placeholder="Company or Business Name"
+                  />
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="projectType">Project Type *</label>
+                  <select
+                    id="projectType"
+                    name="projectType"
+                    class="form-select custom-input"
+                    [(ngModel)]="formData.projectType"
+                    required
+                  >
+                    <option value="" disabled>Select project type</option>
+                    <option value="Business Website">Business Website</option>
+                    <option value="Portfolio Website">Portfolio Website</option>
+                    <option value="Admin Dashboard">Admin Dashboard</option>
+                    <option value="Custom Web App">Custom Web App</option>
+                    <option value="API / Backend Integration">API / Backend Integration</option>
+                    <option value="Website Redesign">Website Redesign</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="budget">Budget Range</label>
+                  <select
+                    id="budget"
+                    name="budget"
+                    class="form-select custom-input"
+                    [(ngModel)]="formData.budget"
+                  >
+                    <option value="" disabled>Select budget range</option>
+                    <option value="Under $1,000">Under $1,000</option>
+                    <option value="$1,000 - $3,000">$1,000 - $3,000</option>
+                    <option value="$3,000 - $6,000">$3,000 - $6,000</option>
+                    <option value="$6,000+">$6,000+</option>
+                    <option value="Not sure yet">Not sure yet</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="timeline">Preferred Timeline</label>
+                  <select
+                    id="timeline"
+                    name="timeline"
+                    class="form-select custom-input"
+                    [(ngModel)]="formData.timeline"
+                  >
+                    <option value="" disabled>Select timeline</option>
+                    <option value="ASAP">ASAP</option>
+                    <option value="Within 2 weeks">Within 2 weeks</option>
+                    <option value="Within 1 month">Within 1 month</option>
+                    <option value="1 to 3 months">1 to 3 months</option>
+                    <option value="Flexible">Flexible</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="message">Project Details *</label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows="6"
+                    class="form-control custom-input custom-textarea"
+                    [(ngModel)]="formData.message"
+                    required
+                    placeholder="Tell me a bit about your project, goals, or what you need."
+                  ></textarea>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <button
+                  type="submit"
+                  class="btn submit-btn"
+                  [disabled]="contactForm.invalid"
+                >
+                  Start a Project
+                </button>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
