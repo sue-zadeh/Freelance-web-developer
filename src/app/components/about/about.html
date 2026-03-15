@@ -1,0 +1,63 @@
+<section class="about-section">
+  <div class="about-overlay"></div>
+
+  <div class="container position-relative about-content">
+    <div class="row align-items-center g-5">
+
+      <div class="col-lg-5">
+        <div class="about-image-wrap fade-up">
+          <img
+            src="/images/portfolio2.png"
+            alt="About Sue Raisianz"
+            class="about-image"
+          />
+        </div>
+      </div>
+
+      <div class="col-lg-7">
+        <div class="about-text-box fade-up">
+          <span class="about-badge">About Me</span>
+
+          <h1 class="about-title mt-3">
+            Web developer focused on modern digital experiences that are clean, practical, and built to work
+          </h1>
+
+          <p class="about-text mt-4">
+            Based in Auckland, New Zealand, this work brings together web development,
+            interface design, structured problem-solving, and a strong focus on usability.
+            Projects range from business websites and service-based platforms to admin dashboards,
+            internal tools, and custom web applications.
+          </p>
+
+          <p class="about-text-secondary">
+            A background in applied computing, real client work, and hands-on project delivery
+            has shaped an approach that values clarity, responsiveness, maintainable structure,
+            and practical results. The goal is not just to make things look good, but to make
+            them useful, trustworthy, and easy to use.
+          </p>
+
+          <div class="about-points mt-4">
+            @for (item of strengths; track item) {
+              <div class="about-point">
+                <span class="point-icon">✦</span>
+                <span>{{ item }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row g-4 mt-5">
+      @for (item of highlights; track item.title) {
+        <div class="col-md-6 col-xl-4">
+          <div class="highlight-card fade-up">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.text }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

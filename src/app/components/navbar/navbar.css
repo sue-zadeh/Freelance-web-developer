@@ -48,6 +48,7 @@
 .nav-link.active::after {
   width: 18px;
 }
+
 .btn-hire {
   background: linear-gradient(135deg, #8b5cf6, #7c3aed);
   color: #ffffff;
