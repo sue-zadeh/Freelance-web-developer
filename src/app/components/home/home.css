@@ -1,3 +1,6 @@
+body {
+  font-family: "Cairo", "Montserrat", system-ui;
+}
 .hero-section {
   position: relative;
   background:
@@ -35,8 +38,10 @@
   display: inline-block;
   background-color: rgba(139, 92, 246, 0.16);
   color: #d8b4fe;
+  font-family: "Cairo", "Montserrat", system-ui; 
+
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1.3rem;
   padding: 8px 16px;
   border-radius: 30px;
 }
@@ -198,7 +203,7 @@
 }
 
 .small-label {
-  font-size: 0.9rem;
+  font-size: 1.3rem;
   font-weight: 600;
   color: #c4b5fd;
   margin-bottom: 12px;
@@ -222,6 +227,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  
 }
 
 .skill-tags span {
@@ -232,6 +238,8 @@
   font-size: 0.92rem;
   font-weight: 500;
   border: 1px solid rgba(196, 181, 253, 0.14);
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+
 }
 
 .tilt-hover {

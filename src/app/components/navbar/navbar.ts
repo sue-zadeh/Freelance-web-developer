@@ -8,4 +8,11 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   templateUrl: './navbar.html',
   styleUrl: './navbar.css'
 })
-export class NavbarComponent {}
+export class NavbarComponent {
+  closeNavbar(): void {
+    const navbar = document.getElementById('mainNavbar');
+    if (navbar && navbar.classList.contains('show')) {
+      navbar.classList.remove('show');
+    }
+  }
+}

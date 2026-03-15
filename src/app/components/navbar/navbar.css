@@ -14,32 +14,40 @@
 }
 
 .nav-link {
+  position: relative;
   color: #374151;
   font-weight: 500;
-  transition: 0.3s ease;
+  transition: color 0.3s ease;
 }
 
-.nav-link:hover,
-.nav-link.active {
-  color: #7c3aed;
-}
-
-.nav-link.active {
-  position: relative;
-}
-
-.nav-link.active::after {
+.nav-link::after {
   content: '';
   position: absolute;
   left: 50%;
   bottom: -6px;
-  width: 18px;
+  width: 0;
   height: 2px;
   background: #8b5cf6;
   border-radius: 999px;
   transform: translateX(-50%);
+  transition: width 0.3s ease;
 }
 
+.nav-link:hover {
+  color: #7c3aed;
+}
+
+.nav-link:hover::after {
+  width: 18px;
+}
+
+.nav-link.active {
+  color: #7c3aed;
+}
+
+.nav-link.active::after {
+  width: 18px;
+}
 .btn-hire {
   background: linear-gradient(135deg, #8b5cf6, #7c3aed);
   color: #ffffff;

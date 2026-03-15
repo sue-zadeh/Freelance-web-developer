@@ -1,3 +1,8 @@
+body { 
+  font-family: "Cairo", "Montserrat", system-ui, 
+  -apple-system, "Segoe UI", Arial, sans-serif; 
+}
+
 :host {
   min-height: 100vh;
   display: flex;
