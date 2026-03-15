@@ -5,7 +5,7 @@
     <div class="row align-items-center g-5">
 
       <div class="col-lg-5">
-        <div class="about-image-wrap fade-up">
+        <div class="about-image-wrap" data-aos="fade-right">
           <img
             src="/images/sue-linkedin.jpeg"
             alt="About Sue Raisianz"
@@ -15,21 +15,21 @@
       </div>
 
       <div class="col-lg-7">
-        <div class="about-text-box fade-up">
+        <div class="about-text-box" data-aos="fade-left">
           <span class="about-badge">About Me</span>
 
           <h1 class="about-title mt-3">
             Web developer focused on modern digital experiences that are clean, practical, and built to work
           </h1>
 
-          <p class="about-text mt-4">
+          <p class="about-text mt-4" data-aos="fade-left" data-aos-delay="100">
             Based in Auckland, New Zealand, this work brings together web development,
             interface design, structured problem-solving, and a strong focus on usability.
             Projects range from business websites and service-based platforms to admin dashboards,
             internal tools, and custom web applications.
           </p>
 
-          <p class="about-text-secondary">
+          <p class="about-text-secondary" data-aos="fade-right" data-aos-delay="100">
             A background in applied computing, real client work, and hands-on project delivery
             has shaped an approach that values clarity, responsiveness, maintainable structure,
             and practical results. The goal is not just to make things look good, but to make
@@ -51,7 +51,7 @@
 
     <div class="row g-4 mt-5">
       @for (item of highlights; track item.title) {
-        <div class="col-md-6 col-xl-4">
+        <div class="col-md-6 col-xl-4" data-aos="fade-up" data-aos-delay="0">
           <div class="highlight-card fade-up">
             <h3>{{ item.title }}</h3>
             <p>{{ item.text }}</p>

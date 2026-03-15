@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar';
 import { FooterComponent } from './components/footer/footer';
+import AOS from 'aos';
 
 @Component({
   selector: 'app-root',
@@ -10,4 +11,13 @@ import { FooterComponent } from './components/footer/footer';
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {}
+export class App implements AfterViewInit {
+  ngAfterViewInit(): void {
+    AOS.init({
+      duration: 900,
+      once: true,
+      offset: 80,
+      easing: 'ease-out-cubic'
+    });
+  }
+}

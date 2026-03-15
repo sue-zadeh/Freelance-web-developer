@@ -5,10 +5,10 @@
     <div class="row align-items-center hero-row gy-5">
       
       <div class="col-lg-6">
-        <div class="hero-left fade-up">
-          <span class="hero-badge">Freelance Web Developer</span>
+        <div class="hero-left" data-aos="fade-up" data-aos-delay="0">
+          <span class="hero-badge" data-aos="fade-right">Freelance Web Developer</span>
 
-          <h1 class="hero-title mt-3">
+          <h1 class="hero-title mt-3" data-aos="fade-left">
              Modern websites, dashboards, and web apps designed for growing businesses 
           </h1>
 
@@ -25,7 +25,7 @@
             <a routerLink="/contact" class="btn btn-outline-custom">Start a Project</a>
           </div>
 
-          <div class="row stats-row mt-5">
+          <div class="row stats-row mt-5" data-aos="fade-left">
             <div class="col-sm-4">
               <div class="stat-box corner-shine">
                 <h3>Business</h3>
@@ -33,7 +33,7 @@
               </div>
             </div>
 
-            <div class="col-sm-4">
+            <div class="col-sm-4" data-aos="fade-right">
               <div class="stat-box corner-shine">
                 <h3>Dashboard</h3>
                 <p>Tools for daily workflows</p>
@@ -41,7 +41,7 @@
             </div>
 
             <div class="col-sm-4">
-              <div class="stat-box corner-shine">
+              <div class="stat-box corner-shine" data-aos="fade-left">
                 <h3>API</h3>
                 <p>Connected, scalable solutions</p>
               </div>
@@ -86,7 +86,7 @@
     <div class="row g-4">
       @for (service of services; track service.title) {
         <div class="col-md-6 col-lg-4">
-          <div class="service-card h-100 fade-up">
+          <div class="service-card h-100" data-aos="fade-right" data-aos-delay="0">
             <h3>{{ service.title }}</h3>
             <p>{{ service.description }}</p>
           </div>

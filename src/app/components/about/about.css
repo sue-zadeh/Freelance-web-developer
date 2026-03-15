@@ -49,7 +49,7 @@
   background-color: rgba(139, 92, 246, 0.16);
   color: #d8b4fe;
   font-weight: 600;
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   padding: 8px 16px;
   border-radius: 30px;
 }
@@ -89,6 +89,8 @@
 }
 
 .highlight-card {
+  position: relative;
+  overflow: hidden;
   background: rgba(23, 23, 45, 0.72);
   border: 1px solid rgba(196, 181, 253, 0.14);
   border-radius: 24px;
@@ -98,10 +100,52 @@
   transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
 }
 
+.highlight-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.18),
+    rgba(236, 72, 153, 0.08)
+  );
+  transform: scale(0);
+  transform-origin: top left;
+  transition: transform 0.45s ease;
+  z-index: 1;
+}
+
+.highlight-card::after {
+  content: '';
+  position: absolute;
+  top: -120%;
+  left: -40%;
+  width: 55%;
+  height: 300%;
+  background: rgba(255, 255, 255, 0.18);
+  transform: rotate(24deg);
+  transition: left 0.65s ease;
+  z-index: 1;
+}
+
+.highlight-card:hover::before {
+  transform: scale(1);
+}
+
+.highlight-card:hover::after {
+  left: 120%;
+}
+
 .highlight-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.28);
   border-color: rgba(196, 181, 253, 0.28);
+}
+
+.highlight-card h3,
+.highlight-card p {
+  position: relative;
+  z-index: 2;
 }
 
 .highlight-card h3 {
