@@ -7,5 +7,8 @@ CREATE TABLE contact_inquiries (
   budget_range VARCHAR(100),
   timeline VARCHAR(100),
   message TEXT NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  ip_address VARCHAR(45),
+  user_agent TEXT,
+  submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  status VARCHAR(30) DEFAULT 'new'
 );
