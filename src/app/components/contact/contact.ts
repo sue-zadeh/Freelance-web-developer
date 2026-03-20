@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-contact',
@@ -9,6 +10,8 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './contact.css'
 })
 export class ContactComponent {
+  private http = inject(HttpClient);
+
   formData = {
     name: '',
     email: '',
@@ -19,19 +22,36 @@ export class ContactComponent {
     message: ''
   };
 
+  isSubmitting = false;
+  successMessage = '';
+  errorMessage = '';
+
   onSubmit(): void {
-    console.log('Form submitted:', this.formData);
+    this.successMessage = '';
+    this.errorMessage = '';
+    this.isSubmitting = true;
 
-    alert('Thanks! Your message has been submitted.');
+    this.http.post('/api/contact', this.formData).subscribe({
+      next: () => {
+        this.successMessage = 'Thanks. Your message has been sent successfully.';
+        this.isSubmitting = false;
 
-    this.formData = {
-      name: '',
-      email: '',
-      company: '',
-      projectType: '',
-      budget: '',
-      timeline: '',
-      message: ''
-    };
+        this.formData = {
+          name: '',
+          email: '',
+          company: '',
+          projectType: '',
+          budget: '',
+          timeline: '',
+          message: ''
+        };
+      },
+      error: (error) => {
+        console.error('Submit error:', error);
+        this.errorMessage =
+          error?.error?.message || 'Something went wrong. Please try again.';
+        this.isSubmitting = false;
+      }
+    });
   }
 }
