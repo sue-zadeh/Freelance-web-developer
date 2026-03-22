@@ -33,7 +33,8 @@ export class ContactComponent {
 
     this.http.post('/api/contact', this.formData).subscribe({
       next: () => {
-        this.successMessage = 'Thanks. Your message has been sent successfully.';
+        this.successMessage = 'Your message has been sent successfully. I will get back to you soon.';
+        this.errorMessage = '';
         this.isSubmitting = false;
 
         this.formData = {
@@ -50,6 +51,7 @@ export class ContactComponent {
         console.error('Submit error:', error);
         this.errorMessage =
           error?.error?.message || 'Something went wrong. Please try again.';
+        this.successMessage = '';
         this.isSubmitting = false;
       }
     });

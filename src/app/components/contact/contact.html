@@ -180,16 +180,27 @@
                 </div>
               </div>
 
-              <div class="col-12">
-                <button
-                  type="submit"
-                  class="btn submit-btn"
-                  [disabled]="contactForm.invalid"
-                >
-                  Start a Project
-                </button>
-              </div>
-            </div>
+             <div class="col-12">
+  @if (successMessage) {
+    <div class="form-alert success-alert mb-3">
+      {{ successMessage }}
+    </div>
+  }
+
+  @if (errorMessage) {
+    <div class="form-alert error-alert mb-3">
+      {{ errorMessage }}
+    </div>
+  }
+
+  <button
+    type="submit"
+    class="btn submit-btn"
+    [disabled]="contactForm.invalid || isSubmitting"
+  >
+    {{ isSubmitting ? 'Sending email...' : 'Start a Project' }}
+  </button>
+</div>
 
           </form>
         </div>

@@ -9,7 +9,7 @@ import { join } from 'node:path';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import mysql from 'mysql2/promise';
-
+import nodmailer from 'nodemailer';
 dotenv.config();
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
@@ -35,6 +35,14 @@ const pool = mysql.createPool({
   queueLimit: 0,
 });
 
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env['EMAIL_USER'],
+    pass: process.env['EMAIL_PASS'],
+  },
+});
+
 /**
  * API health check
  */
@@ -58,9 +66,10 @@ app.post('/api/contact', async (req, res) => {
     } = req.body;
 
     if (!name || !email || !projectType || !message) {
-      return res.status(400).json({
+      res.status(400).json({
         message: 'Name, email, project type, and message are required.',
       });
+      return;
     }
 
     if (
@@ -68,9 +77,10 @@ app.post('/api/contact', async (req, res) => {
       email.length > 150 ||
       projectType.length > 100
     ) {
-      return res.status(400).json({
+      res.status(400).json({
         message: 'Some fields are too long.',
       });
+      return;
     }
 
     const sql = `
@@ -94,15 +104,40 @@ app.post('/api/contact', async (req, res) => {
 
     const [result] = await pool.execute(sql, values);
 
+    await transporter.sendMail({
+      from: process.env['EMAIL_USER'],
+      to: process.env['EMAIL_USER'],
+      replyTo: email.trim(),
+      subject: `New project inquiry from ${name}`,
+      html: `
+        <h2>New Contact Form Submission</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Company:</strong> ${company || '-'}</p>
+        <p><strong>Project Type:</strong> ${projectType}</p>
+        <p><strong>Budget:</strong> ${budget || '-'}</p>
+        <p><strong>Timeline:</strong> ${timeline || '-'}</p>
+        <p><strong>Message:</strong></p>
+        <p>${message.replace(/\n/g, '<br>')}</p>
+      `,
+    });
+
     res.status(201).json({
       message: 'Contact form submitted successfully.',
       id: (result as mysql.ResultSetHeader).insertId,
     });
-  } catch (error) {
-    console.error('Error saving contact form:', error);
+    return;
+  } catch (error: any) {
+    console.error('Error saving contact form:');
+    console.error('message:', error?.message);
+    console.error('code:', error?.code);
+    console.error('sqlMessage:', error?.sqlMessage);
+    console.error('full error:', error);
+
     res.status(500).json({
       message: 'Something went wrong while saving the contact form.',
     });
+    return;
   }
 });
 
