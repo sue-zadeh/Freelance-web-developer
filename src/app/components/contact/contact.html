@@ -28,39 +28,30 @@
               <span class="info-icon">✉</span>
               <div>
                 <h3>Email</h3>
-                <p>raisianz@email.com</p>
+                <p>freelancedeveloper.sue@gmail.com</p>
               </div>
             </div>
-
-           <!-- <div class="info-item">
-              <span class="info-icon">⌂</span>
-              <div>
-                <h3>Location</h3>
-                <p>Auckland, New Zealand</p>
-              </div>
-            </div>-->
 
             <div class="info-item">
               <span class="info-icon">⌁</span>
               <div>
                 <h3>Availability</h3>
-                <p>Available for freelance projects</p>
+                <p>
+                  Available for freelance projects.<br>
+                  Usually replies within 1 to 2 business days.
+                </p>
               </div>
             </div>
           </div>
-
-          <p class="reply-note mt-4">
-            Usually replies within 1 to 2 business days.
-          </p>
         </div>
       </div>
 
       <!-- Right side -->
       <div class="col-lg-7">
         <div class="contact-form-card fade-up">
-          <form #contactForm="ngForm" (ngSubmit)="onSubmit()">
-
+          <form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)">
             <div class="row g-3">
+
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="name">Your Name *</label>
@@ -180,28 +171,29 @@
                 </div>
               </div>
 
-             <div class="col-12">
-  @if (successMessage) {
-    <div class="form-alert success-alert mb-3">
-      {{ successMessage }}
-    </div>
-  }
+              <div class="col-12">
+                @if (successMessage) {
+                  <div class="form-alert success-alert mb-3">
+                    {{ successMessage }}
+                  </div>
+                }
 
-  @if (errorMessage) {
-    <div class="form-alert error-alert mb-3">
-      {{ errorMessage }}
-    </div>
-  }
+                @if (errorMessage) {
+                  <div class="form-alert error-alert mb-3">
+                    {{ errorMessage }}
+                  </div>
+                }
 
-  <button
-    type="submit"
-    class="btn submit-btn"
-    [disabled]="contactForm.invalid || isSubmitting"
-  >
-    {{ isSubmitting ? 'Sending email...' : 'Start a Project' }}
-  </button>
-</div>
+                <button
+                  type="submit"
+                  class="btn submit-btn"
+                  [disabled]="contactForm.invalid || isSubmitting"
+                >
+                  {{ isSubmitting ? 'Sending email...' : 'Start a Project' }}
+                </button>
+              </div>
 
+            </div>
           </form>
         </div>
       </div>

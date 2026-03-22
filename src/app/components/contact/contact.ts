@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-contact',
@@ -26,34 +27,54 @@ export class ContactComponent {
   successMessage = '';
   errorMessage = '';
 
-  onSubmit(): void {
+  onSubmit(contactForm: NgForm): void {
+    if (contactForm.invalid || this.isSubmitting) {
+      return;
+    }
+
     this.successMessage = '';
     this.errorMessage = '';
     this.isSubmitting = true;
 
-    this.http.post('/api/contact', this.formData).subscribe({
-      next: () => {
-        this.successMessage = 'Your message has been sent successfully. I will get back to you soon.';
-        this.errorMessage = '';
-        this.isSubmitting = false;
+    this.http
+      .post('/api/contact', this.formData)
+      .pipe(
+        finalize(() => {
+          this.isSubmitting = false;
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.successMessage =
+            'Your message has been sent successfully. I will get back to you soon.';
+          this.errorMessage = '';
 
-        this.formData = {
-          name: '',
-          email: '',
-          company: '',
-          projectType: '',
-          budget: '',
-          timeline: '',
-          message: ''
-        };
-      },
-      error: (error) => {
-        console.error('Submit error:', error);
-        this.errorMessage =
-          error?.error?.message || 'Something went wrong. Please try again.';
-        this.successMessage = '';
-        this.isSubmitting = false;
-      }
-    });
+          this.formData = {
+            name: '',
+            email: '',
+            company: '',
+            projectType: '',
+            budget: '',
+            timeline: '',
+            message: ''
+          };
+
+          contactForm.resetForm({
+            name: '',
+            email: '',
+            company: '',
+            projectType: '',
+            budget: '',
+            timeline: '',
+            message: ''
+          });
+        },
+        error: (error) => {
+          console.error('Submit error:', error);
+          this.errorMessage =
+            error?.error?.message || 'Something went wrong. Please try again.';
+          this.successMessage = '';
+        }
+      });
   }
 }

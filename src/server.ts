@@ -9,7 +9,7 @@ import { join } from 'node:path';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import mysql from 'mysql2/promise';
-import nodmailer from 'nodemailer';
+import nodemailer from 'nodemailer';
 dotenv.config();
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
