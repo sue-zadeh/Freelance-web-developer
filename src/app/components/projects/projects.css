@@ -125,9 +125,10 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(15, 15, 35, 0.12),
-    rgba(15, 15, 35, 0.88)
-  );
+      rgba(6, 6, 18, 0.88) 0%,
+      rgba(10, 10, 24, 0.72) 52%,
+      rgba(6, 6, 18, 0.97) 100%
+      );
   color: #f8fafc;
   padding: 22px;
   display: flex;
@@ -196,7 +197,7 @@
   border: 1px solid rgba(196, 181, 253, 0.16);
   padding: 6px 10px;
   border-radius: 999px;
-  font-size: 1.3rem;
+  font-size: 1rem;
   white-space: nowrap;
 }
 
