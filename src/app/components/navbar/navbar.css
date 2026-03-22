@@ -24,7 +24,7 @@
   content: '';
   position: absolute;
   left: 50%;
-  bottom: -6px;
+  bottom: -3px;
   width: 0;
   height: 2px;
   background: #8b5cf6;
@@ -33,12 +33,13 @@
   transition: width 0.3s ease;
 }
 
+
 .nav-link:hover {
   color: #7c3aed;
 }
 
 .nav-link:hover::after {
-  width: 18px;
+  width: 30px;
 }
 
 .nav-link.active {
@@ -46,7 +47,7 @@
 }
 
 .nav-link.active::after {
-  width: 18px;
+  width: 30px;
 }
 
 .btn-hire {
