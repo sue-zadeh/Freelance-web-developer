@@ -11,7 +11,9 @@ import { CommonModule } from '@angular/common';
 export class ProjectsComponent {
   selectedCategory = 'All';
 
-  categories = ['All', 'Business Website', 'Admin Dashboard', 'Web Application'];
+  categories = ['All', 'Business Website', 'Admin Dashboard'
+    // , 'Web Application'
+  ];
 
   projects = [
     {
@@ -35,7 +37,7 @@ export class ProjectsComponent {
       hoverDescription:
         'A custom web platform designed for member management, internal use, and structured administrative control.',
       tags: ['Web App', 'Dashboard', 'Membership System'],
-      liveUrl: 'https://lodge-matarik476-python-production.up.railway.app/',
+      liveUrl: 'https://lodgematariki476.co.nz/',
       secureOnly: false,
     },
     {
@@ -86,6 +88,32 @@ export class ProjectsComponent {
       liveUrl: '',
       secureOnly: true,
     },
+    {
+  title: 'SAMCT Villages',
+  categories: ['Business Website', 'Admin Dashboard', 'Web Application'],
+  image: '/images/home-public-SAMCT.png',
+  shortDescription:
+    'A multi-role SaaS platform with public pages, resident access, and admin dashboards for structured village operations.',
+  hoverDescription:
+    'An in-progress village management platform combining public information, resident-facing features, and administrative tools in one scalable system.',
+  tags: ['SaaS Platform', 'Resident Access', 'Admin Dashboard'],
+  liveUrl: '',
+  secureOnly: false,
+  inProgress: true,
+},
+{
+  title: 'Senior Healthcare Auckland Ltd',
+  categories: ['Business Website', 'Web Application'],
+  image: '/images/healthcare.png',
+  shortDescription:
+    'A full-stack healthcare services website with responsive animated pages, recruitment flow, and client enquiry forms.',
+  hoverDescription:
+    'An in-progress healthcare website built from wireframe to production, designed to present services clearly and support both staffing and client enquiries.',
+  tags: ['Healthcare Website', 'Responsive UI', 'Enquiry Forms'],
+  liveUrl: '',
+  secureOnly: false,
+  inProgress: true,
+},
   ];
 
   get filteredProjects() {
@@ -93,7 +121,9 @@ export class ProjectsComponent {
       return this.projects;
     }
 
-    return this.projects.filter((project) => project.categories.includes(this.selectedCategory));
+    return this.projects.filter((project) =>
+      project.categories.includes(this.selectedCategory)
+    );
   }
 
   setCategory(category: string): void {

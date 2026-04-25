@@ -43,34 +43,45 @@
                 <h3>{{ project.title }}</h3>
                 <p>{{ project.hoverDescription }}</p>
 
-                @if (project.secureOnly) {
-                  <div class="project-note">
-                    Preview only. Live access is restricted for security.
-                  </div>
-                } @else {
-                  <div class="project-note">
-                    Click to view the live website.
-                  </div>
-                }
+                @if (project.inProgress) {
+  <div class="project-note">
+    In progress. Preview shown while the project is being developed.
+  </div>
+} @else if (project.secureOnly) {
+  <div class="project-note">
+    Preview only. Live access is restricted for security.
+  </div>
+} @else {
+  <div class="project-note">
+    Click to view the live website.
+  </div>
+}
               </div>
             </div>
 
             <div class="project-body">
-              <div class="project-top-row">
-                <h3 class="project-name">{{ project.title }}</h3>
-                @if (project.secureOnly) {
-                  <span class="security-badge">Preview Only</span>
-                }
-              </div>
+             <div class="project-top-row">
+               <h3 class="project-name">{{ project.title }}</h3>
 
-              <p class="project-description">{{ project.shortDescription }}</p>
+                <div class="d-flex gap-2 flex-wrap justify-content-end">
+                   @if (project.secureOnly) {
+                     <span class="security-badge">Preview Only</span>
+                     }
 
-              <div class="project-tags">
-                @for (tag of project.tags; track tag) {
-                  <span>{{ tag }}</span>
-                }
-              </div>
+                   @if (project.inProgress) {
+                     <span class="progress-badge">In Progress</span>
+                   }
+                 </div>
             </div>
+
+       <p class="project-description">{{ project.shortDescription }}</p>
+
+        <div class="project-tags">
+          @for (tag of project.tags; track tag) {
+          <span>{{ tag }}</span>
+          }
+           </div>
+          </div>
           </div>
         </div>
       }
