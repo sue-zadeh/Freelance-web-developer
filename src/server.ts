@@ -8,8 +8,9 @@ import express from 'express';
 import { join } from 'node:path';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import mysql from 'mysql2/promise';
+import { Pool } from 'pg';
 import nodemailer from 'nodemailer';
+
 dotenv.config();
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
@@ -25,14 +26,15 @@ app.use(
 
 app.use(express.json());
 
-const pool = mysql.createPool({
-  host: process.env['DB_HOST'] || 'localhost',
-  user: process.env['DB_USER'] || 'freelance_user',
-  password: process.env['DB_PASSWORD'] || '',
-  database: process.env['DB_NAME'] || '',
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
+const pool = new Pool({
+  host: process.env['PGHOST'],
+  port: Number(process.env['PGPORT']) || 5432,
+  user: process.env['PGUSER'],
+  password: process.env['PGPASSWORD'],
+  database: process.env['PGDATABASE'],
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 const transporter = nodemailer.createTransport({
@@ -85,8 +87,20 @@ app.post('/api/contact', async (req, res) => {
 
     const sql = `
       INSERT INTO contact
-      (name, email, company, project_type, budget_range, timeline, message, ip_address, user_agent, status)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      (
+        name,
+        email,
+        company,
+        project_type,
+        budget_range,
+        timeline,
+        message,
+        ip_address,
+        user_agent,
+        status
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      RETURNING id
     `;
 
     const values = [
@@ -102,7 +116,7 @@ app.post('/api/contact', async (req, res) => {
       'new',
     ];
 
-    const [result] = await pool.execute(sql, values);
+    const result = await pool.query(sql, values);
 
     await transporter.sendMail({
       from: process.env['EMAIL_USER'],
@@ -124,14 +138,14 @@ app.post('/api/contact', async (req, res) => {
 
     res.status(201).json({
       message: 'Contact form submitted successfully.',
-      id: (result as mysql.ResultSetHeader).insertId,
+      id: result.rows[0].id,
     });
     return;
   } catch (error: any) {
     console.error('Error saving contact form:');
     console.error('message:', error?.message);
     console.error('code:', error?.code);
-    console.error('sqlMessage:', error?.sqlMessage);
+    console.error('detail:', error?.detail);
     console.error('full error:', error);
 
     res.status(500).json({
