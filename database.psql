@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS freelance;
-USE freelance;
+-- CREATE DATABASE IF NOT EXISTS freelance;
+-- USE freelance;
 
 CREATE TABLE IF NOT EXISTS contact (
   id SERIAL PRIMARY KEY,

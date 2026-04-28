@@ -9,7 +9,6 @@
     "test": "ng test",
     "serve:ssr:sue-portfolio": "node dist/sue-portfolio/server/server.mjs",
     "start:prod": "node dist/sue-portfolio/server/server.mjs"
-
   },
   "private": true,
   "packageManager": "npm@11.6.3",
@@ -30,6 +29,7 @@
     "express": "^5.1.0",
     "mysql2": "^3.20.0",
     "nodemailer": "^8.0.3",
+    "pg": "^8.20.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
@@ -43,6 +43,7 @@
     "@types/express": "^5.0.1",
     "@types/node": "^20.19.37",
     "@types/nodemailer": "^7.0.11",
+    "@types/pg": "^8.20.0",
     "jsdom": "^28.0.0",
     "postcss": "^8.5.3",
     "prettier": "^3.8.1",
