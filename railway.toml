@@ -1,0 +1,5 @@
+[deploy]
+startCommand = "node dist/sue-portfolio/server/server.mjs"
+
+[variables]
+RAILPACK_NO_SPA = "1"
