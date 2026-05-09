@@ -106,7 +106,7 @@ export class ProjectsComponent {
   categories: ['Business Website', 'Web Application'],
   image: '/images/healthcare.png',
   shortDescription:
-    'A full-stack healthcare services website with responsive animated pages, recruitment flow, and client enquiry forms.',
+    'c',
   hoverDescription:
     'An in-progress healthcare website built from wireframe to production, designed to present services clearly and support both staffing and client enquiries.',
   tags: ['Healthcare Website', 'Responsive UI', 'Enquiry Forms'],
