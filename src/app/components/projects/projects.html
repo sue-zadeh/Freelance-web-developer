@@ -34,8 +34,9 @@
             <div class="project-image-wrap">
               <img
                 [src]="project.image"
-                [alt]="project.title"
+                [alt]="project.title + ' project preview'"
                 class="project-image"
+                [class.project-image-contain]="project.fit === 'contain'"
               />
 
               <div class="project-overlay-card">
@@ -43,9 +44,13 @@
                 <h3>{{ project.title }}</h3>
                 <p>{{ project.hoverDescription }}</p>
 
-                @if (project.inProgress) {
+               @if (project.inProgress && project.liveUrl) {
   <div class="project-note">
-    In progress. Preview shown while the project is being developed.
+    In progress. Live preview available.
+  </div>
+} @else if (project.inProgress && !project.liveUrl) {
+  <div class="project-note">
+    In progress. Live preview coming soon.
   </div>
 } @else if (project.secureOnly) {
   <div class="project-note">

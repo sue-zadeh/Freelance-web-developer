@@ -92,12 +92,13 @@ export class ProjectsComponent {
   title: 'SAMCT Villages',
   categories: ['Business Website', 'Admin Dashboard', 'Web Application'],
   image: '/images/home-public-SAMCT.png',
+  fit:'contain',
   shortDescription:
     'A multi-role SaaS platform with public pages, resident access, and admin dashboards for structured village operations.',
   hoverDescription:
     'An in-progress village management platform combining public information, resident-facing features, and administrative tools in one scalable system.',
   tags: ['SaaS Platform', 'Resident Access', 'Admin Dashboard'],
-  liveUrl: '',
+  liveUrl: 'https://samct-production.up.railway.app/',
   secureOnly: false,
   inProgress: true,
 },
@@ -105,6 +106,7 @@ export class ProjectsComponent {
   title: 'Senior Healthcare Auckland Ltd',
   categories: ['Business Website', 'Web Application'],
   image: '/images/healthcare.png',
+   fit:'contain',
   shortDescription:
     'c',
   hoverDescription:
@@ -131,12 +133,10 @@ export class ProjectsComponent {
   }
 
   openProject(project: any): void {
-    if (project.secureOnly) {
+    if (!project.liveUrl || project.secureOnly) {
       return;
     }
 
-    if (project.liveUrl) {
-      window.open(project.liveUrl, '_blank');
-    }
+    window.open(project.liveUrl, '_blank', 'noopener,noreferrer');
   }
 }
