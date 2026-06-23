@@ -6,13 +6,16 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   standalone: true,
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './navbar.html',
-  styleUrl: './navbar.css'
+  styleUrl: './navbar.css',
 })
 export class NavbarComponent {
+  isOpen = false;
+
+  toggleNavbar(): void {
+    this.isOpen = !this.isOpen;
+  }
+
   closeNavbar(): void {
-    const navbar = document.getElementById('mainNavbar');
-    if (navbar && navbar.classList.contains('show')) {
-      navbar.classList.remove('show');
-    }
+    this.isOpen = false;
   }
 }

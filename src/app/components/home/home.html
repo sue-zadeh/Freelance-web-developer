@@ -1,97 +1,138 @@
-<section class="hero-section">
-  <div class="hero-overlay"></div>
+<main>
+  <section class="hero-section" aria-labelledby="hero-title">
+    <div class="hero-overlay" aria-hidden="true"></div>
 
-  <div class="container position-relative hero-content">
-    <div class="row align-items-center hero-row gy-5">
-      
-      <div class="col-lg-6">
-        <div class="hero-left" data-aos="fade-up" data-aos-delay="0">
-          <span class="hero-badge" data-aos="fade-right">Freelance Web Developer</span>
+    <div class="container position-relative hero-content">
+      <div class="row align-items-center hero-row gy-5">
+        <div class="col-lg-6">
+          <div class="hero-left">
+            <p class="hero-badge">
+              Available for Freelance & Company Projects
+            </p>
 
-          <h1 class="hero-title mt-3" data-aos="fade-left">
-             Modern websites, dashboards, and web apps designed for growing businesses 
-          </h1>
+            <h1 id="hero-title" class="hero-title mt-3">
+              Modern websites, dashboards, and web apps designed for growing
+              businesses
+            </h1>
 
-          <p class="hero-text mt-4">
-            Business websites, admin dashboards, and custom web tools built with clean design, responsive layouts, and practical functionality.
-          </p>
+            <p class="hero-text mt-4">
+              Business websites, admin dashboards, and custom web tools built
+              with clean design, responsive layouts, and practical functionality.
+            </p>
 
-          <p class="hero-text-secondary">
-            Clear user experience, scalable frontend-to-backend integration, and API-driven solutions shaped around real business needs.
-          </p>
+            <p class="hero-text-secondary">
+              Clear user experience, scalable frontend-to-backend integration,
+              and API-driven solutions shaped around real business needs.
+            </p>
 
-          <div class="d-flex flex-wrap gap-3 mt-4">
-            <a routerLink="/projects" class="btn btn-primary-custom">View Projects</a>
-            <a routerLink="/contact" class="btn btn-outline-custom">Start a Project</a>
+            <p class="availability-note mt-3">
+             Open to freelance work and company project collaborations.
+            </p>
+
+            <div
+              class="hero-actions d-flex flex-wrap gap-3 mt-4"
+              aria-label="Main actions"
+            >
+              <a routerLink="/projects" class="btn btn-primary-custom">
+                View Projects
+              </a>
+
+              <a routerLink="/contact" class="btn btn-outline-custom">
+                Start a Project
+              </a>
+            </div>
+
+            <div class="row stats-row mt-5" aria-label="Core services">
+              <div class="col-sm-4">
+                <article class="stat-box corner-shine">
+                  <h2>Business</h2>
+                  <p>Websites that build trust</p>
+                </article>
+              </div>
+
+              <div class="col-sm-4">
+                <article class="stat-box corner-shine">
+                  <h2>Dashboard</h2>
+                  <p>Tools for daily workflows</p>
+                </article>
+              </div>
+
+              <div class="col-sm-4">
+                <article class="stat-box corner-shine">
+                  <h2>API</h2>
+                  <p>Connected, scalable solutions</p>
+                </article>
+              </div>
+            </div>
           </div>
+        </div>
 
-          <div class="row stats-row mt-5" data-aos="fade-left">
-            <div class="col-sm-4">
-              <div class="stat-box corner-shine">
-                <h3>Business</h3>
-                <p>Websites that build trust</p>
-              </div>
-            </div>
+        <div class="col-lg-6">
+          <aside
+            class="hero-card float-card tilt-hover"
+            aria-labelledby="included-title"
+          >
+            <p class="small-label">What’s included</p>
 
-            <div class="col-sm-4" data-aos="fade-right">
-              <div class="stat-box corner-shine">
-                <h3>Dashboard</h3>
-                <p>Tools for daily workflows</p>
-              </div>
-            </div>
+            <h2 id="included-title" class="card-title">
+              Digital solutions built for clarity, performance, and growth
+            </h2>
 
-            <div class="col-sm-4">
-              <div class="stat-box corner-shine" data-aos="fade-left">
-                <h3>API</h3>
-                <p>Connected, scalable solutions</p>
-              </div>
-            </div>
-          </div>
+            <p class="card-text">
+              Professional websites, internal dashboards, and custom web
+              applications designed to support workflows, improve usability, and
+              deliver practical business value.
+            </p>
+
+            <ul class="skill-tags" aria-label="Skills and services">
+              @for (skill of skills; track skill) {
+                <li>{{ skill }}</li>
+              }
+            </ul>
+          </aside>
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="col-lg-6">
-        <div class="hero-card float-card tilt-hover">
-          <p class="small-label">What’s included</p>
-          <h2 class="card-title">Digital solutions built for clarity, performance, and growth</h2>
-          <p class="card-text">
-            Professional websites, internal dashboards, and custom web applications designed
-            to support workflows, improve usability, and deliver practical business value.
-          </p>
+  <section class="services-section" aria-labelledby="services-title">
+    <div class="container">
+      <div class="text-center mb-5 fade-up">
+        <h2 id="services-title" class="section-title">
+          What I Can Help With
+        </h2>
 
-          <div class="skill-tags">
-            <span>Business Websites</span>
-            <span>Admin Dashboards</span>
-            <span>Custom Web Apps</span>
-            <span>API Integration</span>
-            <span>Responsive UI</span>
-            <span>User-Focused Design</span>
-          </div>
-        </div>
+        <p class="section-subtitle">
+          Practical digital solutions tailored to business goals, user needs,
+          and everyday workflows.
+        </p>
       </div>
 
-    </div>
-  </div>
-</section>
-
-<section class="services-section">
-  <div class="container">
-    <div class="text-center mb-5 fade-up">
-      <h2 class="section-title">What I Can Help With</h2>
-      <p class="section-subtitle">
-         Practical digital solutions tailored to business goals, user needs, and everyday workflows.
-      </p>
-    </div>
-
-    <div class="row g-4">
-      @for (service of services; track service.title) {
-        <div class="col-md-6 col-lg-4">
-          <div class="service-card h-100" data-aos="fade-right" data-aos-delay="0">
-            <h3>{{ service.title }}</h3>
-            <p>{{ service.description }}</p>
+      <div class="row g-4">
+        @for (service of services; track service.title) {
+          <div class="col-md-6 col-lg-4">
+            <article class="service-card h-100">
+              <h3>{{ service.title }}</h3>
+              <p>{{ service.description }}</p>
+            </article>
           </div>
+        }
+      </div>
+
+      <div class="collab-strip mt-5" aria-label="Collaboration message">
+        <div>
+          <p class="collab-label">For companies and project teams</p>
+          <h3>Need reliable web development support?</h3>
+          <p>
+            I can help with business websites, dashboards, custom web
+            applications, and practical frontend-to-backend delivery.
+          </p>
         </div>
-      }
+
+        <a routerLink="/contact" class="btn btn-primary-custom">
+          Start a Project
+        </a>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+</main>

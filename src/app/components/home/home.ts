@@ -9,6 +9,15 @@ import { RouterLink } from '@angular/router';
   styleUrl: './home.css',
 })
 export class HomeComponent {
+  skills = [
+    'Business Websites',
+    'Admin Dashboards',
+    'Custom Web Apps',
+    'API Integration',
+    'Responsive UI',
+    'User-Focused Design',
+  ];
+
   services = [
     {
       title: 'Business Websites',
@@ -23,7 +32,7 @@ export class HomeComponent {
     {
       title: 'Custom Web Apps & APIs',
       description:
-        'Freelance web developer creating modern websites, dashboards, and custom web applications.',
+        'Modern web applications and API-connected tools built around real business workflows.',
     },
   ];
 }
