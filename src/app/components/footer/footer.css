@@ -1,3 +1,4 @@
+/* Footer Layout */
 .site-footer {
   background-color: #111827;
   color: #f9fafb;
@@ -15,12 +16,40 @@
   font-size: 0.95rem;
 }
 
+/* Contact Info Section */
+.footer-contact-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-icon {
+  width: 16px;
+  height: 16px;
+  fill: #60a5fa; /* Icon accent color */
+}
+
 .footer-link {
   color: #f9fafb;
   text-decoration: none;
-  transition: 0.3s ease;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
 }
 
 .footer-link:hover {
   color: #60a5fa;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 767px) {
+  .footer-contact-info {
+    align-items: flex-end;
+    margin-top: 12px;
+  }
 }
