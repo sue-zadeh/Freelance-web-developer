@@ -14,8 +14,8 @@
 }
 .custom-navbar .container {
   max-width: 1320px;
-  padding-left: 0px;
-  padding-right: 42px;
+  padding-left: 6rem;
+  padding-right: 0;
 }
 
 .brand-text {
@@ -152,5 +152,12 @@
   }
   .navbar-contact-item {
     margin-top: 0.5rem;
+  }
+}
+
+/* ایجاد فاصله دقیق بین لینک Contact و شماره تلفن در دسکتاپ */
+@media (min-width: 992px) {
+  .nav-contact-start {
+    margin-left: 50px !important; /* این عدد رو می‌تونی کم یا زیاد کنی (مثلاً 40px یا 60px) */
   }
 }
