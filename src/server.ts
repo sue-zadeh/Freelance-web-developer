@@ -27,14 +27,12 @@ app.use(
 app.use(express.json());
 
 const pool = new Pool({
-  host: process.env['PGHOST'],
+  host: process.env['PGHOST'] || 'localhost',
   port: Number(process.env['PGPORT']) || 5432,
   user: process.env['PGUSER'],
   password: process.env['PGPASSWORD'],
   database: process.env['PGDATABASE'],
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  ssl: process.env['NODE_ENV'] === 'production' ? { rejectUnauthorized: false } : false,
 });
 
 const transporter = nodemailer.createTransport({
