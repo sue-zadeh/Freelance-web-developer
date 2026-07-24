@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnInit, inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar';
@@ -12,13 +12,18 @@ import AOS from 'aos';
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App implements AfterViewInit {
-  ngAfterViewInit(): void {
-    AOS.init({
-      duration: 900,
-      once: true,
-      offset: 80,
-      easing: 'ease-out-cubic'
-    });
+export class App implements OnInit {
+  private platformId = inject(PLATFORM_ID);
+
+  ngOnInit(): void {
+    // Only initialize AOS inside the browser environment
+    if (isPlatformBrowser(this.platformId)) {
+      AOS.init({
+        duration: 900,
+        once: true,
+        offset: 80,
+        easing: 'ease-out-cubic'
+      });
+    }
   }
 }
