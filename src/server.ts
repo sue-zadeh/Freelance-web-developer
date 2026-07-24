@@ -35,14 +35,20 @@ const pool = new Pool({
   ssl: process.env['NODE_ENV'] === 'production' ? { rejectUnauthorized: false } : false,
 });
 
+const emailPort = Number(process.env['EMAIL_PORT']) || 465;
+
 const transporter = nodemailer.createTransport({
   host: process.env['EMAIL_HOST'] || 'smtp.zoho.com.au',
-  port: Number(process.env['EMAIL_PORT']) || 465,
-  secure: true, // true for 465, false for 587
+  port: emailPort,
+  secure: emailPort === 465, // true for 465, false for 587
   auth: {
     user: process.env['EMAIL_USER'],
     pass: process.env['EMAIL_PASS'],
   },
+  // Add timeouts so the server doesn't hang indefinitely
+  connectionTimeout: 10000, // 10 seconds
+  greetingTimeout: 10000,
+  socketTimeout: 10000,
 });
 
 /**
@@ -118,23 +124,28 @@ app.post('/api/contact', async (req, res) => {
 
     const result = await pool.query(sql, values);
 
-    await transporter.sendMail({
-      from: process.env['EMAIL_USER'],
-      to: process.env['EMAIL_USER'],
-      replyTo: email.trim(),
-      subject: `New project inquiry from ${name}`,
-      html: `
-        <h2>New Contact Form Submission</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Company:</strong> ${company || '-'}</p>
-        <p><strong>Project Type:</strong> ${projectType}</p>
-        <p><strong>Budget:</strong> ${budget || '-'}</p>
-        <p><strong>Timeline:</strong> ${timeline || '-'}</p>
-        <p><strong>Message:</strong></p>
-        <p>${message.replace(/\n/g, '<br>')}</p>
-      `,
-    });
+    // Isolated email execution: prevents database insertion or request flow from hanging
+    try {
+      await transporter.sendMail({
+        from: process.env['EMAIL_USER'],
+        to: process.env['EMAIL_USER'],
+        replyTo: email.trim(),
+        subject: `New project inquiry from ${name}`,
+        html: `
+          <h2>New Contact Form Submission</h2>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Company:</strong> ${company || '-'}</p>
+          <p><strong>Project Type:</strong> ${projectType}</p>
+          <p><strong>Budget:</strong> ${budget || '-'}</p>
+          <p><strong>Timeline:</strong> ${timeline || '-'}</p>
+          <p><strong>Message:</strong></p>
+          <p>${message.replace(/\n/g, '<br>')}</p>
+        `,
+      });
+    } catch (emailError: any) {
+      console.error('Failed to send email notification:', emailError?.message || emailError);
+    }
 
     res.status(201).json({
       message: 'Contact form submitted successfully.',
