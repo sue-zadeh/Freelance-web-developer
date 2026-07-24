@@ -38,7 +38,9 @@ const pool = new Pool({
 });
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: process.env['EMAIL_HOST'] || 'smtp.zoho.com.au',
+  port: Number(process.env['EMAIL_PORT']) || 465,
+  secure: true, // true for 465, false for 587
   auth: {
     user: process.env['EMAIL_USER'],
     pass: process.env['EMAIL_PASS'],
