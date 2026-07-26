@@ -16,7 +16,6 @@ dotenv.config();
 if (!process.env['RESEND_API_KEY']) {
   console.warn('RESEND_API_KEY is missing. Contact form emails will not send.');
 }
-
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
@@ -96,24 +95,26 @@ app.post('/api/contact', async (req, res) => {
 
     const result = await pool.query(sql, values);
 
+    // 3. Send email using Resend HTTP API (Bypasses all Railway port blocks)
     const emailResult = await resend.emails.send({
       from: 'Sue Web Studio <contact@suewebstudio.com>',
       to: ['suezadeh@suewebstudio.com'],
       replyTo: email.trim(),
       subject: `New project inquiry from ${name}`,
       html: `
-        <h2>New Contact Form Submission</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Company:</strong> ${company || '-'}</p>
-        <p><strong>Project Type:</strong> ${projectType}</p>
-        <p><strong>Budget:</strong> ${budget || '-'}</p>
-        <p><strong>Timeline:</strong> ${timeline || '-'}</p>
-        <p><strong>Message:</strong></p>
-        <p>${message.replace(/\n/g, '<br>')}</p>
-      `,
+    <h2>New Contact Form Submission</h2>
+    <p><strong>Name:</strong> ${name}</p>
+    <p><strong>Email:</strong> ${email}</p>
+    <p><strong>Company:</strong> ${company || '-'}</p>
+    <p><strong>Project Type:</strong> ${projectType}</p>
+    <p><strong>Budget:</strong> ${budget || '-'}</p>
+    <p><strong>Timeline:</strong> ${timeline || '-'}</p>
+    <p><strong>Message:</strong></p>
+    <p>${message.replace(/\n/g, '<br>')}</p>
+  `,
     });
 
+    console.log('Resend email result:', emailResult);
     console.log('Resend email result:', emailResult);
 
     res.status(201).json({
