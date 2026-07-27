@@ -42,7 +42,7 @@
 .projects-title {
   font-size: 3rem;
   line-height: 1.15;
-  font-weight: 800;
+  font-weight: 600;
   color: #f8fafc;
 }
 
@@ -50,7 +50,7 @@
   font-size: 1.05rem;
   line-height: 1.9;
   color: #d1d5db;
-  max-width: 700px;
+  max-width: 650px;
   margin: 0 auto;
 }
 
