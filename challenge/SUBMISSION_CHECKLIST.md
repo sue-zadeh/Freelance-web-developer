@@ -2,6 +2,7 @@
 
 ## Ready in this branch
 
+- [x] Single final submission package with ready-to-paste form text
 - [x] Complete solution code
 - [x] Clearly labelled Improvement Changelog
 - [x] Clean-environment reproduction guide with exact commands
@@ -54,6 +55,8 @@ production data is required to reproduce the submitted result.
 2. Reproduction: `challenge/REPRODUCTION.md`
 3. Agent trajectory: `challenge/trajectories/codex-work.md`
 4. Video: the unlisted video URL
+
+The consolidated copy-and-upload package is `challenge/FINAL_SUBMISSION_PACKAGE.md`.
 
 ## Final safety check
 
