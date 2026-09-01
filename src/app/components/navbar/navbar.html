@@ -7,16 +7,15 @@
     <button
       class="navbar-toggler border-0 shadow-none"
       type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#mainNavbar"
+      (click)="toggleNavbar()"
       aria-controls="mainNavbar"
-      aria-expanded="false"
+      [attr.aria-expanded]="isOpen"
       aria-label="Toggle navigation"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="mainNavbar">
+    <div class="collapse navbar-collapse" [class.show]="isOpen" id="mainNavbar">
       <ul class="navbar-nav ms-auto align-items-lg-center gap-3">
         
         <!-- Navigation Links -->
@@ -28,6 +27,9 @@
         </li>
         <li class="nav-item">
           <a class="nav-link px-2" routerLink="/projects" routerLinkActive="active" (click)="closeNavbar()">Projects</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link px-2" routerLink="/release-guardian" routerLinkActive="active" (click)="closeNavbar()">Release Guardian</a>
         </li>
         <li class="nav-item">
           <a class="nav-link px-2" routerLink="/contact" routerLinkActive="active" (click)="closeNavbar()">Get a Quote</a>

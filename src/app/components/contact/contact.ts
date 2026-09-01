@@ -26,7 +26,8 @@ export class ContactComponent {
     projectType: '',
     budget: '',
     timeline: '',
-    message: ''
+    message: '',
+    website: '',
   };
 
   // State flag tracking whether HTTP request is in progress to disable UI interactions
@@ -76,7 +77,8 @@ export class ContactComponent {
             projectType: '',
             budget: '',
             timeline: '',
-            message: ''
+            message: '',
+            website: '',
           };
 
           // Reset template form state, clearing ngModel pristine/untouched/dirty flags
@@ -87,7 +89,8 @@ export class ContactComponent {
             projectType: '',
             budget: '',
             timeline: '',
-            message: ''
+            message: '',
+            website: '',
           });
         },
         // Triggered on HTTP 4xx or 5xx server errors

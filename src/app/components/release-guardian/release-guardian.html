@@ -1,0 +1,77 @@
+<main class="guardian-page">
+  <section class="guardian-hero" aria-labelledby="guardian-title">
+    <div class="guardian-glow guardian-glow-one" aria-hidden="true"></div>
+    <div class="guardian-glow guardian-glow-two" aria-hidden="true"></div>
+    <div class="container guardian-content">
+      <p class="guardian-kicker">micro1 Frontier Engineering Challenge 2026</p>
+      <h1 id="guardian-title">Release Guardian</h1>
+      <p class="guardian-lead">
+        An agent-guided security hardening workflow for an Angular and Node.js
+        portfolio. Every improvement is tied to a repeatable test or release check.
+      </p>
+      <div class="guardian-command" aria-label="Verification command">
+        <span>$</span>
+        <code>npm run verify</code>
+        <strong>PASS</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="container metrics-section" aria-labelledby="metrics-title">
+    <div class="section-heading">
+      <p>Measured improvement</p>
+      <h2 id="metrics-title">Same project. Stronger release evidence.</h2>
+    </div>
+
+    <div class="metrics-grid">
+      @for (metric of metrics; track metric.label) {
+        <article class="metric-card">
+          <div class="metric-change">
+            <span>{{ metric.before }}</span>
+            <span class="metric-arrow" aria-hidden="true">→</span>
+            <strong>{{ metric.after }}</strong>
+          </div>
+          <p>{{ metric.label }}</p>
+        </article>
+      }
+    </div>
+  </section>
+
+  <section class="workflow-section" aria-labelledby="workflow-title">
+    <div class="container workflow-grid">
+      <div>
+        <p class="eyebrow">Agent workflow</p>
+        <h2 id="workflow-title">Inspect. Fix. Prove. Approve.</h2>
+        <p class="workflow-copy">
+          The coding agent first captured a baseline, then hardened the smallest
+          high-risk boundary: the public contact API. Deterministic checks verify
+          the result, while deployment and final submission remain human-approved.
+        </p>
+      </div>
+
+      <ol class="workflow-steps">
+        <li><span>01</span><div><strong>Inspect</strong><p>Build, tests, dependencies and attack surface.</p></div></li>
+        <li><span>02</span><div><strong>Fix</strong><p>Validation, escaping, rate limits and headers.</p></div></li>
+        <li><span>03</span><div><strong>Prove</strong><p>Same 12 release controls on baseline and final.</p></div></li>
+        <li><span>04</span><div><strong>Approve</strong><p>A human controls push, deploy and submission.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="container controls-section" aria-labelledby="controls-title">
+    <div class="section-heading">
+      <p>Final controls</p>
+      <h2 id="controls-title">Security that can be checked, not just claimed.</h2>
+    </div>
+    <div class="controls-grid">
+      @for (control of controls; track control) {
+        <div class="control-pill"><span aria-hidden="true">✓</span>{{ control }}</div>
+      }
+    </div>
+    <p class="hot-take">
+      <strong>Hot take:</strong> an agent is most useful when it cannot declare its
+      own work finished. The reliable finish line is a deterministic gate plus a
+      human checkpoint.
+    </p>
+  </section>
+</main>

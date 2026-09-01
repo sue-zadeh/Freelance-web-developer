@@ -96,12 +96,21 @@
 }
 
 .contact-form-card {
+  position: relative;
   background: rgba(23, 23, 45, 0.72);
   border: 1px solid rgba(196, 181, 253, 0.14);
   border-radius: 28px;
   padding: 34px;
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.28);
   backdrop-filter: blur(10px);
+}
+
+.website-field {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
 
 .form-group label {

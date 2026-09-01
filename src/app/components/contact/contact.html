@@ -51,6 +51,17 @@
         <p class= "text-light fs-4">Open to freelance projects, company work, and team collaboration.</p>
         <div class="contact-form-card fade-up">
           <form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)">
+            <div class="website-field" aria-hidden="true">
+              <label for="website">Website</label>
+              <input
+                id="website"
+                name="website"
+                type="text"
+                tabindex="-1"
+                autocomplete="off"
+                [(ngModel)]="formData.website"
+              />
+            </div>
             <div class="row g-3">
 
               <div class="col-md-6">
@@ -63,6 +74,8 @@
                     class="form-control custom-input"
                     [(ngModel)]="formData.name"
                     required
+                    maxlength="100"
+                    autocomplete="name"
                     placeholder="Your Name"
                   />
                 </div>
@@ -78,6 +91,8 @@
                     class="form-control custom-input"
                     [(ngModel)]="formData.email"
                     required
+                    maxlength="150"
+                    autocomplete="email"
                     placeholder="Your Email"
                   />
                 </div>
@@ -92,6 +107,8 @@
                     name="company"
                     class="form-control custom-input"
                     [(ngModel)]="formData.company"
+                    maxlength="150"
+                    autocomplete="organization"
                     placeholder="Company or Business Name"
                   />
                 </div>
@@ -167,6 +184,7 @@
                     class="form-control custom-input custom-textarea"
                     [(ngModel)]="formData.message"
                     required
+                    maxlength="3000"
                     placeholder="Tell me a bit about your project, goals, or what you need."
                   ></textarea>
                 </div>

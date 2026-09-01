@@ -108,7 +108,7 @@ export class ProjectsComponent {
   image: '/images/healthcare.png',
    fit:'contain',
   shortDescription:
-    'c',
+    'A responsive healthcare website designed to present services clearly and support staffing and client enquiries.',
   hoverDescription:
     'An in-progress healthcare website built from wireframe to production, designed to present services clearly and support both staffing and client enquiries.',
   tags: ['Healthcare Website', 'Responsive UI', 'Enquiry Forms'],

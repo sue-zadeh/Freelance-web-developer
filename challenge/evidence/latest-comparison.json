@@ -1,0 +1,88 @@
+{
+  "baselineRef": "56567bbb61d287d445ae3b00ef553fb2c7e0baa4",
+  "finalRef": "HEAD",
+  "primaryMetric": "release controls passed",
+  "baseline": {
+    "passed": 0,
+    "total": 12
+  },
+  "final": {
+    "passed": 12,
+    "total": 12
+  },
+  "absoluteImprovement": 12,
+  "checks": [
+    {
+      "id": "dependency-hygiene",
+      "baseline": false,
+      "final": true,
+      "evidence": "package.json"
+    },
+    {
+      "id": "security-headers",
+      "baseline": false,
+      "final": true,
+      "evidence": "src/server.ts"
+    },
+    {
+      "id": "request-size-limit",
+      "baseline": false,
+      "final": true,
+      "evidence": "src/server.ts"
+    },
+    {
+      "id": "rate-limit",
+      "baseline": false,
+      "final": true,
+      "evidence": "src/server/contact.ts"
+    },
+    {
+      "id": "strict-validation",
+      "baseline": false,
+      "final": true,
+      "evidence": "src/server/contact.ts"
+    },
+    {
+      "id": "safe-email-rendering",
+      "baseline": false,
+      "final": true,
+      "evidence": "src/server/contact.ts"
+    },
+    {
+      "id": "bot-honeypot",
+      "baseline": false,
+      "final": true,
+      "evidence": "src/server/contact.ts"
+    },
+    {
+      "id": "privacy-minimisation",
+      "baseline": false,
+      "final": true,
+      "evidence": "src/server.ts and database.psql"
+    },
+    {
+      "id": "safe-errors",
+      "baseline": false,
+      "final": true,
+      "evidence": "src/server/contact.ts"
+    },
+    {
+      "id": "behavioral-tests",
+      "baseline": false,
+      "final": true,
+      "evidence": "src/server/contact.spec.ts"
+    },
+    {
+      "id": "ci-release-gate",
+      "baseline": false,
+      "final": true,
+      "evidence": ".github/workflows/release-guardian.yml"
+    },
+    {
+      "id": "seo-evidence",
+      "baseline": false,
+      "final": true,
+      "evidence": "src/app/app.routes.ts and public SEO files"
+    }
+  ]
+}

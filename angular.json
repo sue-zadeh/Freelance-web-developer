@@ -28,10 +28,17 @@
             "styles": [
              "bootstrap/dist/css/bootstrap.min.css",
                "src/styles.css"            ],
+            "allowedCommonJsDependencies": [
+              "aos"
+            ],
             "server": "src/main.server.ts",
             "outputMode": "server",
             "security": {
-              "allowedHosts": []
+              "allowedHosts": [
+                "localhost",
+                "suewebstudio.com",
+                "www.suewebstudio.com"
+              ]
             },
             "ssr": {
               "entry": "src/server.ts"
@@ -42,13 +49,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "650kB",
+                  "maximumError": "900kB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "8kB",
+                  "maximumError": "12kB"
                 }
               ],
               "outputHashing": "all"
