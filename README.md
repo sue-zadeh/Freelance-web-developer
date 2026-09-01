@@ -110,6 +110,7 @@ a human checkpoint before consequential actions.
 - [Agent instructions and disclosure](challenge/AGENT_INSTRUCTIONS.md)
 - [Representative trajectory](challenge/trajectories/codex-work.md)
 - [Five-minute video script](challenge/VIDEO_SCRIPT.md)
+- [Final submission package and ready-to-paste form text](challenge/FINAL_SUBMISSION_PACKAGE.md)
 - [Submission checklist and copy](challenge/SUBMISSION_CHECKLIST.md)
 - [Security policy](SECURITY.md)
 - [Third-party notices](THIRD_PARTY_NOTICES.md)
