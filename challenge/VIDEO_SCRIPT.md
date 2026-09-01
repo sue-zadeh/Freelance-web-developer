@@ -1,86 +1,173 @@
-# Solution video - maximum 5 minutes
+# Solution video - exact recording plan (maximum 5 minutes)
 
-This is a final demo video, not a recording of every minute spent in Codex.
+This is a short final demonstration, not a recording of every minute spent working in
+Codex. Aim for 4:20-4:40 so the upload remains safely below the five-minute limit.
 
-Recommended tool: Windows Snipping Tool screen recording, Clipchamp, Loom, or Zoom.
-Record the screen at 1080p. Use the script below and keep the final video near 4:30.
+## A. Prepare before pressing Record
 
-## Before recording
+1. Close email, messages, `.env`, Railway variables, browser password prompts, and
+   every tab that contains private information.
+2. Set browser zoom to 90-100% and terminal text large enough to read in the video.
+3. Open the GitHub branch page and confirm the branch selector says
+   `freelance--Challenge`, not `main`.
+4. In the project terminal, run `npm ci` before the recording.
+5. Build and start the local site in terminal 1:
 
-1. Close email, messages, `.env`, Railway variables, and anything private.
-2. Open the repository on branch `freelance--Challenge`.
-3. Open a terminal in the project and run `npm ci` before recording.
-4. Open `http://localhost:4000/release-guardian` after `npm run build` and `npm run start:prod`.
-5. Keep `README.md`, `challenge/IMPROVEMENT_CHANGELOG.md`, and the terminal ready.
+   ```bash
+   npm run build
+   npm run start:prod
+   ```
 
-## 0:00-0:30 - Problem and user
+6. Open `http://localhost:4000/release-guardian` and confirm the page loads.
+7. Open terminal 2 in the repository and leave it ready for `npm run verify`.
+8. Prepare these tabs/files in this exact order:
+   - `/release-guardian`
+   - `challenge/evidence/baseline.md`
+   - `challenge/AGENT_INSTRUCTIONS.md`
+   - `challenge/trajectories/codex-work.md`
+   - terminal 2
+   - `src/server/contact.ts`
+   - `src/server/contact.spec.ts`
+   - `challenge/IMPROVEMENT_CHANGELOG.md`
+9. Use Windows Snipping Tool > Record, Clipchamp, Loom, or Zoom. Record the screen at
+   1080p if possible. A webcam is optional; clear voice and readable evidence matter.
+10. Do one short sound test, then start the final recording.
 
-Say:
+## B. Record in this exact order
 
-> Hi, I am Sue. Freelance developers can ship a portfolio that looks finished while
-> its public contact boundary, tests, dependencies, and privacy checks are still weak.
-> Release Guardian uses a coding agent to improve that boundary, then makes a
-> deterministic gate and a human checkpoint decide whether it is ready.
+### 0:00-0:15 - Title
 
-Show the Release Guardian title and the “Inspect. Fix. Prove. Approve.” workflow.
+**Show:** the top of `/release-guardian` with the title and
+“Inspect. Fix. Prove. Approve.”
 
-## 0:30-1:05 - Simple baseline
+**Say:**
 
-Show `challenge/evidence/baseline.md` and say:
+> Hi, I am Sue. This is Release Guardian, an evidence-driven security improvement for
+> a real Angular and Node.js freelance portfolio.
 
-> The untouched baseline is commit 56567bb. Its build passed, but the tests had zero
-> passing, npm audit found 12 production vulnerabilities, and the release evaluator
-> passed zero of 12 controls. This proves a successful build was not enough.
+### 0:15-0:40 - Problem and intended user
 
-## 1:05-1:40 - Coding-agent workflow
+**Show:** stay on the workflow and problem section of the page.
 
-Show `challenge/AGENT_INSTRUCTIONS.md` and the trajectory. Say:
+**Say:**
 
-> I used Codex in ChatGPT Work as one coding agent. It first captured the baseline,
-> then focused on the smallest high-risk boundary, reran all gates after changes, and
-> left push, deployment, and final submission as human-approved actions.
+> Freelance developers can ship a website that looks finished while its public contact
+> API, tests, dependencies, and privacy checks are still weak. Release Guardian lets a
+> coding agent improve the project, but independent tests and a human checkpoint decide
+> whether the release is ready.
 
-## 1:40-3:05 - One realistic execution
+### 0:40-1:05 - Simple baseline
 
-In the terminal, run:
+**Show:** `challenge/evidence/baseline.md`. Point to the four baseline results.
+
+**Say:**
+
+> I first measured the untouched baseline at commit 56567bb. The build passed, but
+> there were zero passing tests, 12 production vulnerabilities, four build warnings,
+> and zero of 12 release controls passed. A successful build was not enough.
+
+### 1:05-1:35 - Agent instructions and trajectory
+
+**Show:** first `challenge/AGENT_INSTRUCTIONS.md`, then
+`challenge/trajectories/codex-work.md`. Scroll just enough to show the instruction,
+tool responses, retry, and human checkpoints.
+
+**Say:**
+
+> I used Codex in ChatGPT Work as one coding agent. Its instruction was to inspect,
+> fix, prove, and then stop for human approval. The trajectory records the prompt,
+> tool results, implementation, retry, and final checkpoints. Push, deployment, and
+> final submission remained human-approved actions.
+
+### 1:35-1:45 - Start one realistic execution
+
+**Show:** terminal 2. Type and run:
 
 ```bash
 npm run verify
 ```
 
-While it runs, briefly show `src/server/contact.ts` and `contact.spec.ts`. Say:
+**Say:**
 
-> The final contact boundary validates types, lengths, email, and allowed selections.
-> It escapes HTML email, uses parameterized database values, limits request size and
-> rate, discards bot honeypot submissions, and no longer stores IP or browser data.
-> Synthetic tests cover XSS, header injection, oversized input, spam, rate limiting,
-> database failure, and email failure.
+> Now I will reproduce the complete evaluation with one command.
 
-Return to the terminal and show the final passing output.
+### 1:45-2:35 - Explain the implemented solution while verification runs
 
-## 3:05-3:45 - Final comparison
+**Show:** `src/server/contact.ts`, then `src/server/contact.spec.ts`. Do not expose an
+`.env` file or any real contact data.
 
-Show the metric cards on `/release-guardian` and say:
+**Say:**
 
-> The same 12 release controls moved from zero to 12. Passing tests moved from zero to
-> 18. Production vulnerabilities moved from 12 to zero, and build warnings moved from
-> four to zero. Every claim has a command and stored evidence in the repository.
+> The final contact boundary validates data types, lengths, email format, and allowed
+> selections. It escapes HTML email, adds plain text email, uses parameterized database
+> values, limits request size and request rate, and discards honeypot spam. It also no
+> longer stores IP address or browser data. Synthetic tests cover XSS, header injection,
+> oversized input, spam, rate limiting, database failure, and email failure.
 
-## 3:45-4:20 - Changelog and removed experiment
+### 2:35-3:05 - Show the live proof
 
-Show the changelog and say:
+**Show:** return to terminal 2. If verification is still running, briefly point to each
+completed stage and wait only until the final audit line appears.
 
-> The largest improvement came from hardening the public contact boundary and making
-> its security behavior testable. I removed the experiment of using npm audit as the
-> entire release decision. Audit found packages, but it missed unsafe email HTML,
-> weak validation, spam, privacy over-collection, and broken tests.
+**Say:**
 
-## 4:20-4:40 - Hot take and close
+> The same command runs the behavioral tests, production build, baseline and final
+> evaluator, and production dependency audit. The final result is 18 passing tests,
+> a clean build, 12 of 12 controls, and zero production vulnerabilities.
 
-Say:
+If the command needs more time, keep speaking over the relevant output; never leave a
+long silent section. Do not stop recording until the final command exits successfully.
 
-> My hot take is that an agent should not be allowed to declare its own work finished.
-> Let the agent move quickly, but let independent tests and a human checkpoint decide
-> whether the result can leave the sandbox. Thank you.
+### 3:05-3:35 - Final comparison and value
 
-Stop recording. Do not wait for five minutes.
+**Show:** return to `/release-guardian` and point to the four metric cards.
+
+**Say:**
+
+> Compared with the same baseline, release controls improved from zero to 12, passing
+> tests from zero to 18, production vulnerabilities from 12 to zero, and build warnings
+> from four to zero. Every claim has a command and stored evidence in the repository.
+
+### 3:35-4:05 - Changelog and biggest change
+
+**Show:** `challenge/IMPROVEMENT_CHANGELOG.md`. Point to Iteration 2 and the Final row.
+
+**Say:**
+
+> The biggest contributing change was hardening the public contact boundary and making
+> its security behavior testable. The improvement changelog connects every meaningful
+> iteration to evidence and records whether the change was kept or removed.
+
+### 4:05-4:25 - Removed experiment
+
+**Show:** point to Iteration 4 in the changelog.
+
+**Say:**
+
+> I removed the experiment of using npm audit as the entire release decision. Audit
+> found vulnerable packages, but it missed unsafe email HTML, weak validation, spam,
+> privacy over-collection, and broken tests. Audit remains one part of the full gate.
+
+### 4:25-4:40 - Hot take and finish
+
+**Show:** return to the Release Guardian title or final metric cards.
+
+**Say:**
+
+> My hot take is that an agent should not declare its own work finished. Let the agent
+> move quickly, but let independent tests and a human checkpoint approve the result.
+> Thank you.
+
+Stop the recording immediately after “Thank you.” Do not add an outro that could push
+the video beyond five minutes.
+
+## C. Check and upload the video
+
+1. Play the exported video once from beginning to end.
+2. Confirm it is at most 5:00, voice is clear, terminal output is readable, and no
+   secret, email inbox, private message, `.env`, API key, or production data appears.
+3. Name it `Release Guardian - micro1 Frontier Engineering Challenge 2026`.
+4. Upload it to YouTube as **Unlisted** (not Private), or use another host that judges
+   can open without signing in.
+5. Open the share URL in an incognito/private browser window. If it plays there, copy
+   that exact URL into the HackerEarth submission form.
