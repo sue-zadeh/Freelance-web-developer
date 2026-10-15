@@ -13,7 +13,7 @@ export class NavbarComponent {
   closeNavbar(): void {
     const navbarCollapse = document.getElementById('mainNavbar');
     if (navbarCollapse && navbarCollapse.classList.contains('show')) {
-      // حذف کلاس show جهت بستن منوی کشویی بوت‌استرپ
+      // for auto closing the menue in small devices
       navbarCollapse.classList.remove('show');
     }
   }
