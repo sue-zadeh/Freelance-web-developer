@@ -9,13 +9,12 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   styleUrl: './navbar.css',
 })
 export class NavbarComponent {
-  isOpen = false;
-
-  toggleNavbar(): void {
-    this.isOpen = !this.isOpen;
-  }
 
   closeNavbar(): void {
-    this.isOpen = false;
+    const navbarCollapse = document.getElementById('mainNavbar');
+    if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+      // حذف کلاس show جهت بستن منوی کشویی بوت‌استرپ
+      navbarCollapse.classList.remove('show');
+    }
   }
 }
