@@ -271,3 +271,29 @@
     width: 100%;
   }
 }
+
+.contact-email-link {
+  color: #d8b4fe;
+  text-decoration: none;
+}
+
+.contact-email-link:hover,
+.contact-email-link:focus-visible {
+  color: #f3e8ff;
+  text-decoration: underline;
+}
+
+.contact-honeypot {
+  position: absolute !important;
+  left: -10000px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+}
+
+.form-privacy-note {
+  margin: 0 0 14px;
+  color: #cbd5e1;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
