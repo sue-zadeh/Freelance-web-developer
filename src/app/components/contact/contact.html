@@ -4,7 +4,6 @@
   <div class="container position-relative contact-content">
     <div class="row align-items-center g-5">
 
-      <!-- Left side -->
       <div class="col-lg-5">
         <div class="contact-info fade-up">
           <span class="contact-badge">Get In Touch</span>
@@ -28,7 +27,11 @@
               <span class="info-icon">✉</span>
               <div>
                 <h3>Email</h3>
-                <p>suezadeh@suewebstudio.com</p>
+                <p>
+                  <a class="contact-email-link" href="mailto:suezadeh@suewebstudio.com">
+                    suezadeh@suewebstudio.com
+                  </a>
+                </p>
               </div>
             </div>
 
@@ -36,23 +39,30 @@
               <span class="info-icon">⌁</span>
               <div>
                 <h3>Availability</h3>
-                <p>
-                  <!--Available for freelance projects.<br>-->
-                  Usually replies within 1 to 2 business days.
-                </p>
+                <p>Usually replies within 1 to 2 business days.</p>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Right side -->
       <div class="col-lg-7">
-        <p class= "text-light fs-4">Open to freelance projects, company work, and team collaboration.</p>
+        <p class="text-light fs-4">Open to freelance projects, company work, and team collaboration.</p>
         <div class="contact-form-card fade-up">
           <form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)">
-            <div class="row g-3">
+            <div class="contact-honeypot" aria-hidden="true">
+              <label for="website">Website</label>
+              <input
+                type="text"
+                id="website"
+                name="website"
+                [(ngModel)]="formData.website"
+                tabindex="-1"
+                autocomplete="off"
+              />
+            </div>
 
+            <div class="row g-3">
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="name">Your Name *</label>
@@ -63,6 +73,8 @@
                     class="form-control custom-input"
                     [(ngModel)]="formData.name"
                     required
+                    maxlength="100"
+                    autocomplete="name"
                     placeholder="Your Name"
                   />
                 </div>
@@ -78,6 +90,8 @@
                     class="form-control custom-input"
                     [(ngModel)]="formData.email"
                     required
+                    maxlength="150"
+                    autocomplete="email"
                     placeholder="Your Email"
                   />
                 </div>
@@ -92,6 +106,8 @@
                     name="company"
                     class="form-control custom-input"
                     [(ngModel)]="formData.company"
+                    maxlength="150"
+                    autocomplete="organization"
                     placeholder="Company or Business Name"
                   />
                 </div>
@@ -167,20 +183,25 @@
                     class="form-control custom-input custom-textarea"
                     [(ngModel)]="formData.message"
                     required
+                    maxlength="5000"
                     placeholder="Tell me a bit about your project, goals, or what you need."
                   ></textarea>
                 </div>
               </div>
 
               <div class="col-12">
+                <p class="form-privacy-note">
+                  Your details are used only to respond to your enquiry and are not shared for marketing.
+                </p>
+
                 @if (successMessage) {
-                  <div class="form-alert success-alert mb-3">
+                  <div class="form-alert success-alert mb-3" role="status">
                     {{ successMessage }}
                   </div>
                 }
 
                 @if (errorMessage) {
-                  <div class="form-alert error-alert mb-3">
+                  <div class="form-alert error-alert mb-3" role="alert">
                     {{ errorMessage }}
                   </div>
                 }
@@ -190,10 +211,9 @@
                   class="btn submit-btn"
                   [disabled]="contactForm.invalid || isSubmitting"
                 >
-                  {{ isSubmitting ? 'Sending email...' : 'Start a Project' }}
+                  {{ isSubmitting ? 'Sending...' : 'Send Project Details' }}
                 </button>
               </div>
-
             </div>
           </form>
         </div>

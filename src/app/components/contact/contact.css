@@ -3,12 +3,7 @@
   min-height: calc(100vh - 140px);
   display: flex;
   align-items: center;
-  background:
-    linear-gradient(135deg, rgba(15, 15, 35, 0.95), rgba(28, 18, 46, 0.93)),
-    url('/images/hero-workspace.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: linear-gradient(135deg, rgba(15, 15, 35, 0.98), rgba(28, 18, 46, 0.96));
   padding: 110px 0 90px;
   overflow: hidden;
 }
@@ -270,4 +265,30 @@
   .submit-btn {
     width: 100%;
   }
+}
+
+.contact-email-link {
+  color: #d8b4fe;
+  text-decoration: none;
+}
+
+.contact-email-link:hover,
+.contact-email-link:focus-visible {
+  color: #f3e8ff;
+  text-decoration: underline;
+}
+
+.contact-honeypot {
+  position: absolute !important;
+  left: -10000px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+}
+
+.form-privacy-note {
+  margin: 0 0 14px;
+  color: #cbd5e1;
+  font-size: 0.85rem;
+  line-height: 1.5;
 }

@@ -6,109 +6,186 @@ import {
   writeResponseToNodeResponse,
 } from '@angular/ssr/node';
 
-// Import Express to create the backend server
 import express from 'express';
-
-// Import join to safely create file/folder paths
 import { join } from 'node:path';
-
-// Import CORS so the frontend can call the backend API
 import cors from 'cors';
-
-// Import dotenv so local .env variables can be loaded during local development
 import dotenv from 'dotenv';
-
-// Import PostgreSQL connection pool
 import { Pool } from 'pg';
-
-// Import Resend email service
 import { Resend } from 'resend';
 
-// Load environment variables from .env locally
 dotenv.config();
 
-// Warn in logs if the Resend API key is missing
-// Do not create Resend here, because Railway/Angular build can fail during SSR build
 if (!process.env['RESEND_API_KEY']) {
   console.warn('RESEND_API_KEY is missing. Contact form emails will not send.');
 }
 
-// Set the folder where Angular browser build files are stored
 const browserDistFolder = join(import.meta.dirname, '../browser');
-
-// Create the Express app
 const app = express();
-
-// Create the Angular SSR engine
 const angularApp = new AngularNodeAppEngine();
 
-// Enable CORS so the frontend can send requests to this backend
+const CONTACT_EMAIL = 'suezadeh@suewebstudio.com';
+const CONTACT_RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
+const CONTACT_RATE_LIMIT_MAX = 5;
+const contactRequestTimes = new Map<string, number[]>();
+
+const allowedProjectTypes = new Set([
+  'Business Website',
+  'Portfolio Website',
+  'Admin Dashboard',
+  'Custom Web App',
+  'API / Backend Integration',
+  'Website Redesign',
+  'Other',
+]);
+
+const allowedBudgets = new Set([
+  '',
+  'Under $1,000',
+  '$1,000 - $3,000',
+  '$3,000 - $6,000',
+  '$6,000+',
+  'Not sure yet',
+]);
+
+const allowedTimelines = new Set([
+  '',
+  'ASAP',
+  'Within 2 weeks',
+  'Within 1 month',
+  '1 to 3 months',
+  'Flexible',
+]);
+
+function getString(value: unknown): string | null {
+  return typeof value === 'string' ? value.trim() : null;
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function isValidEmail(value: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+function contactRateLimit(req: express.Request, res: express.Response, next: express.NextFunction): void {
+  const now = Date.now();
+  const ip = req.ip || req.socket.remoteAddress || 'unknown';
+  const recent = (contactRequestTimes.get(ip) || []).filter(
+    (time) => now - time < CONTACT_RATE_LIMIT_WINDOW_MS,
+  );
+
+  if (recent.length >= CONTACT_RATE_LIMIT_MAX) {
+    res.setHeader('Retry-After', Math.ceil(CONTACT_RATE_LIMIT_WINDOW_MS / 1000).toString());
+    res.status(429).json({
+      message: 'Too many messages were sent from this connection. Please try again later.',
+    });
+    return;
+  }
+
+  recent.push(now);
+  contactRequestTimes.set(ip, recent);
+  next();
+}
+
+// Railway and other reverse proxies provide the real client IP through proxy headers.
+app.set('trust proxy', 1);
+
+// Do not advertise the Express framework in response headers.
+app.disable('x-powered-by');
+
+// Low-risk security headers that do not interfere with Angular SSR or external fonts/icons.
+app.use((_req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  next();
+});
+
 app.use(
   cors({
-    // Use CLIENT_ORIGIN from Railway/local .env, or localhost for development
     origin: process.env['CLIENT_ORIGIN'] || 'http://localhost:4200',
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type'],
   }),
 );
 
-// Allow Express to read JSON body data from requests
-app.use(express.json());
+// Keep request bodies small because the public API only accepts a short contact form.
+app.use(express.json({ limit: '20kb' }));
 
-// Create PostgreSQL connection pool
 const pool = new Pool({
-  // Database host, local fallback is localhost
   host: process.env['PGHOST'] || 'localhost',
-
-  // Database port, local PostgreSQL usually uses 5432
   port: Number(process.env['PGPORT']) || 5432,
-
-  // Database username
   user: process.env['PGUSER'],
-
-  // Database password
   password: process.env['PGPASSWORD'],
-
-  // Database name
   database: process.env['PGDATABASE'],
-
-  // Use SSL only in production, needed for Railway PostgreSQL
   ssl: process.env['NODE_ENV'] === 'production' ? { rejectUnauthorized: false } : false,
 });
 
-// Simple API route to check if backend is running
 app.get('/api/health', async (_req, res) => {
-  // Send success response
   res.json({ message: 'API is running' });
 });
 
-// Contact form API route
-app.post('/api/contact', async (req, res) => {
+app.post('/api/contact', contactRateLimit, async (req, res) => {
   try {
-    // Get form values from frontend request body
-    const { name, email, company, projectType, budget, timeline, message } = req.body;
+    const body = req.body ?? {};
 
-    // Check required fields
+    const name = getString(body.name);
+    const email = getString(body.email);
+    const company = getString(body.company) ?? '';
+    const projectType = getString(body.projectType);
+    const budget = getString(body.budget) ?? '';
+    const timeline = getString(body.timeline) ?? '';
+    const message = getString(body.message);
+
+    // Hidden honeypot field. Real visitors never fill this in.
+    const website = getString(body.website) ?? '';
+    if (website) {
+      res.status(201).json({ message: 'Contact form submitted successfully.' });
+      return;
+    }
+
     if (!name || !email || !projectType || !message) {
-      // Return bad request if required fields are missing
       res.status(400).json({
         message: 'Name, email, project type, and message are required.',
       });
-
-      // Stop the function here
       return;
     }
 
-    // Check basic field length limits
-    if (name.length > 100 || email.length > 150 || projectType.length > 100) {
-      // Return bad request if fields are too long
-      res.status(400).json({
-        message: 'Some fields are too long.',
-      });
-
-      // Stop the function here
+    if (
+      name.length > 100 ||
+      email.length > 150 ||
+      company.length > 150 ||
+      projectType.length > 100 ||
+      budget.length > 100 ||
+      timeline.length > 100 ||
+      message.length > 5000
+    ) {
+      res.status(400).json({ message: 'Some fields are too long.' });
       return;
     }
 
-    // SQL query to insert the contact form data into PostgreSQL
+    if (!isValidEmail(email)) {
+      res.status(400).json({ message: 'Please enter a valid email address.' });
+      return;
+    }
+
+    if (!allowedProjectTypes.has(projectType)) {
+      res.status(400).json({ message: 'Please select a valid project type.' });
+      return;
+    }
+
+    if (!allowedBudgets.has(budget) || !allowedTimelines.has(timeline)) {
+      res.status(400).json({ message: 'Please select valid form options.' });
+      return;
+    }
+
     const sql = `
       INSERT INTO contact
       (
@@ -127,172 +204,128 @@ app.post('/api/contact', async (req, res) => {
       RETURNING id
     `;
 
-    // Values for the SQL query
     const values = [
-      // Clean name
-      name.trim(),
-
-      // Clean email
-      email.trim(),
-
-      // Company is optional, so save null if empty
-      company ? company.trim() : null,
-
-      // Clean project type
-      projectType.trim(),
-
-      // Budget is optional, so save null if empty
-      budget ? budget.trim() : null,
-
-      // Timeline is optional, so save null if empty
-      timeline ? timeline.trim() : null,
-
-      // Clean message
-      message.trim(),
-
-      // Save visitor IP address
+      name,
+      email,
+      company || null,
+      projectType,
+      budget || null,
+      timeline || null,
+      message,
       req.ip,
-
-      // Save browser/user agent info if available
-      req.get('user-agent') || null,
-
-      // Default status for new messages
+      (req.get('user-agent') || '').slice(0, 500) || null,
       'new',
     ];
 
-    // Save contact form data into PostgreSQL
+    // Save first so a genuine lead is not lost if the email provider has a temporary problem.
     const result = await pool.query(sql, values);
+    const contactId = result.rows[0].id;
 
-    // Get Resend API key from environment variables
     const resendApiKey = process.env['RESEND_API_KEY'];
 
-    // If Resend API key is missing, return an error instead of fake success
     if (!resendApiKey) {
-      // Log clear server-side error
-      console.error('RESEND_API_KEY is missing.');
-
-      // Tell frontend that form was saved but email failed
-      res.status(500).json({
-        message: 'Form saved, but email service is not configured.',
+      console.error(`Contact #${contactId} saved, but RESEND_API_KEY is missing.`);
+      res.status(202).json({
+        message: 'Your message was received successfully.',
+        id: contactId,
       });
-
-      // Stop the function here
       return;
     }
 
-    // Create Resend only here, inside the route, so Angular/Railway build does not fail
     const resend = new Resend(resendApiKey);
 
-    // Send email notification using Resend
+    const safeName = escapeHtml(name);
+    const safeEmail = escapeHtml(email);
+    const safeCompany = escapeHtml(company || '-');
+    const safeProjectType = escapeHtml(projectType);
+    const safeBudget = escapeHtml(budget || '-');
+    const safeTimeline = escapeHtml(timeline || '-');
+    const safeMessage = escapeHtml(message).replace(/\n/g, '<br>');
+    const safeSubjectName = name.replace(/[\r\n]+/g, ' ').slice(0, 100);
+
     try {
-      // Send email to your business email
-      const emailResult = await resend.emails.send({
-        // Sender must use your verified Resend domain
+      const { data, error } = await resend.emails.send({
         from: 'Sue Web Studio <contact@suewebstudio.com>',
-
-        // Email receiver
-        to: ['suezadeh@suewebstudio.com'],
-
-        // When you click reply, it replies to the client/customer
-        replyTo: email.trim(),
-
-        // Email subject
-        subject: `New project inquiry from ${name}`,
-
-        // Email HTML body
+        to: [CONTACT_EMAIL],
+        replyTo: email,
+        subject: `New project inquiry from ${safeSubjectName}`,
         html: `
           <h2>New Contact Form Submission</h2>
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Company:</strong> ${company || '-'}</p>
-          <p><strong>Project Type:</strong> ${projectType}</p>
-          <p><strong>Budget:</strong> ${budget || '-'}</p>
-          <p><strong>Timeline:</strong> ${timeline || '-'}</p>
+          <p><strong>Reference:</strong> #${contactId}</p>
+          <p><strong>Name:</strong> ${safeName}</p>
+          <p><strong>Email:</strong> ${safeEmail}</p>
+          <p><strong>Company:</strong> ${safeCompany}</p>
+          <p><strong>Project Type:</strong> ${safeProjectType}</p>
+          <p><strong>Budget:</strong> ${safeBudget}</p>
+          <p><strong>Timeline:</strong> ${safeTimeline}</p>
           <p><strong>Message:</strong></p>
-          <p>${message.replace(/\n/g, '<br>')}</p>
+          <p>${safeMessage}</p>
         `,
       });
 
-      // Log Resend result so you can check Railway logs
-      console.log('Resend email result:', JSON.stringify(emailResult));
+      if (error) {
+        console.error(`Resend rejected contact #${contactId}:`, error);
+        res.status(202).json({
+          message: 'Your message was received successfully.',
+          id: contactId,
+        });
+        return;
+      }
+
+      console.log(`Contact #${contactId} notification sent:`, data?.id || 'sent');
     } catch (emailError: any) {
-      // Log exact email error in Railway logs
-      console.error('Resend email failed:', emailError?.message || emailError);
+      console.error(
+        `Contact #${contactId} email notification failed:`,
+        emailError?.message || emailError,
+      );
 
-      // Return error so frontend does not show fake success
-      res.status(500).json({
-        message: 'Form saved, but email notification failed.',
+      res.status(202).json({
+        message: 'Your message was received successfully.',
+        id: contactId,
       });
-
-      // Stop the function here
       return;
     }
 
-    // If database save and email send both worked, return success
     res.status(201).json({
       message: 'Contact form submitted successfully.',
-      id: result.rows[0].id,
+      id: contactId,
     });
-
-    // Stop the function here
     return;
   } catch (error: any) {
-    // Log any database or unexpected server error
     console.error('Error handling contact form:', error);
 
-    // Return server error to frontend
     res.status(500).json({
       message: 'Something went wrong while submitting the contact form.',
     });
-
-    // Stop the function here
     return;
   }
 });
 
-// Serve Angular static browser files
 app.use(
   express.static(browserDistFolder, {
-    // Cache static files for one year
     maxAge: '1y',
-
-    // Do not automatically serve index.html here
     index: false,
-
-    // Do not redirect automatically
     redirect: false,
   }),
 );
 
-// Let Angular SSR handle all other routes
 app.use((req, res, next) => {
-  // Ask Angular SSR to handle the request
   angularApp
     .handle(req)
-
-    // If Angular returns a response, write it to Express response
     .then((response) => (response ? writeResponseToNodeResponse(response, res) : next()))
-
-    // If Angular has an error, pass it to Express error handler
     .catch(next);
 });
 
-// Start server only when this file is the main running module
 if (isMainModule(import.meta.url) || process.env['pm_id']) {
-  // Use Railway PORT or fallback to 4000 locally
   const port = process.env['PORT'] || 4000;
 
-  // Start listening for requests
   app.listen(port, (error) => {
-    // If server fails to start, throw error
     if (error) {
       throw error;
     }
 
-    // Log the server URL
     console.log(`Node Express server listening on http://localhost:${port}`);
   });
 }
 
-// Export request handler for Angular SSR
 export const reqHandler = createNodeRequestHandler(app);
