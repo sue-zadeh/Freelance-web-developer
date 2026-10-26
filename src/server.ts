@@ -11,12 +11,12 @@ import { join } from 'node:path';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { Pool } from 'pg';
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 
 dotenv.config();
 
-if (!process.env['RESEND_API_KEY']) {
-  console.warn('RESEND_API_KEY is missing. Contact form emails will not send.');
+if (!process.env['ZOHO_SMTP_USER'] || !process.env['ZOHO_SMTP_PASSWORD']) {
+  console.warn('Zoho SMTP credentials are missing. Contact form emails will not send.');
 }
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
@@ -221,10 +221,11 @@ app.post('/api/contact', contactRateLimit, async (req, res) => {
     const result = await pool.query(sql, values);
     const contactId = result.rows[0].id;
 
-    const resendApiKey = process.env['RESEND_API_KEY'];
+    const smtpUser = process.env['ZOHO_SMTP_USER'];
+    const smtpPassword = process.env['ZOHO_SMTP_PASSWORD'];
 
-    if (!resendApiKey) {
-      console.error(`Contact #${contactId} saved, but RESEND_API_KEY is missing.`);
+    if (!smtpUser || !smtpPassword) {
+      console.error(`Contact #${contactId} saved, but Zoho SMTP credentials are missing.`);
       res.status(202).json({
         message: 'Your message was received successfully.',
         id: contactId,
@@ -232,7 +233,15 @@ app.post('/api/contact', contactRateLimit, async (req, res) => {
       return;
     }
 
-    const resend = new Resend(resendApiKey);
+    const transporter = nodemailer.createTransport({
+      host: process.env['ZOHO_SMTP_HOST'] || 'smtppro.zoho.com',
+      port: Number(process.env['ZOHO_SMTP_PORT']) || 465,
+      secure: (Number(process.env['ZOHO_SMTP_PORT']) || 465) === 465,
+      auth: {
+        user: smtpUser,
+        pass: smtpPassword,
+      },
+    });
 
     const safeName = escapeHtml(name);
     const safeEmail = escapeHtml(email);
@@ -244,11 +253,23 @@ app.post('/api/contact', contactRateLimit, async (req, res) => {
     const safeSubjectName = name.replace(/[\r\n]+/g, ' ').slice(0, 100);
 
     try {
-      const { data, error } = await resend.emails.send({
-        from: 'Sue Web Studio <contact@suewebstudio.com>',
-        to: [CONTACT_EMAIL],
+      const info = await transporter.sendMail({
+        from: `Sue Web Studio <${smtpUser}>`,
+        to: CONTACT_EMAIL,
         replyTo: email,
         subject: `New project inquiry from ${safeSubjectName}`,
+        text: [
+          `Reference: #${contactId}`,
+          `Name: ${name}`,
+          `Email: ${email}`,
+          `Company: ${company || '-'}`,
+          `Project Type: ${projectType}`,
+          `Budget: ${budget || '-'}`,
+          `Timeline: ${timeline || '-'}`,
+          '',
+          'Message:',
+          message,
+        ].join('\n'),
         html: `
           <h2>New Contact Form Submission</h2>
           <p><strong>Reference:</strong> #${contactId}</p>
@@ -263,19 +284,10 @@ app.post('/api/contact', contactRateLimit, async (req, res) => {
         `,
       });
 
-      if (error) {
-        console.error(`Resend rejected contact #${contactId}:`, error);
-        res.status(202).json({
-          message: 'Your message was received successfully.',
-          id: contactId,
-        });
-        return;
-      }
-
-      console.log(`Contact #${contactId} notification sent:`, data?.id || 'sent');
+      console.log(`Contact #${contactId} Zoho notification sent:`, info.messageId);
     } catch (emailError: any) {
       console.error(
-        `Contact #${contactId} email notification failed:`,
+        `Contact #${contactId} Zoho SMTP notification failed:`,
         emailError?.message || emailError,
       );
 
