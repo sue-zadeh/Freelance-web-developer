@@ -30,7 +30,7 @@ Command: `npm run verify`.
 | Check                                                                  | Result                       |
 | ---------------------------------------------------------------------- | ---------------------------- |
 | Server validation, HTTP/security, and outbound email payload tests     | 40 passed                    |
-| Angular page, navigation, filters, 3D controls, form, and footer tests | 24 passed                    |
+| Angular page, navigation, filters, 3D controls, form, and footer tests | 26 passed                    |
 | Production Angular build                                               | Passed; one page prerendered |
 | Built HTML / SEO checks                                                | 14 passed                    |
 | Running production-server HTTP checks                                  | 11 passed                    |
@@ -93,15 +93,34 @@ The root component explicitly skips client hydration. The server still sends ful
 
 Verification for this follow-up:
 
-| Check                                                  | Result                                                      |
-| ------------------------------------------------------ | ----------------------------------------------------------- |
-| Server/security/email regression tests                 | 40 passed                                                   |
-| Angular UI and reveal tests                            | 24 passed                                                   |
-| Built HTML, SEO, ordering, and visible fallback checks | 14 passed                                                   |
-| Running production-server HTTP checks                  | 11 passed                                                   |
+| Check                                                  | Result                                                                  |
+| ------------------------------------------------------ | ----------------------------------------------------------------------- |
+| Server/security/email regression tests                 | 40 passed                                                               |
+| Angular UI and reveal tests                            | 26 passed                                                               |
+| Built HTML, SEO, ordering, and visible fallback checks | 14 passed                                                               |
+| Running production-server HTTP checks                  | 11 passed                                                               |
 | Production build                                       | Passed; one page prerendered and initial bundle below the 500 kB budget |
-| Diff whitespace check                                  | Passed                                                      |
+| Diff whitespace check                                  | Passed                                                                  |
 
 Browser QA used the production build on the managed Chromium preview. The actual navbar hover reported white text on rgb(82, 50, 143), an active shine animation, and a visible edge line. The top-view preset and range End key produced 0° tilt and 360° rotation. A real pointer drag changed the view to 159° / 67° and released its dragging state. The floor fit the scene; no horizontal desktop overflow appeared. After navigation, there was one H1, nine project cards, and one form, and the sticky header remained at top 0.
 
 Phone and tablet CSS were reviewed in temporary 375 px / 768 px frames using the exact prerendered markup and styles, with effective content widths of 360 px / 753 px. The phone's maximum diagonal overhead view fit the scene and all preset buttons remained visible. These static frames do not run Angular; pointer/keyboard behaviour is covered separately in the live preview and unit tests. No physical-device or cross-browser certification is claimed. This follow-up does not send another live enquiry or test payments or private accounts on client projects.
+
+## Brighter interaction and two 3D concepts — 3 November 2026
+
+Requested refinements are included in this release:
+
+- Every native button and every link styled as a button shares a visible 3 px teal, purple, pink and gold frame that moves on hover or keyboard focus. The diagonal shine repeats while the control is active. Disabled controls do not animate. The frame is masked to the border so it does not cover the label.
+- Restored the original purple/pink SVG wave under “Web Studio” and used a light lavender navbar. Section washes alternate lavender, sage, warm neutral, and dark purple; content contrast remains the priority.
+- Added a short welcome float and a stronger hover float/tilt to the ShowerPower preview. The automatic welcome ends within five seconds; continued motion is tied to hover or focus. Reintroduced the original About-style diagonal card sweep on the About highlights, service cards and portfolio cards.
+- Centred the work heading, introduction, filter buttons and project count, preserving all nine projects and their existing order.
+- Created a three-column interactive section with the room on the left, explanatory text in the centre, and a six-layer sandwich on the right. Tablet uses the copy above two demos; phone stacks the copy, room, and sandwich. These are illustrative CSS 3D concepts, not photographed client models.
+- Replaced both room range sliders with a draggable spherical control. Both demos use the reusable two-axis orb with pointer capture, touch drag, arrow keys, Home reset, a readable angle summary, and an accessible name/instructions. The room retains top-view/perspective/reset and lighting buttons. The scene itself still supports direct dragging and keeps vertical touch page scrolling; only the orb captures both touch axes.
+- The sandwich supports assembly and separation with animated layer transitions, independent orbit controls and a status message.
+- Added the requested AOS library, pinned to 2.3.4 and bundled locally. Its engine loads only in the browser. AOS attributes are added after the module loads, so prerendered/no-JavaScript content stays visible. Failed module loading and reduced motion keep content visible. The integration refreshes after filter changes and cleans up removed elements. Angular's explicit CommonJS allow-list contains AOS because that stable release uses CommonJS; its browser chunk is lazy, approximately 4.53 kB estimated transfer.
+
+Automated verification: 40 server tests, 26 Angular UI/AOS/orb tests, 14 built HTML/SEO checks and 11 running-server HTTP checks passed. Production build passed without budget warnings (approximately 407.44 kB initial raw / 102.28 kB estimated transfer). `npm audit --omit=dev --audit-level=moderate` reported zero vulnerabilities. No real enquiry or client payment was submitted during this release.
+
+Chromium QA exercised actual orb dragging (room changed to 39° rotation / 73° tilt, then released), keyboard turning of the sandwich, sandwich assembly/separation, filters (3 website cards, then 9 cards with AOS initialized), real button border animation, the wave, and the ShowerPower hover float/tilt. The page retained exactly one H1 and one contact form. Visible project images loaded successfully and site console errors were absent (browser-extension messages excluded).
+
+Responsive layout used exact prerendered markup and built styles in temporary 375 px / 768 px frames (360 px / 753 px content widths). No horizontal overflow was measured, all sandwich layers fit the scene, and the one-/two-column demo arrangements were visually reviewed. These frames are static CSS checks; Angular interactions are covered separately by the live Chromium preview and unit tests. No physical-device, Safari/Firefox, formal accessibility certification, or measured engagement increase is claimed. Existing reduced-motion CSS disables decorative motion, and AOS tests cover enabling that preference while the page is active.

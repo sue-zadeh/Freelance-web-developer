@@ -1,5 +1,5 @@
 .projects-section {
-  background: #f8f7f3;
+  background: #f3edf7;
 }
 .filter-row {
   display: flex;
@@ -222,4 +222,23 @@
   background: #ebe3f7;
   border-color: #a58cbe;
   color: #432e60;
+}
+
+.projects-section .section-heading {
+  display: block;
+  text-align: center;
+  max-width: 760px;
+  margin-inline: auto;
+  margin-bottom: 28px;
+}
+.projects-section .section-heading > p {
+  max-width: 560px;
+  margin: 24px auto 0;
+}
+.filter-row {
+  justify-content: center;
+}
+.project-count {
+  text-align: center;
+  margin-block: 16px 30px;
 }

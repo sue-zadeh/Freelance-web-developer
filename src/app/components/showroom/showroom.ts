@@ -1,9 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { RevealDirective } from '../../shared/reveal';
+import { OrbitControlComponent, OrbitView } from '../orbit-control/orbit-control';
+import { SandwichComponent } from '../sandwich/sandwich';
 
 @Component({
   selector: 'app-showroom',
-  imports: [RevealDirective],
+  imports: [RevealDirective, OrbitControlComponent, SandwichComponent],
   templateUrl: './showroom.html',
   styleUrl: './showroom.css',
 })
@@ -15,13 +17,10 @@ export class ShowroomComponent {
   readonly dragging = signal(false);
   private pointer?: { id: number; x: number; y: number; angle: number; tilt: number };
 
-  setAngle(event: Event): void {
+  applyView(view: OrbitView): void {
     this.smoothView.set(false);
-    this.angle.set(Number((event.target as HTMLInputElement).value));
-  }
-  setTilt(event: Event): void {
-    this.smoothView.set(false);
-    this.tilt.set(Number((event.target as HTMLInputElement).value));
+    this.angle.set(view.angle);
+    this.tilt.set(view.tilt);
   }
   setView(tilt: number): void {
     this.smoothView.set(true);
@@ -49,7 +48,7 @@ export class ShowroomComponent {
     const start = this.pointer;
     if (!start || start.id !== event.pointerId) return;
     this.angle.set(this.wrap(start.angle + (event.clientX - start.x) * 0.7));
-    // Touch keeps vertical page scrolling; use the labelled slider to tilt on a phone.
+    // The scene keeps page scrolling; the orb supports both axes on touch.
     if (event.pointerType !== 'touch')
       this.tilt.set(this.clamp(start.tilt - (event.clientY - start.y) * 0.25));
   }

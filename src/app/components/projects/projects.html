@@ -26,7 +26,8 @@
     <div class="project-grid">
       @for (project of filteredProjects; track project.title) {
         <article
-          class="project-card"
+          class="project-card shine-card"
+          revealEffect="zoom-in"
           [class.featured]="project.featured"
           appReveal
           [revealDelay]="($index % 3) * 65"
