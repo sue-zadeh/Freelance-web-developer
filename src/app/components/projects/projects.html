@@ -1,6 +1,6 @@
 <section id="projects" class="section projects-section" aria-labelledby="projects-title">
   <div class="shell">
-    <div class="section-heading">
+    <div class="section-heading" appReveal>
       <div>
         <p class="eyebrow">Selected work</p>
         <h2 id="projects-title">Different businesses.<br />Real things I’ve built.</h2>
@@ -25,7 +25,12 @@
     <p class="project-count" aria-live="polite">{{ filteredProjects.length }} projects</p>
     <div class="project-grid">
       @for (project of filteredProjects; track project.title) {
-        <article class="project-card">
+        <article
+          class="project-card"
+          [class.featured]="project.featured"
+          appReveal
+          [revealDelay]="($index % 3) * 65"
+        >
           <div class="project-image-wrap">
             <img
               [src]="project.image"
@@ -36,7 +41,11 @@
               decoding="async"
             />
             <span class="project-category">{{
-              project.inProgress ? 'In progress' : project.category
+              project.featured
+                ? 'Featured · Launched'
+                : project.inProgress
+                  ? 'In progress'
+                  : project.category
             }}</span>
           </div>
           <div class="project-body">
@@ -80,7 +89,7 @@
         </article>
       }
     </div>
-    <div class="work-cta">
+    <div class="work-cta" appReveal>
       <p>
         Your business won’t look exactly like these.<br /><strong>That’s where we start.</strong>
       </p>

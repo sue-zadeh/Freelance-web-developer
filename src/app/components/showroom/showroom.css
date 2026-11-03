@@ -44,19 +44,32 @@
   letter-spacing: 0;
 }
 .scene {
-  height: 324px;
+  height: 360px;
   display: grid;
   place-items: center;
   perspective: 1000px;
   overflow: hidden;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  border-radius: 8px;
 }
 .room {
   position: relative;
   width: 260px;
   height: 260px;
   transform-style: preserve-3d;
-  transform: rotateX(57deg) rotateZ(var(--rotation));
-  transition: transform 0.15s;
+  transform: rotateX(var(--tilt, 57deg)) rotateZ(var(--rotation));
+  scale: 0.78;
+}
+.scene.smooth-view .room {
+  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.scene.is-dragging {
+  cursor: grabbing;
+}
+.scene:focus-visible {
+  outline-offset: -5px;
 }
 .floor {
   position: absolute;
@@ -210,41 +223,80 @@
   text-align: center;
   padding-top: 8px;
 }
+.scene-help {
+  color: #43594b;
+  font-size: 10px;
+  text-align: center;
+  margin: 0 16px 15px;
+}
 .demo-controls {
-  margin: 12px 24px 0;
-  display: flex;
-  align-items: center;
-  gap: 25px;
-  padding-top: 19px;
+  margin: 0 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  padding-top: 16px;
   border-top: 1px solid #b1bfb2;
 }
 .angle-control {
-  flex: 1;
   min-width: 0;
 }
 .angle-control label {
   display: flex;
   justify-content: space-between;
-  font-size: 10px;
-  color: #42574d;
-  margin-bottom: 6px;
+  gap: 8px;
+  font-size: 11px;
+  color: #334b3f;
+}
+.angle-control output {
+  font-variant-numeric: tabular-nums;
+  font-weight: 650;
 }
 input {
   width: 100%;
+  margin: 0;
   accent-color: #356d58;
-  min-height: 27px;
+  min-height: 44px;
   display: block;
+  cursor: ew-resize;
 }
-.lighting-toggle {
+.demo-toolbar {
+  margin: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.view-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.demo-toolbar button {
   background: #f2f3e9;
   border: 1px solid #a4b3a2;
   border-radius: 6px;
-  min-height: 42px;
-  padding: 8px 13px;
-  color: #365447;
+  min-height: 44px;
+  padding: 8px 11px;
+  color: #2c493b;
   font-size: 11px;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.demo-toolbar button:hover,
+.demo-toolbar button:focus-visible {
+  background: #fffdf1;
+  border-color: #356d58;
+}
+.demo-toolbar button[aria-pressed='true'] {
+  background: #335b48;
+  border-color: #335b48;
+  color: #fff;
+}
+.lighting-toggle {
   display: flex;
-  gap: 15px;
+  gap: 12px;
   align-items: center;
 }
 .concept-note {
@@ -258,6 +310,7 @@ input {
 }
 .evening .demo-panel-top,
 .evening label,
+.evening .scene-help,
 .evening .concept-note {
   color: #e2decd;
 }
@@ -279,16 +332,22 @@ input {
     gap: 35px;
   }
   .scene {
-    height: 300px;
+    height: 330px;
   }
   .room {
-    scale: 0.85;
+    scale: 0.72;
   }
 }
 @media (max-width: 700px) {
   .demo-layout {
     grid-template-columns: 1fr;
     gap: 32px;
+  }
+  .room {
+    scale: 0.82;
+  }
+  .scene {
+    height: 360px;
   }
   .demo-panel {
     max-width: 550px;
@@ -298,19 +357,42 @@ input {
 }
 @media (max-width: 390px) {
   .room {
-    scale: 0.75;
+    scale: 0.67;
   }
   .scene {
-    height: 270px;
+    height: 300px;
   }
-  .demo-controls {
+  .demo-controls,
+  .demo-toolbar {
     margin-inline: 16px;
-    gap: 14px;
+    gap: 12px;
   }
   .demo-panel-top {
     padding-inline: 16px;
   }
   .concept-note {
     margin-inline: 16px;
+  }
+}
+
+@media (min-width: 391px) and (max-width: 480px) {
+  .room {
+    scale: 0.72;
+  }
+  .scene {
+    height: 320px;
+  }
+}
+@media (max-width: 480px) {
+  .view-presets {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .demo-toolbar button {
+    padding-inline: 8px;
+  }
+  .scene-help {
+    font-size: 9px;
   }
 }

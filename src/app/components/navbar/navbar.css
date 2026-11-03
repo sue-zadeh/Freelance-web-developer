@@ -50,13 +50,18 @@
   font-weight: 600;
   padding-block: 12px;
 }
-.nav-links > a.active,
-.nav-links > a:hover {
+.nav-links > a:not(.button).active,
+.nav-links > a:not(.button):hover {
   color: var(--purple);
 }
 .nav-phone {
   padding-left: 18px;
   border-left: 1px solid var(--line);
+}
+.nav-links > .nav-cta,
+.nav-links > .nav-cta:hover,
+.nav-links > .nav-cta:focus-visible {
+  color: #fff;
 }
 .nav-cta {
   min-height: 45px;
@@ -109,4 +114,17 @@
     justify-content: center;
     margin-top: 8px;
   }
+}
+
+.nav-links > a:not(.button) {
+  background-image: linear-gradient(90deg, var(--purple), var(--teal));
+  background-position: left bottom 5px;
+  background-size: 0 2px;
+  background-repeat: no-repeat;
+  transition:
+    color 0.2s,
+    background-size 0.25s;
+}
+.nav-links > a:not(.button):is(:hover, :focus-visible, .active) {
+  background-size: 100% 2px;
 }

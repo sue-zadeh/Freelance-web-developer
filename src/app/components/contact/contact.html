@@ -1,6 +1,6 @@
 <section id="contact" class="section contact-section" aria-labelledby="contact-title">
   <div class="shell contact-layout">
-    <div class="contact-copy">
+    <div class="contact-copy" appReveal>
       <p class="eyebrow">Your next step starts here</p>
       <h2 id="contact-title">
         An idea, a question,<br />or a website that<br /><em>needs a little help?</em>
@@ -23,7 +23,7 @@
         </p>
       </div>
     </div>
-    <div class="form-card">
+    <div class="form-card" appReveal [revealDelay]="80">
       <h3>Tell me about your project</h3>
       <p class="form-intro">A few details are enough to start. Fields marked * are required.</p>
       <form

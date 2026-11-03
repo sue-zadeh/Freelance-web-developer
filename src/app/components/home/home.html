@@ -1,6 +1,6 @@
 <section id="home" class="hero-section" aria-labelledby="hero-title">
   <div class="shell hero-grid">
-    <div class="hero-copy">
+    <div class="hero-copy" appReveal>
       <p class="eyebrow">
         <span aria-hidden="true" class="status-dot"></span> Independent web developer · Auckland, NZ
       </p>
@@ -21,7 +21,7 @@
       </div>
       <p class="hero-location">Based on Auckland’s North Shore. Working across New Zealand.</p>
     </div>
-    <div class="hero-showcase">
+    <div class="hero-showcase" appReveal [revealDelay]="100">
       <div class="showcase-topline">
         <span>From idea to real website</span><span aria-hidden="true">✦</span>
       </div>
@@ -60,7 +60,7 @@
 
 <section id="services" class="section services-section" aria-labelledby="services-title">
   <div class="shell">
-    <div class="section-heading">
+    <div class="section-heading" appReveal>
       <div>
         <p class="eyebrow">What do you need to build?</p>
         <h2 id="services-title">A good website is a start.<br />Let’s make it useful.</h2>
@@ -72,7 +72,7 @@
     </div>
     <div class="service-grid">
       @for (service of services; track service.number) {
-        <article class="service-card">
+        <article class="service-card" appReveal [revealDelay]="$index * 65">
           <div class="service-top">
             <span>{{ service.number }}</span
             ><span aria-hidden="true">↗</span>
