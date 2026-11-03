@@ -1,31 +1,22 @@
 import { TestBed } from '@angular/core/testing';
-import { RevealService } from './reveal';
+import { AOS_LOADER, AosApi, RevealService } from './reveal';
 
-// Observer delivery is controlled to check offscreen, detached, and reduced-motion content.
-describe('Visible-by-default scroll reveals', () => {
-  let deliver: IntersectionObserverCallback;
-  let changeMotion: (event: MediaQueryListEvent) => void;
+describe('Progressive AOS reveals', () => {
   let reduced: boolean;
-  let observer: {
-    observe: ReturnType<typeof vi.fn>;
-    unobserve: ReturnType<typeof vi.fn>;
-    disconnect: ReturnType<typeof vi.fn>;
+  let changeMotion: (event: MediaQueryListEvent) => void;
+  let api: AosApi;
+  let loader: ReturnType<typeof vi.fn>;
+  const settle = async () => {
+    await Promise.resolve();
+    await Promise.resolve();
+    await Promise.resolve();
   };
 
   beforeEach(() => {
     reduced = false;
-    observer = { observe: vi.fn(), unobserve: vi.fn(), disconnect: vi.fn() };
-    vi.stubGlobal(
-      'IntersectionObserver',
-      class {
-        constructor(callback: IntersectionObserverCallback) {
-          deliver = callback;
-        }
-        observe = observer.observe;
-        unobserve = observer.unobserve;
-        disconnect = observer.disconnect;
-      },
-    );
+    api = { init: vi.fn(), refreshHard: vi.fn(), refresh: vi.fn() };
+    loader = vi.fn(async () => api);
+    TestBed.configureTestingModule({ providers: [{ provide: AOS_LOADER, useValue: loader }] });
     vi.stubGlobal('matchMedia', () => ({
       get matches() {
         return reduced;
@@ -41,79 +32,72 @@ describe('Visible-by-default scroll reveals', () => {
     vi.unstubAllGlobals();
   });
 
-  function target() {
+  it('leaves server/fallback content visible until the local AOS module is ready', async () => {
+    let ready!: (value: AosApi) => void;
+    loader.mockImplementation(
+      () =>
+        new Promise<AosApi>((resolve) => {
+          ready = resolve;
+        }),
+    );
     const element = document.createElement('article');
-    element.textContent = 'Useful project content';
-    const animation = { cancel: vi.fn(), onfinish: null };
-    const animate = vi.fn(() => animation);
-    Object.defineProperty(element, 'animate', { value: animate });
-    return { element, animation, animate };
-  }
-  function intersect(element: HTMLElement, isIntersecting = true) {
-    deliver(
-      [{ target: element, isIntersecting } as unknown as IntersectionObserverEntry],
-      {} as IntersectionObserver,
-    );
-  }
-
-  it('never hides content when animation support is unavailable', () => {
-    vi.stubGlobal('IntersectionObserver', undefined);
-    const { element, animate } = target();
-    TestBed.inject(RevealService).watch(element);
+    element.textContent = 'A useful project';
+    TestBed.inject(RevealService).watch(element, 999, 'zoom-in');
+    expect(element.hasAttribute('data-aos')).toBe(false);
     expect(element.style.opacity).toBe('');
-    expect(element.style.visibility).toBe('');
-    expect(element.textContent).toBe('Useful project content');
-    expect(animate).not.toHaveBeenCalled();
-    expect(observer.observe).not.toHaveBeenCalled();
+    ready(api);
+    await settle();
+    expect(element.getAttribute('data-aos')).toBe('zoom-in');
+    expect(element.getAttribute('data-aos-delay')).toBe('200');
+    expect(api.init).toHaveBeenCalledWith(
+      expect.objectContaining({ once: true, disableMutationObserver: true }),
+    );
   });
-  it('does not start observers or animation for reduced motion', () => {
+  it('does not download or initialize AOS for reduced motion', async () => {
     reduced = true;
-    const { element, animate } = target();
+    const element = document.createElement('div');
     TestBed.inject(RevealService).watch(element);
-    expect(observer.observe).not.toHaveBeenCalled();
-    expect(animate).not.toHaveBeenCalled();
+    await settle();
+    expect(loader).not.toHaveBeenCalled();
+    expect(element.hasAttribute('data-aos')).toBe(false);
+  });
+  it('keeps content visible when the animation module fails', async () => {
+    loader.mockRejectedValue(new Error('Module unavailable'));
+    const element = document.createElement('div');
+    TestBed.inject(RevealService).watch(element);
+    await settle();
+    expect(element.hasAttribute('data-aos')).toBe(false);
+    expect(element.classList.contains('aos-init')).toBe(false);
     expect(element.style.opacity).toBe('');
   });
-  it('animates once on entry, with a bounded stagger and no persistent hidden styles', () => {
-    const { element, animate } = target();
-    TestBed.inject(RevealService).watch(element, 999);
-    intersect(element, false);
-    expect(animate).not.toHaveBeenCalled();
-    intersect(element);
-    intersect(element);
-    expect(animate).toHaveBeenCalledTimes(1);
-    expect(animate).toHaveBeenCalledWith(
-      expect.any(Array),
-      expect.objectContaining({ delay: 180, fill: 'backwards' }),
-    );
-    expect(observer.unobserve).toHaveBeenCalledWith(element);
-    expect(element.style.opacity).toBe('');
-  });
-  it('cleans up removed cards, including pending observer delivery and active animation', () => {
-    const first = target();
+  it('initializes once and refreshes real additions/removals from project filters', async () => {
     const service = TestBed.inject(RevealService);
-    const stopPending = service.watch(first.element);
-    stopPending();
-    intersect(first.element);
-    expect(first.animate).not.toHaveBeenCalled();
-    const second = target();
-    const stopActive = service.watch(second.element);
-    intersect(second.element);
-    stopActive();
-    expect(second.animation.cancel).toHaveBeenCalledOnce();
+    const first = document.createElement('article');
+    const remove = service.watch(first);
+    await settle();
+    const second = document.createElement('article');
+    service.watch(second);
+    await settle();
+    expect(api.init).toHaveBeenCalledTimes(1);
+    expect(api.refreshHard).toHaveBeenCalled();
+    remove();
+    await settle();
+    expect(first.hasAttribute('data-aos')).toBe(false);
+    expect(second.getAttribute('data-aos')).toBe('fade-up');
   });
-  it('cancels active animation and pending reveals when reduced motion is enabled', () => {
-    const active = target();
-    const pending = target();
-    const service = TestBed.inject(RevealService);
-    service.watch(active.element);
-    service.watch(pending.element);
-    intersect(active.element);
+  it('clears hidden animation state immediately when reduced motion is enabled', async () => {
+    const element = document.createElement('div');
+    TestBed.inject(RevealService).watch(element);
+    await settle();
+    element.classList.add('aos-init');
     reduced = true;
     changeMotion({ matches: true } as MediaQueryListEvent);
-    intersect(pending.element);
-    expect(active.animation.cancel).toHaveBeenCalledOnce();
-    expect(pending.animate).not.toHaveBeenCalled();
-    expect(observer.disconnect).toHaveBeenCalled();
+    expect(element.hasAttribute('data-aos')).toBe(false);
+    expect(element.classList.contains('aos-init')).toBe(false);
+    reduced = false;
+    changeMotion({ matches: false } as MediaQueryListEvent);
+    await settle();
+    expect(element.getAttribute('data-aos')).toBe('fade-up');
+    expect(api.init).toHaveBeenCalledTimes(1);
   });
 });

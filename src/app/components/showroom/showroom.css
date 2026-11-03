@@ -229,36 +229,6 @@
   text-align: center;
   margin: 0 16px 15px;
 }
-.demo-controls {
-  margin: 0 24px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 22px;
-  padding-top: 16px;
-  border-top: 1px solid #b1bfb2;
-}
-.angle-control {
-  min-width: 0;
-}
-.angle-control label {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  font-size: 11px;
-  color: #334b3f;
-}
-.angle-control output {
-  font-variant-numeric: tabular-nums;
-  font-weight: 650;
-}
-input {
-  width: 100%;
-  margin: 0;
-  accent-color: #356d58;
-  min-height: 44px;
-  display: block;
-  cursor: ew-resize;
-}
 .demo-toolbar {
   margin: 0 24px;
   display: flex;
@@ -327,32 +297,93 @@ input {
 .evening .wall-back > span {
   text-shadow: 0 0 10px #ffe3a8;
 }
-@media (max-width: 900px) {
+
+.demo-layout {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr) minmax(0, 1fr);
+  grid-template-areas: 'room copy food';
+  gap: 27px;
+  align-items: center;
+}
+.demo-panel {
+  grid-area: room;
+  align-self: stretch;
+}
+.demo-copy {
+  grid-area: copy;
+  text-align: center;
+  padding-inline: 3px;
+}
+.demo-copy h2 {
+  font-size: clamp(2rem, 3vw, 2.75rem);
+}
+.demo-copy > p:not(.eyebrow) {
+  font-size: 14px;
+}
+app-sandwich {
+  grid-area: food;
+  align-self: stretch;
+  min-width: 0;
+}
+.scene {
+  height: 300px;
+}
+.room {
+  scale: 0.7;
+}
+.demo-toolbar {
+  margin: 6px 18px 0;
+  gap: 8px;
+}
+.view-presets {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 100%;
+}
+.demo-toolbar button {
+  padding-inline: 8px;
+  font-size: 10px;
+}
+.scene-help {
+  margin-bottom: 0;
+  font-size: 9px;
+}
+.evening {
+  --orbit-ink: #eee4d8;
+}
+@media (max-width: 1050px) {
   .demo-layout {
-    gap: 35px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 'copy copy' 'room food';
+    gap: 32px;
+  }
+  .demo-copy {
+    max-width: 620px;
+    margin-inline: auto;
+    padding-bottom: 10px;
+  }
+  .demo-copy h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
   }
   .scene {
-    height: 330px;
+    height: 320px;
   }
   .room {
-    scale: 0.72;
+    scale: 0.75;
   }
 }
 @media (max-width: 700px) {
   .demo-layout {
     grid-template-columns: 1fr;
-    gap: 32px;
+    grid-template-areas: 'copy' 'room' 'food';
   }
-  .room {
-    scale: 0.82;
-  }
-  .scene {
-    height: 360px;
-  }
-  .demo-panel {
-    max-width: 550px;
+  .demo-panel,
+  app-sandwich {
+    max-width: 500px;
     width: 100%;
     margin-inline: auto;
+  }
+  .room {
+    scale: 0.78;
   }
 }
 @media (max-width: 390px) {
@@ -361,38 +392,5 @@ input {
   }
   .scene {
     height: 300px;
-  }
-  .demo-controls,
-  .demo-toolbar {
-    margin-inline: 16px;
-    gap: 12px;
-  }
-  .demo-panel-top {
-    padding-inline: 16px;
-  }
-  .concept-note {
-    margin-inline: 16px;
-  }
-}
-
-@media (min-width: 391px) and (max-width: 480px) {
-  .room {
-    scale: 0.72;
-  }
-  .scene {
-    height: 320px;
-  }
-}
-@media (max-width: 480px) {
-  .view-presets {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  .demo-toolbar button {
-    padding-inline: 8px;
-  }
-  .scene-help {
-    font-size: 9px;
   }
 }

@@ -21,27 +21,29 @@
       </div>
       <p class="hero-location">Based on Auckland’s North Shore. Working across New Zealand.</p>
     </div>
-    <div class="hero-showcase" appReveal [revealDelay]="100">
+    <div class="hero-showcase" appReveal revealEffect="zoom-in" [revealDelay]="100">
       <div class="showcase-topline">
         <span>From idea to real website</span><span aria-hidden="true">✦</span>
       </div>
-      <div class="browser-card">
-        <div class="browser-toolbar">
-          <span class="browser-dots" aria-hidden="true">● ● ●</span><span>showerpower.co.nz</span
-          ><span aria-hidden="true">↗</span>
+      <div class="browser-float">
+        <div class="browser-card">
+          <div class="browser-toolbar">
+            <span class="browser-dots" aria-hidden="true">● ● ●</span><span>showerpower.co.nz</span
+            ><span aria-hidden="true">↗</span>
+          </div>
+          <img
+            src="/images/showerpower.webp"
+            alt="ShowerPower website showing shower installation services and a quote enquiry"
+            width="1200"
+            height="800"
+            fetchpriority="high"
+            decoding="async"
+          />
         </div>
-        <img
-          src="/images/showerpower.webp"
-          alt="ShowerPower website showing shower installation services and a quote enquiry"
-          width="1200"
-          height="800"
-          fetchpriority="high"
-          decoding="async"
-        />
       </div>
       <div class="showcase-caption">
         <div><span class="mini-label">Selected client work</span><strong>ShowerPower</strong></div>
-        <a href="#projects" aria-label="Explore the ShowerPower project"
+        <a class="icon-button" href="#projects" aria-label="Explore the ShowerPower project"
           ><span aria-hidden="true">↗</span></a
         >
       </div>
@@ -72,7 +74,7 @@
     </div>
     <div class="service-grid">
       @for (service of services; track service.number) {
-        <article class="service-card" appReveal [revealDelay]="$index * 65">
+        <article class="service-card shine-card" appReveal [revealDelay]="$index * 65">
           <div class="service-top">
             <span>{{ service.number }}</span
             ><span aria-hidden="true">↗</span>

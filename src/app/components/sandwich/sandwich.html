@@ -1,0 +1,56 @@
+<div class="sandwich-panel" [class.assembled]="assembled()">
+  <div class="food-topline">
+    <span>PRODUCT / 02</span><span class="food-badge">Concept demo</span>
+  </div>
+  <div
+    class="food-scene"
+    role="img"
+    aria-label="An interactive sandwich with six layers: toasted bread, lettuce, tomato, cheese, cucumber, and a second slice of bread."
+  >
+    <div class="plate" aria-hidden="true"></div>
+    <div
+      class="sandwich-stack"
+      [style.--food-angle]="angle() + 'deg'"
+      [style.--food-tilt]="tilt() + 'deg'"
+      aria-hidden="true"
+    >
+      <div class="ingredient bread bread-bottom" style="--layer: 0; --height: 0px"></div>
+      <div class="ingredient lettuce" style="--layer: 1; --height: 14px"></div>
+      <div class="ingredient tomatoes" style="--layer: 2; --height: 26px">
+        <i></i><i></i><i></i>
+      </div>
+      <div class="ingredient cheese" style="--layer: 3; --height: 38px"></div>
+      <div class="ingredient cucumber" style="--layer: 4; --height: 50px">
+        <i></i><i></i><i></i>
+      </div>
+      <div class="ingredient bread bread-top" style="--layer: 5; --height: 68px">
+        <i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+    </div>
+  </div>
+  <div class="food-caption">
+    <span class="food-kicker">A closer look, layer by layer</span>
+    <h3>Made to make you curious.</h3>
+    <p>Turn it around. Then bring it together.</p>
+  </div>
+  <app-orbit-control
+    controlId="food-orbit"
+    label="Rotate sandwich in 3D"
+    [angle]="angle()"
+    [tilt]="tilt()"
+    (viewChange)="setView($event)"
+  />
+  <button
+    type="button"
+    class="button food-button"
+    [attr.aria-pressed]="assembled()"
+    aria-controls="sandwich-state"
+    (click)="assembled.set(!assembled())"
+  >
+    {{ assembled() ? 'Separate the layers' : 'Bring the layers together' }}
+    <span aria-hidden="true">{{ assembled() ? '↕' : '↓' }}</span>
+  </button>
+  <p id="sandwich-state" class="food-state" role="status">
+    {{ assembled() ? 'All six layers together.' : 'Six layers, ready to explore.' }}
+  </p>
+</div>

@@ -67,8 +67,10 @@ check('Animated content stays visible without JavaScript and room controls are p
     assert.notEqual(element.style.opacity, '0');
     assert.notEqual(element.style.visibility, 'hidden');
   }
-  assert.equal(document.getElementById('room-angle').max, '360');
-  assert.equal(document.getElementById('room-tilt').min, '0');
+  assert.equal(document.querySelectorAll('app-orbit-control').length, 2);
+  assert.equal(document.querySelectorAll('.ingredient').length, 6);
+  assert.equal(document.querySelectorAll('input[type=range]').length, 0);
+  assert.equal(document.querySelectorAll('[data-aos]').length, 0);
   assert.equal(document.querySelectorAll('form').length, 1);
 });
 check('All local images exist and have alt text and dimensions', () => {

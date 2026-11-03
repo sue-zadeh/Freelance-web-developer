@@ -91,7 +91,7 @@ export class StudioPageComponent {
     {
       title: 'Do you create interactive or 3D websites?',
       answer:
-        'I can build interactive web experiences, including 3D-style scenes and animation for product, venue, or company presentations. The restaurant concept above is a small browser demo. A detailed model, photography, or a full virtual tour would need its own agreed scope.',
+        'I can build interactive web experiences, including 3D-style scenes and animation for product, venue, or company presentations. The restaurant and sandwich concepts above are small browser demos. A detailed model, photography, or a full virtual tour would need its own agreed scope.',
     },
     {
       title: 'Can you improve a website I already have?',

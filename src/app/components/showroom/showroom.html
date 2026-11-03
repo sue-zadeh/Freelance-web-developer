@@ -1,21 +1,21 @@
 <section id="demo" class="section demo-section" aria-labelledby="demo-title">
   <div class="shell demo-layout">
-    <div class="demo-copy" appReveal>
-      <p class="eyebrow">A little room for imagination</p>
-      <h2 id="demo-title">Don’t just describe it.<br />Let people explore it.</h2>
+    <div class="demo-copy" appReveal revealEffect="zoom-in">
+      <p class="eyebrow">Made to be explored</p>
+      <h2 id="demo-title">Turn an idea<br />into an experience.</h2>
       <p>
-        A restaurant, a showroom, a new product. An interactive website can help people picture the
-        experience before they visit.
+        A place to look around. A product to take apart. Give people a closer look at what makes
+        your business different.
       </p>
       <p class="demo-note">
-        Try this small restaurant concept. Turn it all the way around, look from above, or change
-        the lighting. A little interaction can make an idea easier to picture.
+        Turn the room with the orb. Explore the sandwich layer by layer. These little interactions
+        are a taste of what we could build for you.
       </p>
       <a class="text-link" href="#contact"
         >Have something in mind? <span aria-hidden="true">↗</span></a
       >
     </div>
-    <div class="demo-panel" appReveal [revealDelay]="80" [class.evening]="evening()">
+    <div class="demo-panel" appReveal revealEffect="fade-right" [class.evening]="evening()">
       <div class="demo-panel-top">
         <span>STUDIO EXPERIMENT / 01</span><span class="concept-badge">Concept demo</span>
       </div>
@@ -55,44 +55,15 @@
         </div>
       </div>
       <p id="room-help" class="scene-help">
-        Drag to turn · Arrow keys to turn or tilt · Home to reset
+        A little room for imagination · Turn it all the way around
       </p>
-      <div class="demo-controls">
-        <div class="angle-control">
-          <label for="room-angle"
-            >Turn the room
-            <output for="room-angle" aria-hidden="true">{{ angle() }}°</output></label
-          >
-          <input
-            id="room-angle"
-            type="range"
-            min="0"
-            max="360"
-            step="1"
-            [value]="angle()"
-            (input)="setAngle($event)"
-            [attr.aria-valuetext]="angle() + ' degrees'"
-          />
-        </div>
-        <div class="angle-control">
-          <label for="room-tilt"
-            >Viewing angle
-            <output for="room-tilt" aria-hidden="true">{{
-              tilt() === 0 ? 'Top view' : tilt() + '°'
-            }}</output></label
-          >
-          <input
-            id="room-tilt"
-            type="range"
-            min="0"
-            max="75"
-            step="1"
-            [value]="tilt()"
-            (input)="setTilt($event)"
-            [attr.aria-valuetext]="tilt() === 0 ? 'Top view' : tilt() + ' degrees from above'"
-          />
-        </div>
-      </div>
+      <app-orbit-control
+        controlId="room-orbit"
+        label="Rotate restaurant in 3D"
+        [angle]="angle()"
+        [tilt]="tilt()"
+        (viewChange)="applyView($event)"
+      />
       <div class="demo-toolbar">
         <div class="view-presets" role="group" aria-label="Room view presets">
           <button type="button" [attr.aria-pressed]="tilt() === 0" (click)="setView(0)">
@@ -119,5 +90,6 @@
         Illustrative browser demo. Custom models and full virtual tours are quoted separately.
       </p>
     </div>
+    <app-sandwich appReveal revealEffect="fade-left" [revealDelay]="100" />
   </div>
 </section>

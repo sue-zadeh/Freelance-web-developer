@@ -1,6 +1,6 @@
 <section id="about" class="section about-section" aria-labelledby="about-title">
   <div class="shell about-layout">
-    <div class="portrait-wrap" appReveal>
+    <div class="portrait-wrap" appReveal revealEffect="fade-right">
       <img
         src="/images/sue.webp"
         alt="Sue Zadeh, independent web developer based in Auckland"
@@ -11,7 +11,7 @@
       />
       <div class="portrait-caption"><span>Meet your developer</span><strong>Sue Zadeh</strong></div>
     </div>
-    <div class="about-copy" appReveal [revealDelay]="80">
+    <div class="about-copy" appReveal revealEffect="fade-left" [revealDelay]="80">
       <p class="eyebrow">A person behind your project</p>
       <h2 id="about-title">Hi, I’m Sue.<br />I’ll be the one building it.</h2>
       <p>
@@ -29,9 +29,18 @@
         the details right.
       </p>
       <ul class="about-points">
-        <li>One person to talk to, from the first idea to launch.</li>
-        <li>Real client work across different businesses and communities.</li>
-        <li>A clear plan and an agreed scope before development starts.</li>
+        <li class="shine-card">
+          <span aria-hidden="true">✓</span
+          ><span>One person to talk to, from the first idea to launch.</span>
+        </li>
+        <li class="shine-card">
+          <span aria-hidden="true">✓</span
+          ><span>Real client work across different businesses and communities.</span>
+        </li>
+        <li class="shine-card">
+          <span aria-hidden="true">✓</span
+          ><span>A clear plan and an agreed scope before development starts.</span>
+        </li>
       </ul>
       <a class="button light" href="#contact"
         >Let’s talk about your idea <span aria-hidden="true">↗</span></a

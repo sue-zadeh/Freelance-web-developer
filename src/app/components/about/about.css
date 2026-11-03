@@ -70,8 +70,7 @@
   display: flex;
   gap: 12px;
 }
-.about-points li::before {
-  content: '✓';
+.about-points li > span:first-child {
   color: #b7d5c4;
 }
 .about-copy .button {
@@ -93,4 +92,19 @@
   .about-copy > p:not(.eyebrow) {
     font-size: 15px;
   }
+}
+
+.about-points li {
+  --card-shine: #ffffff26;
+  padding: 13px 16px;
+  border: 1px solid #78648f66;
+  background: #292338;
+  border-radius: 8px;
+  transition:
+    border-color 0.3s,
+    translate 0.3s;
+}
+.about-points li:is(:hover, :focus-within) {
+  border-color: #b38de5;
+  translate: 0 -3px;
 }

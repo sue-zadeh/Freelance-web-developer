@@ -82,9 +82,7 @@ describe('One-page studio experience', () => {
     const cards = page.querySelectorAll('article');
     expect(cards[0].querySelector('h3')?.textContent).toBe('SAMCT Villages');
     expect(cards[0].querySelector('.project-category')?.textContent).toContain('Launched');
-    expect(cards[0].querySelector('a')?.getAttribute('href')).toBe(
-      'https://samplvillages.org.nz/',
-    );
+    expect(cards[0].querySelector('a')?.getAttribute('href')).toBe('https://samplvillages.org.nz/');
     expect(cards[0].querySelector('a')?.textContent).toContain('Visit website');
     expect(cards[8].querySelector('h3')?.textContent).toBe('Senior Healthcare Auckland');
     const lion = cards[1];
@@ -101,46 +99,42 @@ describe('One-page studio experience', () => {
   });
 });
 
-describe('Restaurant exploration', () => {
+describe('Interactive 3D concepts', () => {
   function setup() {
     const fixture = TestBed.createComponent(ShowroomComponent);
     fixture.detectChanges();
     const page = fixture.nativeElement as HTMLElement;
-    const control = (id: string, value: string) => {
-      const slider = page.querySelector<HTMLInputElement>('#' + id)!;
-      slider.value = value;
-      slider.dispatchEvent(new Event('input'));
-      fixture.detectChanges();
-      return slider;
-    };
     const button = (text: string) =>
       Array.from(page.querySelectorAll('button')).find((b) => b.textContent?.includes(text))!;
-    return { fixture, page, control, button };
+    const orb = page.querySelector<HTMLButtonElement>('[aria-label="Rotate restaurant in 3D"]')!;
+    const key = (name: string) => {
+      const event = new KeyboardEvent('keydown', { key: name, cancelable: true });
+      orb.dispatchEvent(event);
+      fixture.detectChanges();
+      return event;
+    };
+    return { fixture, page, button, orb, key };
   }
-
-  it('supports a full turn, top view, tilt, perspective, and reset through labelled controls', () => {
-    const { fixture, page, control, button } = setup();
-    const room = page.querySelector<HTMLElement>('.room')!;
-    const slider = control('room-angle', '360');
-    expect(slider.max).toBe('360');
-    expect(room.style.getPropertyValue('--rotation')).toBe('360deg');
+  it('replaces both range sliders with an accessible orb and keeps top/perspective/reset views', () => {
+    const { fixture, page, button, key } = setup();
+    expect(page.querySelectorAll('input[type="range"]')).toHaveLength(0);
+    expect(page.querySelectorAll('app-orbit-control')).toHaveLength(2);
+    for (let i = 0; i < 36; i++) key('ArrowRight');
+    expect(fixture.componentInstance.angle()).toBe(330);
     button('Top view').click();
     fixture.detectChanges();
-    expect(room.style.getPropertyValue('--tilt')).toBe('0deg');
+    expect(page.querySelector<HTMLElement>('.room')!.style.getPropertyValue('--tilt')).toBe('0deg');
     expect(button('Top view').getAttribute('aria-pressed')).toBe('true');
-    expect(page.querySelector('#room-tilt')?.getAttribute('aria-valuetext')).toBe('Top view');
-    control('room-tilt', '75');
-    expect(room.style.getPropertyValue('--tilt')).toBe('75deg');
+    key('ArrowUp');
+    expect(fixture.componentInstance.tilt()).toBe(0);
     button('Perspective').click();
     fixture.detectChanges();
-    expect(room.style.getPropertyValue('--tilt')).toBe('57deg');
-    expect(button('Perspective').getAttribute('aria-pressed')).toBe('true');
+    expect(fixture.componentInstance.tilt()).toBe(57);
     button('Reset view').click();
     fixture.detectChanges();
-    expect(room.style.getPropertyValue('--rotation')).toBe('330deg');
+    expect(fixture.componentInstance.angle()).toBe(330);
   });
-
-  it('keeps the selected lighting when changing the view', () => {
+  it('keeps lighting independent of view changes', () => {
     const { fixture, page, button } = setup();
     button('Daylight').click();
     button('Top view').click();
@@ -149,56 +143,19 @@ describe('Restaurant exploration', () => {
     expect(button('Evening').getAttribute('aria-pressed')).toBe('true');
     expect(page.querySelector('.demo-panel')?.classList.contains('evening')).toBe(true);
   });
-
-  it('wraps keyboard rotation, bounds tilt, and handles Home without intercepting unrelated keys', () => {
-    const { fixture, page, control } = setup();
-    const scene = page.querySelector<HTMLElement>('.scene')!;
-    const key = (name: string) => {
-      const event = new KeyboardEvent('keydown', { key: name, cancelable: true });
-      scene.dispatchEvent(event);
-      fixture.detectChanges();
-      return event;
-    };
-    control('room-angle', '355');
-    expect(key('ArrowRight').defaultPrevented).toBe(true);
-    expect(fixture.componentInstance.angle()).toBe(5);
-    key('ArrowLeft');
-    expect(fixture.componentInstance.angle()).toBe(355);
-    control('room-tilt', '0');
-    key('ArrowUp');
-    expect(fixture.componentInstance.tilt()).toBe(0);
-    control('room-tilt', '75');
-    key('ArrowDown');
-    expect(fixture.componentInstance.tilt()).toBe(75);
-    expect(key('Tab').defaultPrevented).toBe(false);
-    key('Home');
+  it('assembles and separates six food layers without changing the room', () => {
+    const { fixture, page, button } = setup();
+    expect(page.querySelectorAll('.ingredient')).toHaveLength(6);
+    const food = page.querySelector('.sandwich-panel')!;
+    expect(food.classList.contains('assembled')).toBe(false);
+    button('Bring the layers together').click();
+    fixture.detectChanges();
+    expect(food.classList.contains('assembled')).toBe(true);
+    expect(button('Separate the layers').getAttribute('aria-pressed')).toBe('true');
+    expect(page.querySelector('#sandwich-state')?.textContent).toContain('All six layers together');
+    button('Separate the layers').click();
+    fixture.detectChanges();
+    expect(food.classList.contains('assembled')).toBe(false);
     expect(fixture.componentInstance.angle()).toBe(330);
-    expect(fixture.componentInstance.tilt()).toBe(57);
-  });
-
-  it('rotates while dragging and stops on cancellation; touch leaves vertical tilt unchanged', () => {
-    const { fixture, page } = setup();
-    const scene = page.querySelector<HTMLElement>('.scene')!;
-    const pointer = (name: string, x: number, y: number, type = 'mouse', id = 1) => {
-      const event = new MouseEvent(name, { clientX: x, clientY: y, button: 0 });
-      Object.defineProperties(event, { pointerType: { value: type }, pointerId: { value: id } });
-      scene.dispatchEvent(event);
-      fixture.detectChanges();
-    };
-    pointer('pointerdown', 100, 100);
-    pointer('pointermove', 200, 60);
-    expect(fixture.componentInstance.angle()).toBe(40);
-    expect(fixture.componentInstance.tilt()).toBe(67);
-    expect(scene.classList.contains('is-dragging')).toBe(true);
-    pointer('pointercancel', 200, 60);
-    pointer('pointermove', 300, 0);
-    expect(fixture.componentInstance.angle()).toBe(40);
-    expect(scene.classList.contains('is-dragging')).toBe(false);
-    pointer('pointerdown', 100, 100, 'touch', 2);
-    pointer('pointermove', 200, 0, 'touch', 2);
-    expect(fixture.componentInstance.angle()).toBe(110);
-    expect(fixture.componentInstance.tilt()).toBe(67);
-    pointer('pointerup', 200, 0, 'touch', 2);
-    expect(scene.classList.contains('is-dragging')).toBe(false);
   });
 });
