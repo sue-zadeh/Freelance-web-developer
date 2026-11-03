@@ -27,6 +27,8 @@
       <h3>Tell me about your project</h3>
       <p class="form-intro">A few details are enough to start. Fields marked * are required.</p>
       <form
+        method="post"
+        action="/api/contact"
         #contactForm="ngForm"
         (ngSubmit)="onSubmit(contactForm)"
         novalidate
