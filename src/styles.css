@@ -188,8 +188,8 @@ button:disabled {
   background: linear-gradient(
     110deg,
     transparent 38%,
-    #ffffff30 48%,
-    #ffffff65 50%,
+    #ffffff18 48%,
+    #ffffff38 50%,
     transparent 62%
   );
   transform: translateX(-100%);

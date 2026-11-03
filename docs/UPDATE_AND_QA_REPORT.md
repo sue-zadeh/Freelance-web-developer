@@ -99,7 +99,7 @@ Verification for this follow-up:
 | Angular UI and reveal tests                            | 24 passed                                                   |
 | Built HTML, SEO, ordering, and visible fallback checks | 14 passed                                                   |
 | Running production-server HTTP checks                  | 11 passed                                                   |
-| Production build                                       | Passed; 364.47 kB initial raw / 96.72 kB estimated transfer |
+| Production build                                       | Passed; one page prerendered and initial bundle below the 500 kB budget |
 | Diff whitespace check                                  | Passed                                                      |
 
 Browser QA used the production build on the managed Chromium preview. The actual navbar hover reported white text on rgb(82, 50, 143), an active shine animation, and a visible edge line. The top-view preset and range End key produced 0° tilt and 360° rotation. A real pointer drag changed the view to 159° / 67° and released its dragging state. The floor fit the scene; no horizontal desktop overflow appeared. After navigation, there was one H1, nine project cards, and one form, and the sticky header remained at top 0.
