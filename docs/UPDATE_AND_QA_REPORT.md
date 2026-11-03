@@ -170,3 +170,15 @@ Temporary exact-source responsive frames at 360 px and 753 px content widths sho
 The earlier change moved the ShowerPower card toward the text, but its positive Y rotation still faced outward to the right. This correction reverses the actual sideways rotation in both states: −8° at rest and −14° on hover or keyboard focus. The pivot is now the card's centre. Its existing inward translation, rounded shape and shine-free picture are preserved.
 
 The production build, 14 built HTML/SEO checks, 11 production-server HTTP checks and whitespace check passed. This is a CSS-only correction; no additional unit tests were added. The managed preview could not start because its relay is unavailable in this session, so visual verification of this revision uses the published page after deployment. The review criterion is the direction of the card's face in both states, rather than its horizontal position alone.
+
+## Layered live-project showcase — 4 November 2026
+
+The hero now presents SAMCT Villages behind ShowerPower as two overlapping browser previews. Both retain an inward-facing Y rotation, while a positive X rotation brings the lower edge closer. Separate soft shadows establish the depth between the pages; hover and keyboard focus gently separate the layers and increase the foreground pitch. The pictures have no shine effect.
+
+The caption identifies both live projects and links to the portfolio. The former floating note is removed to keep the two-page composition clear. The heading and enquiry action retain their own column. The design is intended to show a wider range of real work without adding competing controls; no measured engagement or conversion increase is claimed.
+
+The showcase is a small standalone Angular component, keeping its styles and the home component below their existing per-component budgets. It reuses the existing optimized images with their actual dimensions: ShowerPower 1200 × 587, SAMCT 920 × 912. The foreground image retains high fetch priority; the rear image is lazy-loaded with low priority. No image generation, new external request destination, dependency, iframe, contact-form or backend change is introduced. Existing AOS entrances and reduced-motion handling are retained.
+
+`npm run verify` passed all 96 checks: 40 server, 31 Angular UI, 14 built HTML/SEO, and 11 production HTTP checks. The build passed without budget warnings at 412.51 kB initial raw / 103.78 kB estimated transfer, plus the separate lazy AOS chunk. The whitespace check passed. No redundant unit tests were added for this reversible visual change.
+
+The managed preview relay remains unavailable. This release therefore uses the published page for visual review of the overlap, shadows, inward-facing rotation, bottom-forward pitch, caption clearance and project link. Mobile-specific CSS preserves a proportional stack with smaller toolbar text and gentler horizontal movement; physical-device testing is not claimed.

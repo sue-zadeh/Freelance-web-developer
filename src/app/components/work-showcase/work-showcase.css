@@ -1,0 +1,205 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+.hero-showcase {
+  position: relative;
+  padding: 25px 0 32px;
+}
+.showcase-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-inline: 10px;
+  margin-bottom: 15px;
+  color: #c1b2d4;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+.showcase-topline > span:last-child {
+  color: #bc9ede;
+  font-size: 25px;
+  transition:
+    transform 0.6s,
+    color 0.6s;
+}
+.browser-stack {
+  display: grid;
+  grid-template-columns: repeat(20, minmax(0, 1fr));
+  grid-template-rows: repeat(20, minmax(0, 1fr));
+  aspect-ratio: 1.12;
+  position: relative;
+  isolation: isolate;
+}
+.browser-stack::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 28% 8% 2%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, #ae8cde35, transparent 70%);
+  filter: blur(24px);
+  pointer-events: none;
+}
+.browser-card {
+  position: relative;
+  align-self: start;
+  border-radius: 11px;
+  background: #efedf5;
+  overflow: hidden;
+  border: 1px solid #d3c6e455;
+  transform-origin: center;
+  transition:
+    transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1),
+    box-shadow 0.55s;
+}
+.browser-back {
+  grid-area: 1 / 4 / 17 / 21;
+  z-index: 0;
+  transform: perspective(1200px) rotateX(7deg) rotateY(-8deg) rotateZ(3deg) scale(0.94);
+  box-shadow:
+    0 22px 42px #03020d66,
+    0 5px 14px #03020d33;
+}
+.browser-front {
+  grid-area: 6 / 1 / 21 / 19;
+  z-index: 1;
+  transform: perspective(1200px) rotateX(8deg) rotateY(-8deg) rotateZ(-1deg);
+  box-shadow:
+    0 28px 52px #03020d99,
+    0 5px 18px #03020d66,
+    0 0 35px #bca3ec12;
+}
+.browser-toolbar {
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-inline: 13px;
+  color: #666074;
+  font-size: 9px;
+  letter-spacing: 0.02em;
+}
+.browser-dots {
+  color: #a699b7;
+  font-size: 7px;
+  letter-spacing: 2px;
+}
+.browser-toolbar svg {
+  width: 9px;
+  height: 9px;
+}
+svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+.browser-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1.55;
+  object-fit: cover;
+  object-position: top;
+}
+.showcase-caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 24px;
+  padding-inline: 6px;
+}
+.mini-label {
+  display: block;
+  color: #b6a9c8;
+  font-size: 10px;
+  margin-bottom: 5px;
+}
+.showcase-caption strong {
+  display: block;
+  color: #f0e9fa;
+  font-size: 16px;
+  font-weight: 550;
+  line-height: 1.4;
+}
+.showcase-caption a {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  color: #e0d0f2;
+  width: 42px;
+  height: 42px;
+  border: 1px solid #8e7da7;
+  border-radius: 50%;
+}
+.showcase-caption a svg {
+  width: 17px;
+  height: 17px;
+}
+.hero-showcase:is(:hover, :focus-within) .browser-front {
+  transform: translate(var(--card-x, -18px), 8px) perspective(1200px) rotateX(12deg) rotateY(-14deg)
+    rotateZ(var(--card-lean, -4deg)) scale(0.98);
+  box-shadow:
+    0 36px 65px #03020db3,
+    0 8px 22px #03020d66,
+    0 0 40px #bca3ec1a;
+}
+.hero-showcase:is(:hover, :focus-within) .browser-back {
+  transform: translate(8px, -8px) perspective(1200px) rotateX(8deg) rotateY(-10deg) rotateZ(4deg)
+    scale(0.96);
+  box-shadow:
+    0 28px 50px #03020d80,
+    0 6px 16px #03020d40;
+}
+.hero-showcase:is(:hover, :focus-within) .showcase-topline > span:last-child {
+  transform: rotate(90deg);
+  color: #a4d2b8;
+}
+@media (max-width: 1000px) {
+  .hero-showcase {
+    padding-left: 15px;
+  }
+}
+@media (max-width: 800px) {
+  :host {
+    max-width: 590px;
+    width: 100%;
+    margin-inline: auto;
+  }
+  .hero-showcase {
+    --card-x: -5px;
+    --card-lean: -2deg;
+    padding: 20px 15px;
+  }
+}
+@media (max-width: 600px) {
+  .hero-showcase {
+    padding: 18px 8px;
+  }
+  .showcase-topline {
+    font-size: 9px;
+    padding-inline: 3px;
+  }
+  .browser-toolbar {
+    height: 26px;
+    padding-inline: 8px;
+    font-size: 8px;
+  }
+  .browser-dots {
+    font-size: 6px;
+    letter-spacing: 1px;
+  }
+  .showcase-caption {
+    margin-top: 20px;
+    padding-inline: 0;
+    gap: 10px;
+  }
+  .showcase-caption strong {
+    font-size: 13px;
+  }
+}
