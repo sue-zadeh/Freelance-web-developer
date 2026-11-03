@@ -351,3 +351,48 @@ h1 em {
     font-size: 10px;
   }
 }
+
+.service-card {
+  transition:
+    translate 0.3s,
+    box-shadow 0.3s,
+    border-color 0.3s;
+}
+.service-card:is(:hover, :focus-within) {
+  translate: 0 -5px;
+  border-color: #ae96ce;
+  box-shadow: 0 18px 35px #39264e10;
+}
+.service-top span:last-child {
+  transition:
+    transform 0.3s,
+    color 0.3s;
+}
+.service-card:is(:hover, :focus-within) .service-top span:last-child {
+  transform: translate(3px, -3px);
+  color: var(--purple);
+}
+.browser-card {
+  transition:
+    transform 0.5s,
+    box-shadow 0.5s;
+}
+.hero-showcase:is(:hover, :focus-within) .browser-card {
+  transform: perspective(1200px) rotateY(0) rotateZ(0);
+  box-shadow: 0 30px 75px #9c70d52b;
+}
+.showcase-topline > span:last-child {
+  transition:
+    transform 0.6s,
+    color 0.6s;
+}
+.hero-showcase:is(:hover, :focus-within) .showcase-topline > span:last-child {
+  transform: rotate(90deg);
+  color: #a4d2b8;
+}
+.hero-work-link span {
+  transition: transform 0.25s;
+}
+.hero-work-link:is(:hover, :focus-visible) span {
+  transform: translateY(4px);
+}

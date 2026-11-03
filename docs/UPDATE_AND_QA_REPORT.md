@@ -13,7 +13,7 @@ Updates the existing Angular repository and Railway application. Keeps the curre
 - Existing /about, /projects, and /contact URLs permanently redirect to their corresponding sections.
 - Rewritten project descriptions, visible case-study details, accessible links, and correctly labelled in-progress work.
 - Lion & Sun added from its actual source and public preview. Backend work is described accurately; donation work is test-only.
-- SAMCT's old public URL returned 404 during this review; its broken outgoing link was removed.
+- SAMCT Villages is now featured first as a launched platform. Its live domain was verified as https://samplvillages.org.nz/ (without the e in sample). Senior Healthcare is last.
 - A lightweight CSS 3D restaurant concept with keyboard-operable view and lighting controls. It is a concept, not an invented client project or a full virtual tour.
 - A shorter required enquiry form with optional budget, business, and timing fields.
 - Missing HttpClient provisioning fixed. Browser and server validation share the same service choices.
@@ -30,9 +30,9 @@ Command: `npm run verify`.
 | Check                                                                  | Result                       |
 | ---------------------------------------------------------------------- | ---------------------------- |
 | Server validation, HTTP/security, and outbound email payload tests     | 40 passed                    |
-| Angular page, navigation, filters, 3D controls, form, and footer tests | 15 passed                    |
+| Angular page, navigation, filters, 3D controls, form, and footer tests | 24 passed                    |
 | Production Angular build                                               | Passed; one page prerendered |
-| Built HTML / SEO checks                                                | 12 passed                    |
+| Built HTML / SEO checks                                                | 14 passed                    |
 | Running production-server HTTP checks                                  | 11 passed                    |
 | Production dependency audit                                            | 0 known vulnerabilities      |
 | Diff whitespace check                                                  | Passed                       |
@@ -80,3 +80,28 @@ These checks are not a real-device Safari/Firefox test, a formal WCAG certificat
 Live HTTP checks caught a hosting fallback that returned the client shell rather than the prerendered document. The server now explicitly serves the verified prerendered home document, and the production environment sets NODE_ENV=production and RAILPACK_NO_SPA=1. The verify command also starts the built production server and checks actual HTTP HTML, headers, redirects, health, robots, sitemap, and missing pages. No database or email operation is performed by those checks.
 
 The root component explicitly skips client hydration. The server still sends full content; Angular replaces that root once when it starts. This avoids duplicate sections when hosting transforms HTML whitespace/comment markers. The browser regression check verifies one heading, nine projects, and one form after startup, filtering, and section navigation.
+
+## Motion, room controls, and portfolio follow-up — 3 November 2026
+
+- Fixed the navbar hover selector that made the purple “Let’s talk” label disappear into its purple background. Hover and keyboard focus now keep white text. The observed hover colours give 9.50:1 contrast; the brightest point of the limited shine gives approximately 5.25:1.
+- Restored scroll reveals with a shared IntersectionObserver and native Web Animations. HTML content is visible by default; no opacity gate is shipped. Each entry animates once, staggers are bounded, removed filter cards are cleaned up, and enabling reduced motion cancels active and pending reveals.
+- Added button shine and coloured edge lines, animated link underlines, card lift, and small arrow/showcase interactions. CSS transitions and animations respect reduced motion. No new dependency, continuous auto-spin, or external asset request was added.
+- Expanded the restaurant concept to a full 0–360° turn, overhead view, tilt slider, perspective preset, and reset. Pointer drag, arrow keys, Home, labelled range controls, and independent lighting are supported. Touch preserves vertical page scrolling.
+- Featured SAMCT as the first project, with a launched badge and details drawn from its actual project source: two villages, resident/manager/administration areas, maintenance, documents, property listings, and purchase orders. The configured live domain, https://samplvillages.org.nz/, was opened successfully. The originally supplied spelling with an extra e did not load in this browser.
+- Expanded Lion & Sun’s description with its donation page, contact/membership forms, email notifications, and private owner content/media area. Its preview status and the lack of live payment processing in that preview remain explicit. No private management route is published in the portfolio.
+- Moved Senior Healthcare Auckland to the end, including when filtering its category.
+
+Verification for this follow-up:
+
+| Check                                                  | Result                                                      |
+| ------------------------------------------------------ | ----------------------------------------------------------- |
+| Server/security/email regression tests                 | 40 passed                                                   |
+| Angular UI and reveal tests                            | 24 passed                                                   |
+| Built HTML, SEO, ordering, and visible fallback checks | 14 passed                                                   |
+| Running production-server HTTP checks                  | 11 passed                                                   |
+| Production build                                       | Passed; 364.47 kB initial raw / 96.72 kB estimated transfer |
+| Diff whitespace check                                  | Passed                                                      |
+
+Browser QA used the production build on the managed Chromium preview. The actual navbar hover reported white text on rgb(82, 50, 143), an active shine animation, and a visible edge line. The top-view preset and range End key produced 0° tilt and 360° rotation. A real pointer drag changed the view to 159° / 67° and released its dragging state. The floor fit the scene; no horizontal desktop overflow appeared. After navigation, there was one H1, nine project cards, and one form, and the sticky header remained at top 0.
+
+Phone and tablet CSS were reviewed in temporary 375 px / 768 px frames using the exact prerendered markup and styles, with effective content widths of 360 px / 753 px. The phone's maximum diagonal overhead view fit the scene and all preset buttons remained visible. These static frames do not run Angular; pointer/keyboard behaviour is covered separately in the live preview and unit tests. No physical-device or cross-browser certification is claimed. This follow-up does not send another live enquiry or test payments or private accounts on client projects.

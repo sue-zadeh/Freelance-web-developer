@@ -192,3 +192,34 @@
     padding-inline: 15px;
   }
 }
+
+.project-card {
+  transition:
+    translate 0.3s,
+    border-color 0.3s,
+    box-shadow 0.3s;
+}
+.project-card:is(:hover, :focus-within) {
+  translate: 0 -5px;
+  border-color: #a58cbe;
+  box-shadow: 0 15px 30px #39264e12;
+}
+.project-card.featured {
+  border-color: #a5b9ac;
+}
+.featured .project-category {
+  background: #285843;
+  color: #fff;
+  border-color: #285843;
+}
+.filter-row button {
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+}
+.filter-row button:not(.active):is(:hover, :focus-visible) {
+  background: #ebe3f7;
+  border-color: #a58cbe;
+  color: #432e60;
+}

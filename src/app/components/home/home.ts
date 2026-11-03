@@ -1,8 +1,9 @@
+import { RevealDirective } from '../../shared/reveal';
 import { Component } from '@angular/core';
 import { ShowroomComponent } from '../showroom/showroom';
 @Component({
   selector: 'app-home',
-  imports: [ShowroomComponent],
+  imports: [ShowroomComponent, RevealDirective],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })

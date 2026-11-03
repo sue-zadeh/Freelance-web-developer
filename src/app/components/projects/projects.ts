@@ -1,3 +1,4 @@
+import { RevealDirective } from '../../shared/reveal';
 import { Component, signal } from '@angular/core';
 
 export interface StudioProject {
@@ -10,19 +11,34 @@ export interface StudioProject {
   tags: readonly string[];
   liveUrl?: string;
   inProgress?: boolean;
+  featured?: boolean;
 }
 export const STUDIO_PROJECTS: readonly StudioProject[] = [
+  {
+    title: 'SAMCT Villages',
+    category: 'Web apps',
+    image: '/images/samct.webp',
+    description:
+      'A launched platform for two retirement villages, with a public website and separate portals for residents, village managers, and administration.',
+    built:
+      'React and TypeScript, ASP.NET Core, and PostgreSQL. Resident accounts, maintenance requests, village documents, property listings, purchase orders, and role-based dashboards.',
+    value:
+      'Gives residents a way to request maintenance and access village information, while managers handle residents, properties, and tasks in one place. A complete example of the business systems I can build behind a website.',
+    tags: ['Launched platform', 'Resident portal', 'Manager dashboards'],
+    liveUrl: 'https://samplvillages.org.nz/',
+    featured: true,
+  },
   {
     title: 'Lion & Sun Society NZ',
     category: 'Web apps',
     image: '/images/lionandsun.webp',
     description:
-      'A bilingual community website with English and Persian layouts, news, events, and photo and video galleries.',
+      'A bilingual community website with English and Persian layouts, news, events, galleries, a donation page, and forms that send enquiries to the organisation.',
     built:
-      'React and TypeScript frontend, right-to-left language support, ASP.NET Core API, SQL Server, contact and membership workflows, and a private media manager.',
+      'React and TypeScript frontend, right-to-left language support, ASP.NET Core API, SQL Server, contact and membership forms with email notifications, a donation page, and a private owner area for content and media management.',
     value:
-      'Gives the organisation a place to share its work and help people get involved. The public link is a frontend preview; the full backend is still being prepared. Donation work is test-only.',
-    tags: ['English / فارسی', 'React + .NET', 'Media management'],
+      'Helps people join, enquire, and support the organisation, while giving the owner tools to keep the website up to date. The public link is a frontend preview; live donation payments are not enabled in this preview.',
+    tags: ['English / فارسی', 'Donations & forms', 'Owner management'],
     liveUrl: 'https://lionandsun.up.railway.app/en',
     inProgress: true,
   },
@@ -77,31 +93,6 @@ export const STUDIO_PROJECTS: readonly StudioProject[] = [
     liveUrl: 'https://www.smartpanelhomes.co.nz/',
   },
   {
-    title: 'Senior Healthcare Auckland',
-    category: 'Websites',
-    image: '/images/healthcare.webp',
-    description:
-      'An in-progress care services website designed to help families understand the available support and make an enquiry.',
-    built: 'Responsive service sections, an introduction to the team, FAQs, and enquiry forms.',
-    value:
-      'Keeps care information clear and approachable for families and people looking for support.',
-    tags: ['Healthcare services', 'Clear content', 'Enquiry forms'],
-    inProgress: true,
-  },
-  {
-    title: 'SAMCT Villages',
-    category: 'Web apps',
-    image: '/images/samct.webp',
-    description:
-      'An in-progress village platform with public information, resident access, and admin dashboards.',
-    built:
-      'A multi-role application with public pages and separate areas for resident and administrative tasks.',
-    value:
-      'Brings village information and day-to-day workflows into one platform. The public preview is currently unavailable while development continues.',
-    tags: ['Village platform', 'Resident access', 'Admin tools'],
-    inProgress: true,
-  },
-  {
     title: 'Voting Center',
     category: 'Web apps',
     image: '/images/voting.webp',
@@ -125,10 +116,23 @@ export const STUDIO_PROJECTS: readonly StudioProject[] = [
       'Shows the kind of member interaction a custom community platform can support. A project example with no public account access.',
     tags: ['Community app', 'Member features', 'Full stack'],
   },
+  {
+    title: 'Senior Healthcare Auckland',
+    category: 'Websites',
+    image: '/images/healthcare.webp',
+    description:
+      'An in-progress care services website designed to help families understand the available support and make an enquiry.',
+    built: 'Responsive service sections, an introduction to the team, FAQs, and enquiry forms.',
+    value:
+      'Keeps care information clear and approachable for families and people looking for support.',
+    tags: ['Healthcare services', 'Clear content', 'Enquiry forms'],
+    inProgress: true,
+  },
 ];
 
 @Component({
   selector: 'app-projects',
+  imports: [RevealDirective],
   templateUrl: './projects.html',
   styleUrl: './projects.css',
 })

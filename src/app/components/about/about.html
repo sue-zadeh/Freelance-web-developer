@@ -1,6 +1,6 @@
 <section id="about" class="section about-section" aria-labelledby="about-title">
   <div class="shell about-layout">
-    <div class="portrait-wrap">
+    <div class="portrait-wrap" appReveal>
       <img
         src="/images/sue.webp"
         alt="Sue Zadeh, independent web developer based in Auckland"
@@ -11,7 +11,7 @@
       />
       <div class="portrait-caption"><span>Meet your developer</span><strong>Sue Zadeh</strong></div>
     </div>
-    <div class="about-copy">
+    <div class="about-copy" appReveal [revealDelay]="80">
       <p class="eyebrow">A person behind your project</p>
       <h2 id="about-title">Hi, I’m Sue.<br />I’ll be the one building it.</h2>
       <p>

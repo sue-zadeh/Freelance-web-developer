@@ -52,6 +52,25 @@ check('All portfolio projects are rendered for search engines', () => {
   assert.equal(document.querySelectorAll('.project-card').length, 9);
   assert.ok(html.includes('Lion &amp; Sun Society NZ'));
 });
+check('Portfolio launch status, ordering and owner features survive prerendering', () => {
+  const cards = document.querySelectorAll('.project-card');
+  assert.equal(cards[0].querySelector('h3').textContent, 'SAMCT Villages');
+  assert.equal(cards[0].querySelector('a').getAttribute('href'), 'https://samplvillages.org.nz/');
+  assert.ok(cards[0].querySelector('.project-category').textContent.includes('Launched'));
+  assert.equal(cards[8].querySelector('h3').textContent, 'Senior Healthcare Auckland');
+  assert.ok(cards[1].textContent.includes('email notifications'));
+  assert.ok(cards[1].textContent.includes('private owner area'));
+  assert.ok(cards[1].textContent.includes('donation page'));
+});
+check('Animated content stays visible without JavaScript and room controls are prerendered', () => {
+  for (const element of document.querySelectorAll('[appReveal]')) {
+    assert.notEqual(element.style.opacity, '0');
+    assert.notEqual(element.style.visibility, 'hidden');
+  }
+  assert.equal(document.getElementById('room-angle').max, '360');
+  assert.equal(document.getElementById('room-tilt').min, '0');
+  assert.equal(document.querySelectorAll('form').length, 1);
+});
 check('All local images exist and have alt text and dimensions', () => {
   for (const image of document.querySelectorAll('img')) {
     const source = image.getAttribute('src');

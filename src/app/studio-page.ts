@@ -1,3 +1,4 @@
+import { RevealDirective } from './shared/reveal';
 import { Component } from '@angular/core';
 import { HomeComponent } from './components/home/home';
 import { ProjectsComponent } from './components/projects/projects';
@@ -6,14 +7,14 @@ import { ContactComponent } from './components/contact/contact';
 
 @Component({
   selector: 'app-studio-page',
-  imports: [HomeComponent, ProjectsComponent, AboutComponent, ContactComponent],
+  imports: [HomeComponent, ProjectsComponent, AboutComponent, ContactComponent, RevealDirective],
   template: `
     <app-home />
     <app-projects />
     <app-about />
     <section id="process" class="section process-section" aria-labelledby="process-title">
       <div class="shell">
-        <div class="section-heading">
+        <div class="section-heading" appReveal>
           <div>
             <p class="eyebrow">A clear way forward</p>
             <h2 id="process-title">From your idea<br />to something useful.</h2>
@@ -21,12 +22,12 @@ import { ContactComponent } from './components/contact/contact';
           <p>You don’t need a technical brief. Start with what your business needs to do.</p>
         </div>
         <ol class="process-grid">
-          <li>
+          <li appReveal>
             <span>01</span>
             <h3>Let’s talk</h3>
             <p>Tell me about your business, your customers, and what you want to improve.</p>
           </li>
-          <li>
+          <li appReveal>
             <span>02</span>
             <h3>A plan and a quote</h3>
             <p>
@@ -34,7 +35,7 @@ import { ContactComponent } from './components/contact/contact';
               starts.
             </p>
           </li>
-          <li>
+          <li appReveal>
             <span>03</span>
             <h3>Build and review</h3>
             <p>
@@ -42,7 +43,7 @@ import { ContactComponent } from './components/contact/contact';
               together.
             </p>
           </li>
-          <li>
+          <li appReveal>
             <span>04</span>
             <h3>Test and launch</h3>
             <p>
@@ -55,14 +56,14 @@ import { ContactComponent } from './components/contact/contact';
     </section>
     <section id="faq" class="section faq-section" aria-labelledby="faq-title">
       <div class="shell faq-layout">
-        <div>
+        <div appReveal>
           <p class="eyebrow">Before we start</p>
           <h2 id="faq-title">A few things<br />you might be wondering.</h2>
           <a class="text-link" href="#contact"
             >Ask me something else <span aria-hidden="true">↗</span></a
           >
         </div>
-        <div class="faq-list">
+        <div class="faq-list" appReveal [revealDelay]="80">
           @for (question of questions; track question.title) {
             <details>
               <summary>{{ question.title }}</summary>
