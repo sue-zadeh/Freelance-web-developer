@@ -1,224 +1,206 @@
-<section class="contact-section">
-  <div class="contact-overlay"></div>
-
-  <div class="container position-relative contact-content">
-    <div class="row align-items-center g-5">
-
-      <div class="col-lg-5">
-        <div class="contact-info fade-up">
-          <span class="contact-badge">Get In Touch</span>
-
-          <h1 class="contact-title mt-3">
-            Let’s talk about your project
-          </h1>
-
-          <p class="contact-text mt-4">
-            Need a business website, admin dashboard, or custom web application?
-            Share a few details and the right solution can take shape from there.
-          </p>
-
-          <p class="contact-text-secondary">
-            Clear communication, practical planning, and digital solutions designed
-            around real business goals.
-          </p>
-
-          <div class="info-list mt-4">
-            <div class="info-item">
-              <span class="info-icon">✉</span>
-              <div>
-                <h3>Email</h3>
-                <p>
-                  <a class="contact-email-link" href="mailto:suezadeh@suewebstudio.com">
-                    suezadeh@suewebstudio.com
-                  </a>
-                </p>
-              </div>
-            </div>
-
-            <div class="info-item">
-              <span class="info-icon">⌁</span>
-              <div>
-                <h3>Availability</h3>
-                <p>Usually replies within 1 to 2 business days.</p>
-              </div>
-            </div>
+<section id="contact" class="section contact-section" aria-labelledby="contact-title">
+  <div class="shell contact-layout">
+    <div class="contact-copy">
+      <p class="eyebrow">Your next step starts here</p>
+      <h2 id="contact-title">
+        An idea, a question,<br />or a website that<br /><em>needs a little help?</em>
+      </h2>
+      <p>
+        Tell me what you’re thinking. I’ll help you work out what’s useful, what’s possible, and
+        where to start.
+      </p>
+      <a class="contact-email" href="mailto:suezadeh@suewebstudio.com"
+        >suezadeh&#64;suewebstudio.com <span aria-hidden="true">↗</span></a
+      ><a class="contact-phone" href="tel:+64212049836">021 204 9836</a>
+      <p class="contact-location">
+        Auckland’s North Shore · New Zealand<br />Remote projects welcome.
+      </p>
+      <div class="next-step">
+        <span aria-hidden="true">✦</span>
+        <p>
+          <strong>What happens next?</strong>I’ll read your message and come back with any questions
+          or a suggested next step. No pressure to commit.
+        </p>
+      </div>
+    </div>
+    <div class="form-card">
+      <h3>Tell me about your project</h3>
+      <p class="form-intro">A few details are enough to start. Fields marked * are required.</p>
+      <form
+        #contactForm="ngForm"
+        (ngSubmit)="onSubmit(contactForm)"
+        novalidate
+        [attr.aria-busy]="isSubmitting()"
+      >
+        <div class="honeypot" aria-hidden="true">
+          <label for="website">Leave this field empty</label
+          ><input
+            id="website"
+            name="website"
+            [(ngModel)]="formData.website"
+            tabindex="-1"
+            autocomplete="off"
+          />
+        </div>
+        <div class="form-grid">
+          <div class="field">
+            <label for="name">Your name *</label
+            ><input
+              id="name"
+              name="name"
+              [(ngModel)]="formData.name"
+              #nameField="ngModel"
+              required
+              pattern=".*\S.*"
+              maxlength="100"
+              autocomplete="name"
+              [attr.aria-invalid]="nameField.invalid && (nameField.touched || submitted())"
+              [attr.aria-describedby]="
+                nameField.invalid && (nameField.touched || submitted()) ? 'name-error' : null
+              "
+            />
+            @if (nameField.invalid && (nameField.touched || submitted())) {
+              <p id="name-error" class="field-error">Please enter your name.</p>
+            }
+          </div>
+          <div class="field">
+            <label for="email">Email address *</label
+            ><input
+              id="email"
+              name="email"
+              type="email"
+              email
+              [(ngModel)]="formData.email"
+              #emailField="ngModel"
+              required
+              maxlength="150"
+              autocomplete="email"
+              [attr.aria-invalid]="emailField.invalid && (emailField.touched || submitted())"
+              [attr.aria-describedby]="
+                emailField.invalid && (emailField.touched || submitted()) ? 'email-error' : null
+              "
+            />
+            @if (emailField.invalid && (emailField.touched || submitted())) {
+              <p id="email-error" class="field-error">Please enter a valid email address.</p>
+            }
+          </div>
+          <div class="field full">
+            <label for="projectType">What can I help with? *</label
+            ><select
+              id="projectType"
+              name="projectType"
+              [(ngModel)]="formData.projectType"
+              #projectField="ngModel"
+              required
+              [attr.aria-invalid]="projectField.invalid && (projectField.touched || submitted())"
+              [attr.aria-describedby]="
+                projectField.invalid && (projectField.touched || submitted())
+                  ? 'project-error'
+                  : null
+              "
+            >
+              <option value="" disabled>Choose a service</option>
+              @for (projectType of projectTypes; track projectType) {
+                <option [value]="projectType">{{ projectType }}</option>
+              }
+            </select>
+            @if (projectField.invalid && (projectField.touched || submitted())) {
+              <p id="project-error" class="field-error">
+                Please choose a service, or select Other.
+              </p>
+            }
+          </div>
+          <div class="field full">
+            <label for="message">A little about your idea *</label
+            ><textarea
+              id="message"
+              name="message"
+              rows="5"
+              [(ngModel)]="formData.message"
+              #messageField="ngModel"
+              required
+              pattern="[\s\S]*\S[\s\S]*"
+              maxlength="5000"
+              placeholder="What do you need, and what would you like it to do?"
+              [attr.aria-invalid]="messageField.invalid && (messageField.touched || submitted())"
+              [attr.aria-describedby]="
+                messageField.invalid && (messageField.touched || submitted())
+                  ? 'message-error'
+                  : null
+              "
+            ></textarea>
+            @if (messageField.invalid && (messageField.touched || submitted())) {
+              <p id="message-error" class="field-error">
+                Please add a few details about your project.
+              </p>
+            }
           </div>
         </div>
-      </div>
-
-      <div class="col-lg-7">
-        <p class="text-light fs-4">Open to freelance projects, company work, and team collaboration.</p>
-        <div class="contact-form-card fade-up">
-          <form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)">
-            <div class="contact-honeypot" aria-hidden="true">
-              <label for="website">Website</label>
-              <input
-                type="text"
-                id="website"
-                name="website"
-                [(ngModel)]="formData.website"
-                tabindex="-1"
-                autocomplete="off"
+        <details class="optional-details">
+          <summary>Add a business name, budget, or timing (optional)</summary>
+          <div class="form-grid optional-grid">
+            <div class="field full">
+              <label for="company">Business or organisation</label
+              ><input
+                id="company"
+                name="company"
+                [(ngModel)]="formData.company"
+                maxlength="150"
+                autocomplete="organization"
               />
             </div>
-
-            <div class="row g-3">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="name">Your Name *</label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    class="form-control custom-input"
-                    [(ngModel)]="formData.name"
-                    required
-                    maxlength="100"
-                    autocomplete="name"
-                    placeholder="Your Name"
-                  />
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="email">Email Address *</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    class="form-control custom-input"
-                    [(ngModel)]="formData.email"
-                    required
-                    maxlength="150"
-                    autocomplete="email"
-                    placeholder="Your Email"
-                  />
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="company">Company / Business</label>
-                  <input
-                    type="text"
-                    id="company"
-                    name="company"
-                    class="form-control custom-input"
-                    [(ngModel)]="formData.company"
-                    maxlength="150"
-                    autocomplete="organization"
-                    placeholder="Company or Business Name"
-                  />
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="projectType">Project Type *</label>
-                  <select
-                    id="projectType"
-                    name="projectType"
-                    class="form-select custom-input"
-                    [(ngModel)]="formData.projectType"
-                    required
-                  >
-                    <option value="" disabled>Select project type</option>
-                    <option value="Business Website">Business Website</option>
-                    <option value="Portfolio Website">Portfolio Website</option>
-                    <option value="Admin Dashboard">Admin Dashboard</option>
-                    <option value="Custom Web App">Custom Web App</option>
-                    <option value="API / Backend Integration">API / Backend Integration</option>
-                    <option value="Website Redesign">Website Redesign</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="budget">Budget Range</label>
-                  <select
-                    id="budget"
-                    name="budget"
-                    class="form-select custom-input"
-                    [(ngModel)]="formData.budget"
-                  >
-                    <option value="" disabled>Select budget range</option>
-                    <option value="Under $1,000">Under $1,000</option>
-                    <option value="$1,000 - $3,000">$1,000 - $3,000</option>
-                    <option value="$3,000 - $6,000">$3,000 - $6,000</option>
-                    <option value="$6,000+">$6,000+</option>
-                    <option value="Not sure yet">Not sure yet</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="timeline">Preferred Timeline</label>
-                  <select
-                    id="timeline"
-                    name="timeline"
-                    class="form-select custom-input"
-                    [(ngModel)]="formData.timeline"
-                  >
-                    <option value="" disabled>Select timeline</option>
-                    <option value="ASAP">ASAP</option>
-                    <option value="Within 2 weeks">Within 2 weeks</option>
-                    <option value="Within 1 month">Within 1 month</option>
-                    <option value="1 to 3 months">1 to 3 months</option>
-                    <option value="Flexible">Flexible</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-12">
-                <div class="form-group">
-                  <label for="message">Project Details *</label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows="6"
-                    class="form-control custom-input custom-textarea"
-                    [(ngModel)]="formData.message"
-                    required
-                    maxlength="5000"
-                    placeholder="Tell me a bit about your project, goals, or what you need."
-                  ></textarea>
-                </div>
-              </div>
-
-              <div class="col-12">
-                <p class="form-privacy-note">
-                  Your details are used only to respond to your enquiry and are not shared for marketing.
-                </p>
-
-                @if (successMessage) {
-                  <div class="form-alert success-alert mb-3" role="status">
-                    {{ successMessage }}
-                  </div>
+            <div class="field">
+              <label for="budget">Budget range (NZD)</label
+              ><select id="budget" name="budget" [(ngModel)]="formData.budget">
+                <option value="">Not specified</option>
+                @for (budget of budgets; track budget) {
+                  <option [value]="budget">{{ budget }}</option>
                 }
-
-                @if (errorMessage) {
-                  <div class="form-alert error-alert mb-3" role="alert">
-                    {{ errorMessage }}
-                  </div>
-                }
-
-                <button
-                  type="submit"
-                  class="btn submit-btn"
-                  [disabled]="contactForm.invalid || isSubmitting"
-                >
-                  {{ isSubmitting ? 'Sending...' : 'Send Project Details' }}
-                </button>
-              </div>
+              </select>
             </div>
-          </form>
-        </div>
-      </div>
-
+            <div class="field">
+              <label for="timeline">Timing</label
+              ><select id="timeline" name="timeline" [(ngModel)]="formData.timeline">
+                <option value="">Not specified</option>
+                @for (timeline of timelines; track timeline) {
+                  <option [value]="timeline">{{ timeline }}</option>
+                }
+              </select>
+            </div>
+          </div>
+        </details>
+        <p class="form-privacy">
+          I’ll use your details to reply about your project. <a href="#privacy">Privacy details</a>
+        </p>
+        @if (successMessage()) {
+          <div class="form-notice" [class.delayed]="notificationDelayed()" role="status">
+            {{ successMessage() }}
+          </div>
+        }
+        @if (errorMessage()) {
+          <div class="form-notice error" role="alert">{{ errorMessage() }}</div>
+        }
+        <button class="button primary submit-button" type="submit" [disabled]="isSubmitting()">
+          {{ isSubmitting() ? 'Sending your enquiry…' : 'Send your enquiry' }}
+          <span aria-hidden="true">↗</span>
+        </button>
+      </form>
     </div>
+  </div>
+  <div id="privacy" class="shell privacy-note">
+    <details>
+      <summary>How I handle your enquiry</summary>
+      <p>
+        Sue Web Studio uses the details you submit to respond to your enquiry and discuss your
+        project. Enquiries are stored in the website’s database and sent to my business inbox
+        through an email provider. Hosting and email providers process this information to run the
+        service, and may store it outside New Zealand. Please don’t include passwords, payment
+        details, or sensitive personal information. Your details aren’t added to a marketing list or
+        sold. To ask about, correct, or delete an enquiry, email
+        <a href="mailto:suezadeh@suewebstudio.com">suezadeh&#64;suewebstudio.com</a>. Basic request
+        information is used to limit spam. This website doesn’t use advertising or analytics
+        cookies.
+      </p>
+    </details>
   </div>
 </section>

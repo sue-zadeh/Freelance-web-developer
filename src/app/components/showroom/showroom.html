@@ -1,0 +1,70 @@
+<section id="demo" class="section demo-section" aria-labelledby="demo-title">
+  <div class="shell demo-layout">
+    <div class="demo-copy">
+      <p class="eyebrow">A little room for imagination</p>
+      <h2 id="demo-title">Don’t just describe it.<br />Let people explore it.</h2>
+      <p>
+        A restaurant, a showroom, a new product. An interactive website can help people picture the
+        experience before they visit.
+      </p>
+      <p class="demo-note">
+        Try this small restaurant concept. Change the view and lighting to see how an idea can feel
+        more real in a browser.
+      </p>
+      <a class="text-link" href="#contact"
+        >Have something in mind? <span aria-hidden="true">↗</span></a
+      >
+    </div>
+    <div class="demo-panel" [class.evening]="evening()">
+      <div class="demo-panel-top">
+        <span>STUDIO EXPERIMENT / 01</span><span class="concept-badge">Concept demo</span>
+      </div>
+      <div
+        class="scene"
+        role="img"
+        aria-label="An interactive three-dimensional restaurant concept with tables, plants, and a cafe wall. Use the controls below to change the angle and lighting."
+      >
+        <div class="room" [style.--rotation]="angle() + 'deg'" aria-hidden="true">
+          <div class="floor"></div>
+          <div class="wall wall-back">
+            <span>THE LITTLE<br /><b>TABLE</b><small>GOOD FOOD. GOOD COMPANY.</small></span>
+          </div>
+          <div class="wall wall-side"><i></i><i></i><i></i></div>
+          <div class="rug"></div>
+          <div class="table table-one"><span></span><i></i><b></b></div>
+          <div class="table table-two"><span></span><i></i><b></b></div>
+          <div class="table table-three"><span></span><i></i><b></b></div>
+          <div class="plant plant-one">✦</div>
+          <div class="plant plant-two">✦</div>
+          <div class="counter"><span>coffee & conversations</span></div>
+        </div>
+      </div>
+      <div class="demo-controls">
+        <div class="angle-control">
+          <label for="room-angle">Explore the angle <span aria-hidden="true">↔</span></label
+          ><input
+            id="room-angle"
+            type="range"
+            min="-65"
+            max="10"
+            [value]="angle()"
+            (input)="setAngle($event)"
+            aria-label="Restaurant view angle"
+          />
+        </div>
+        <button
+          type="button"
+          class="lighting-toggle"
+          [attr.aria-pressed]="evening()"
+          (click)="evening.set(!evening())"
+        >
+          {{ evening() ? 'Evening' : 'Daylight' }}
+          <span aria-hidden="true">{{ evening() ? '☾' : '☀' }}</span>
+        </button>
+      </div>
+      <p class="concept-note">
+        Illustrative browser demo. Custom models and full virtual tours are quoted separately.
+      </p>
+    </div>
+  </div>
+</section>

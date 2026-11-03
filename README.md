@@ -1,59 +1,68 @@
-# SuePortfolio- Freelance-Web-Developer
+# Sue Web Studio
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.1.
+Angular 21 one-page business website for Sue Zadeh. Production: https://suewebstudio.com/.
+The Express server handles contact enquiries and Angular server rendering.
 
-## Development server
+## Local development
 
-To start a local development server, run:
+Use Node 24 (see `.nvmrc`), then:
 
-```bash
-ng serve
+```sh
+npm ci
+npm start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+For frontend + the real contact backend together:
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```sh
+npm run build
+npm run start:prod
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Copy `.env.example` to an ignored `.env` for local settings. Set up a **separate development database** using `database.psql`. No production secret is stored in this repository. Angular's `npm start` frontend server does not proxy the contact API; use the production build/server to test the integrated form.
 
-```bash
-ng generate --help
+## Verification
+
+```sh
+npm run verify
+npm audit --omit=dev
 ```
 
-## Building
+`verify` runs HTTP validation/security/contact tests against an isolated in-memory test double, Angular UI/form tests in jsdom, the production build, and checks of actual prerendered HTML. These tests do not contact a real database or send email. Live inbox delivery requires a separate test.
 
-To build the project run:
+The GitHub quality workflow runs verification and checks production dependencies for known moderate/high/critical advisories.
 
-```bash
-ng build
-```
+## Production
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Keep the existing Railway service, PostgreSQL database, domain, and GitHub connection. Build with `npm run build`, start with `npm run start:prod`. The existing health endpoint is `/api/health`.
 
-## Running unit tests
+Required service variables:
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+- `NODE_ENV=production`
+- `PGHOST`, `PGPORT`, `PGUSER`, `PGPASSWORD`, `PGDATABASE`
+- `RESEND_API_KEY`: a valid Resend sending key with the sender domain verified
+- `CLIENT_ORIGIN=https://suewebstudio.com` (optional; the canonical origin is always allowed)
 
-```bash
-ng test
-```
+The destination is fixed to **suezadeh@suewebstudio.com**. Customer addresses go in Reply-To, never the sender or recipient. The browser never receives provider credentials. Zoho is the receiving mailbox; it does not need a Zoho SMTP password. Sender: `contact@suewebstudio.com`.
 
-## Running end-to-end tests
+The form saves a lead before attempting email. HTTP 201 means the email provider accepted the notification; it does **not** prove inbox delivery. HTTP 202 means the lead was saved but notification is delayed; the UI tells the visitor. HTTP 503 means saving failed, so the UI retains their draft and offers direct contact.
 
-For end-to-end (e2e) testing, run:
+Existing contact rows remain unchanged. New submissions use the existing schema. New statuses:
 
-```bash
-ng e2e
-```
+- `new`: stored, before email attempt
+- `notified`: accepted by email provider
+- `notification_pending`: provider unavailable or not configured
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Check notification failures in service logs and the contact table. There is no unattended email retry worker in this release. Investigate pending records, then resend through the provider using the original reference and idempotency key `website-enquiry/<id>` within its supported retention window. Do not repeatedly resend a lead with a new key.
 
-## Additional Resources
+SQL uses parameter values. Private Railway database hosts use the platform's private network; external production database hosts require verified TLS. Public rate limiting allows five attempts per IP in 15 minutes, with a bounded in-memory map. It resets on restart and is per replica; add a shared store before scaling beyond one instance.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Old `/about`, `/projects`, and `/contact` links permanently redirect to their sections. The canonical page is prerendered so visitors and search engines receive the content without waiting for JavaScript. Unknown pages and API routes return 404.
+
+CSP restricts scripts and connections to this origin. Inline styles are permitted for Angular styles and the interactive scene; inline executable scripts are not permitted. There are no remote fonts, icon CDNs, analytics, advertising cookies, or production source maps.
+
+## Project previews
+
+Lion & Sun is described as in progress. Its public URL is a frontend preview; donation work is test-only. Private project screenshots do not grant operational account access. No revenue, search ranking, or client result statistics are invented.
+
+See `docs/UPDATE_AND_QA_REPORT.md` for release evidence, remaining checks, and the practical plan for attracting enquiries.

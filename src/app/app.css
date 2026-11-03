@@ -1,15 +1,9 @@
-body { 
-  font-family: "Cairo", "Montserrat", system-ui, 
-  -apple-system, "Segoe UI", Arial, sans-serif; 
-}
-
 :host {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
-
 .app-main {
   flex: 1;
-  display: block;
+  min-width: 0;
 }

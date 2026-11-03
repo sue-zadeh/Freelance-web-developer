@@ -1,137 +1,100 @@
-<div class="home-page">
-  <section class="hero-section" aria-labelledby="hero-title">
-    <div class="hero-overlay" aria-hidden="true"></div>
-
-    <div class="container position-relative hero-content">
-      <div class="row align-items-center hero-row gy-5">
-        <div class="col-lg-6">
-          <div class="hero-left">
-            <p class="hero-badge">
-              Available for Freelance & Company Projects
-            </p>
-
-            <h1 id="hero-title" class="hero-title mt-3">
-              Modern websites, dashboards, and web apps designed for growing
-              businesses
-            </h1>
-
-            <p class="hero-text mt-4">
-              Business websites, admin dashboards, and custom web tools built
-              with clean design, responsive layouts, and practical functionality.
-            </p>
-
-            <p class="hero-text-secondary">
-              Clear user experience, scalable frontend-to-backend integration,
-              and API-driven solutions shaped around real business needs.
-            </p>
-
-            <p class="availability-note mt-3">
-             Open to freelance work and company project collaborations.
-            </p>
-
-            <div
-              class="hero-actions d-flex flex-wrap gap-3 mt-4"
-              aria-label="Main actions"
-            >
-              <a routerLink="/projects" class="btn btn-primary-custom">
-                View Projects
-              </a>
-
-              <a routerLink="/contact" class="btn btn-outline-custom">
-                Start a Project
-              </a>
-            </div>
-
-            <div class="row stats-row mt-5" aria-label="Core services">
-              <div class="col-sm-4">
-                <article class="stat-box corner-shine">
-                  <h2>Business</h2>
-                  <p>Websites that build trust</p>
-                </article>
-              </div>
-
-              <div class="col-sm-4">
-                <article class="stat-box corner-shine">
-                  <h2>Dashboard</h2>
-                  <p>Tools for daily workflows</p>
-                </article>
-              </div>
-
-              <div class="col-sm-4">
-                <article class="stat-box corner-shine">
-                  <h2>API</h2>
-                  <p>Connected, scalable solutions</p>
-                </article>
-              </div>
-            </div>
-          </div>
+<section id="home" class="hero-section" aria-labelledby="hero-title">
+  <div class="shell hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">
+        <span aria-hidden="true" class="status-dot"></span> Independent web developer · Auckland, NZ
+      </p>
+      <h1 id="hero-title">Your business.<br />Your next step.<br /><em>Let’s build it.</em></h1>
+      <p class="hero-description">
+        Websites that help customers find you.<br />Web apps that make your work easier.
+      </p>
+      <p class="hero-intro">
+        I’m Sue. I design and build practical websites, business apps, and interactive experiences
+        for people with ideas and businesses to grow.
+      </p>
+      <div class="hero-actions">
+        <a class="button light" href="#contact"
+          >Tell me your idea <span aria-hidden="true">↗</span></a
+        ><a class="hero-work-link" href="#projects"
+          >Explore my work <span aria-hidden="true">↓</span></a
+        >
+      </div>
+      <p class="hero-location">Based on Auckland’s North Shore. Working across New Zealand.</p>
+    </div>
+    <div class="hero-showcase">
+      <div class="showcase-topline">
+        <span>From idea to real website</span><span aria-hidden="true">✦</span>
+      </div>
+      <div class="browser-card">
+        <div class="browser-toolbar">
+          <span class="browser-dots" aria-hidden="true">● ● ●</span><span>showerpower.co.nz</span
+          ><span aria-hidden="true">↗</span>
         </div>
+        <img
+          src="/images/showerpower.webp"
+          alt="ShowerPower website showing shower installation services and a quote enquiry"
+          width="1200"
+          height="800"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </div>
+      <div class="showcase-caption">
+        <div><span class="mini-label">Selected client work</span><strong>ShowerPower</strong></div>
+        <a href="#projects" aria-label="Explore the ShowerPower project"
+          ><span aria-hidden="true">↗</span></a
+        >
+      </div>
+      <div class="showcase-note">
+        <span class="note-icon" aria-hidden="true">✓</span>
+        <p>A clear first impression.<br /><strong>A simple next step.</strong></p>
+      </div>
+    </div>
+  </div>
+  <div class="shell hero-bottom">
+    <span>Thoughtful design.</span><span>Frontend to backend.</span
+    ><span>Tested before launch.</span
+    ><a href="#services">See what I can help with <span aria-hidden="true">↓</span></a>
+  </div>
+</section>
 
-        <div class="col-lg-6">
-          <aside
-            class="hero-card float-card tilt-hover"
-            aria-labelledby="included-title"
+<section id="services" class="section services-section" aria-labelledby="services-title">
+  <div class="shell">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">What do you need to build?</p>
+        <h2 id="services-title">A good website is a start.<br />Let’s make it useful.</h2>
+      </div>
+      <p>
+        A new online home, a better way to run your work, or an idea people can interact with. We’ll
+        start with what you need.
+      </p>
+    </div>
+    <div class="service-grid">
+      @for (service of services; track service.number) {
+        <article class="service-card">
+          <div class="service-top">
+            <span>{{ service.number }}</span
+            ><span aria-hidden="true">↗</span>
+          </div>
+          <p class="service-name">{{ service.name }}</p>
+          <h3>{{ service.title }}</h3>
+          <p class="service-text">{{ service.text }}</p>
+          <ul>
+            @for (item of service.items; track item) {
+              <li>{{ item }}</li>
+            }
+          </ul>
+          <a class="text-link" href="#contact"
+            >{{ service.link }} <span aria-hidden="true">→</span></a
           >
-            <p class="small-label">What’s included</p>
-
-            <h2 id="included-title" class="card-title">
-              Digital solutions built for clarity, performance, and growth
-            </h2>
-
-            <p class="card-text">
-              Professional websites, internal dashboards, and custom web
-              applications designed to support workflows, improve usability, and
-              deliver practical business value.
-            </p>
-
-            <ul class="skill-tags" aria-label="Skills and services">
-              @for (skill of skills; track skill) {
-                <li>{{ skill }}</li>
-              }
-            </ul>
-          </aside>
-        </div>
-      </div>
+        </article>
+      }
     </div>
-  </section>
-
-  <section class="services-section" aria-labelledby="services-title">
-    <div class="container">
-      <div class="text-center mb-5 fade-up">
-        <h2 id="services-title" class="section-title">
-          What I Can Help With
-        </h2>
-
-        <p class="section-subtitle">
-          Practical digital solutions tailored to business goals, user needs,
-          and everyday workflows.
-        </p>
-      </div>
-
-      <div class="row g-4">
-        @for (service of services; track service.title) {
-          <div class="col-md-6 col-lg-4">
-            <article class="service-card h-100">
-              <h3>{{ service.title }}</h3>
-              <p>{{ service.description }}</p>
-            </article>
-          </div>
-        }
-      </div>
-
-      <div class="collab-strip mt-5" aria-label="Collaboration message">
-        <div>
-          <p class="collab-label">For companies and project teams</p>
-          <h3>Need reliable web development support?</h3>
-          <p class='fs-6'>
-            Open to freelance work and company project collaborations.
-          </p>
-        </div>
-
-        <a routerLink="/contact" class="btn btn-primary-custom">
-          Start a Project
-        </a>
-      </div>
-    </div>
-  </section>
-</div>
+    <p class="services-note">
+      Already have a website? I can also help with redesigns, broken forms, API connections,
+      testing, and improvements.
+    </p>
+  </div>
+</section>
+<app-showroom />
