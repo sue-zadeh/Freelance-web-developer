@@ -164,3 +164,9 @@ Phone and tablet CSS were reviewed in temporary frames at 360 px and 753 px cont
 Chromium review confirmed the reference shine's timing, opacity and single iteration, readable white navbar CTA text, the inward preview pose without shine, centred services, loaded café/sandwich textures, top-view fit, and independent evening lighting without flattening the room's 3D geometry. Returning between sections and the unchanged portfolio filters remained usable. No site console errors or warnings were observed, excluding browser-extension messages.
 
 Temporary exact-source responsive frames at 360 px and 753 px content widths showed the correct stacked/two-column demo arrangements, loaded café images and no horizontal overflow. These are static CSS layout checks; JavaScript interactions were checked separately in Chromium and unit tests. No real enquiry or client payment was sent. These checks do not claim physical-device or cross-browser certification.
+
+## Hero tilt direction correction — 4 November 2026
+
+The earlier change moved the ShowerPower card toward the text, but its positive Y rotation still faced outward to the right. This correction reverses the actual sideways rotation in both states: −8° at rest and −14° on hover or keyboard focus. The pivot is now the card's centre. Its existing inward translation, rounded shape and shine-free picture are preserved.
+
+The production build, 14 built HTML/SEO checks, 11 production-server HTTP checks and whitespace check passed. This is a CSS-only correction; no additional unit tests were added. The managed preview could not start because its relay is unavailable in this session, so visual verification of this revision uses the published page after deployment. The review criterion is the direction of the card's face in both states, rather than its horizontal position alone.
