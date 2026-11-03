@@ -78,3 +78,5 @@ These checks are not a real-device Safari/Firefox test, a formal WCAG certificat
 ## Live verification follow-up
 
 Live HTTP checks caught a hosting fallback that returned the client shell rather than the prerendered document. The server now explicitly serves the verified prerendered home document, and the production environment sets NODE_ENV=production and RAILPACK_NO_SPA=1. The verify command also starts the built production server and checks actual HTTP HTML, headers, redirects, health, robots, sitemap, and missing pages. No database or email operation is performed by those checks.
+
+The root component explicitly skips client hydration. The server still sends full content; Angular replaces that root once when it starts. This avoids duplicate sections when hosting transforms HTML whitespace/comment markers. The browser regression check verifies one heading, nine projects, and one form after startup, filtering, and section navigation.

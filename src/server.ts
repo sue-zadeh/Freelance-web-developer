@@ -74,7 +74,10 @@ const angularApp = new AngularNodeAppEngine();
 app.get('/', (_request, response, next) => {
   response.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
   response.sendFile(join(browserDistFolder, 'index.html'), (error) => {
-    if (error) next(error);
+    if (error) {
+      if (!production && (error as NodeJS.ErrnoException).code === 'ENOENT') next();
+      else next(error);
+    }
   });
 });
 app.use(
@@ -94,6 +97,17 @@ app.use((request, response, next) => {
   // Missing assets must stay 404 instead of becoming a successful app shell.
   if (/\.[^/]+$/.test(request.path)) {
     response.status(404).type('text').send('File not found.');
+    return;
+  }
+  // The public site has one document. Unmatched production URLs are real 404s,
+  // rather than the framework's client-shell fallback.
+  if (production) {
+    response
+      .status(404)
+      .type('html')
+      .send(
+        '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Page not found | Sue Web Studio</title></head><body style="margin:0;background:#f8f7f3;color:#252638;font:16px/1.7 system-ui,sans-serif"><main style="max-width:620px;margin:12vh auto;padding:32px"><p style="color:#6844b3">Sue Web Studio</p><h1>Let’s get you back on track.</h1><p>This page may have moved.</p><a href="/" style="display:inline-block;background:#6844b3;color:white;padding:12px 20px;border-radius:7px;text-decoration:none">Visit the website</a></main></body></html>',
+      );
     return;
   }
   angularApp
