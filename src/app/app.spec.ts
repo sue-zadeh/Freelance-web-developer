@@ -58,10 +58,11 @@ describe('One-page studio experience', () => {
     expect(fixture.nativeElement.querySelectorAll('article')).toHaveLength(9);
     const button = Array.from(
       fixture.nativeElement.querySelectorAll('button') as NodeListOf<HTMLButtonElement>,
-    ).find((element) => element.textContent?.trim() === 'Websites')!;
+    ).find((element) => element.textContent?.trim() === 'Business websites')!;
     button.click();
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelectorAll('article')).toHaveLength(3);
+    expect(fixture.nativeElement.querySelectorAll('article')).toHaveLength(4);
+    expect(fixture.nativeElement.textContent).toContain('SAMCT Villages');
     expect(fixture.nativeElement.textContent).toContain('ShowerPower');
     expect(fixture.nativeElement.textContent).not.toContain('Lion & Sun Society NZ');
     expect(button.getAttribute('aria-pressed')).toBe('true');
@@ -90,12 +91,14 @@ describe('One-page studio experience', () => {
     expect(lion.textContent).toContain('email notifications');
     expect(lion.textContent).toContain('private owner area');
     const filter = Array.from(page.querySelectorAll('button')).find(
-      (button) => button.textContent?.trim() === 'In progress',
+      (button) => button.textContent?.trim() === 'Admin dashboards',
     )!;
     filter.click();
     fixture.detectChanges();
-    expect(page.textContent).not.toContain('SAMCT Villages');
-    expect(page.textContent).toContain('Senior Healthcare Auckland');
+    expect(page.textContent).toContain('SAMCT Villages');
+    expect(page.textContent).toContain('Lion & Sun Society NZ');
+    expect(page.textContent).toContain('FieldSafe');
+    expect(page.textContent).not.toContain('Senior Healthcare Auckland');
   });
 });
 

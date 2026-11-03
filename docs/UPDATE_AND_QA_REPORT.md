@@ -1,6 +1,6 @@
 # Sue Web Studio: change and QA record
 
-Date: 3 November 2026 (New Zealand)
+Updated: 4 November 2026 (New Zealand)
 
 ## Scope
 
@@ -30,7 +30,7 @@ Command: `npm run verify`.
 | Check                                                                  | Result                       |
 | ---------------------------------------------------------------------- | ---------------------------- |
 | Server validation, HTTP/security, and outbound email payload tests     | 40 passed                    |
-| Angular page, navigation, filters, 3D controls, form, and footer tests | 26 passed                    |
+| Angular page, navigation, filters, 3D controls, form, and footer tests | 29 passed                    |
 | Production Angular build                                               | Passed; one page prerendered |
 | Built HTML / SEO checks                                                | 14 passed                    |
 | Running production-server HTTP checks                                  | 11 passed                    |
@@ -124,3 +124,28 @@ Automated verification: 40 server tests, 26 Angular UI/AOS/orb tests, 14 built H
 Chromium QA exercised actual orb dragging (room changed to 39° rotation / 73° tilt, then released), keyboard turning of the sandwich, sandwich assembly/separation, filters (3 website cards, then 9 cards with AOS initialized), real button border animation, the wave, and the ShowerPower hover float/tilt. The page retained exactly one H1 and one contact form. Visible project images loaded successfully and site console errors were absent (browser-extension messages excluded).
 
 Responsive layout used exact prerendered markup and built styles in temporary 375 px / 768 px frames (360 px / 753 px content widths). No horizontal overflow was measured, all sandwich layers fit the scene, and the one-/two-column demo arrangements were visually reviewed. These frames are static CSS checks; Angular interactions are covered separately by the live Chromium preview and unit tests. No physical-device, Safari/Firefox, formal accessibility certification, or measured engagement increase is claimed. Existing reduced-motion CSS disables decorative motion, and AOS tests cover enabling that preference while the page is active.
+
+## Gold sheen, photographic sandwich, and clearer filters — 4 November 2026
+
+This release replaces the previous colourful hover frames with a narrow gold-and-white reflected-light sweep across button surfaces. It also applies the sweep to the ShowerPower browser card and its caption badge. Button corners are now 25 px; circular orbit and arrow controls retain their circular shape. Keyboard focus outlines remain visible, and reduced-motion settings disable decorative animation.
+
+The ShowerPower preview now leans toward the text, with its transform origin on the inner edge. Chromium measured its left edge moving from 696.89 px to 664.24 px on hover, approximately 32.7 px inward. The mobile translation is reduced to keep the card within its column.
+
+The opening text has staggered AOS entrances, and the ShowerPower preview enters from the right. The main heading and preview use 1.1-second entrances. The AOS adapter now allows the initial pose one browser paint before applying the final pose, so opening-viewport elements visibly animate. New tests cover that staging, reduced motion during preparation, and a visible fallback if AOS initialization fails. Prerendered and no-JavaScript content remains visible.
+
+The sandwich now uses six photorealistic ingredient textures on independently rotating CSS 3D layers, replacing the drawn shapes. A single transparent 1200 × 800 WebP atlas is reused by every layer, including the bread depth faces. It is 267,258 bytes and loads lazily. Asset generation details and the full prompt are recorded in [ASSET_PROVENANCE.md](ASSET_PROVENANCE.md). Assembly, separation, orbit dragging, keyboard turning, and Home reset remain available.
+
+Portfolio filters now describe the client's needs rather than splitting websites from apps or mixing status into the category list. Projects support multiple categories, so SAMCT can appear under its public website, organisation, and administration capabilities. Featured and in-progress badges remain separate; SAMCT stays first and Senior Healthcare stays last.
+
+| Filter | Matching projects |
+| --- | --- |
+| All work | 9 |
+| Business websites | 4: SAMCT, ShowerPower, Smart Panel Homes, Senior Healthcare |
+| Organisations & communities | 5: SAMCT, Lion & Sun, FieldSafe, Lodge Matariki, TreeTalk |
+| Admin dashboards | 5: SAMCT, Lion & Sun, FieldSafe, Lodge Matariki, Voting Center |
+
+Verification: `npm run verify` passed all 94 checks: 40 server/security/email tests, 29 Angular UI tests, 14 built HTML/SEO checks, and 11 running production-server HTTP checks. The production build passed without budget warnings, with 407.57 kB initial raw JavaScript/CSS and 102.38 kB estimated transfer. The separate lazy AOS chunk remains approximately 4.53 kB estimated transfer. No dependency or contact-backend changes are included.
+
+Chromium QA confirmed the inward preview motion, gold-sweep animation with no border mask, readable white navbar CTA text, 25 px button corners, heading/preview AOS attributes, loaded ingredient textures, sandwich assembly/separation, keyboard rotation, and real pointer drag to 5° rotation / 66° tilt with its dragging state released. Each portfolio filter was clicked and its exact project titles checked against the table above. No site console errors or warnings were observed, excluding browser-extension messages.
+
+Phone and tablet CSS were reviewed in temporary frames at 360 px and 753 px content widths. The filter buttons wrap centrally, the sandwich and controls fit, and neither document has horizontal overflow. These are static responsive layout checks, with Angular interactions checked separately in the live preview and unit tests; they are not physical-device or cross-browser certification. No real enquiry, client payment, or private client account operation was performed for this release.

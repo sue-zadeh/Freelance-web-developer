@@ -1,32 +1,42 @@
 <section id="home" class="hero-section" aria-labelledby="hero-title">
   <div class="shell hero-grid">
-    <div class="hero-copy" appReveal>
-      <p class="eyebrow">
+    <div class="hero-copy">
+      <p class="eyebrow" appReveal data-aos-duration="900">
         <span aria-hidden="true" class="status-dot"></span> Independent web developer · Auckland, NZ
       </p>
-      <h1 id="hero-title">Your business.<br />Your next step.<br /><em>Let’s build it.</em></h1>
-      <p class="hero-description">
+      <h1 id="hero-title" appReveal [revealDelay]="50" data-aos-duration="1100">
+        Your business.<br />Your next step.<br /><em>Let’s build it.</em>
+      </h1>
+      <p class="hero-description" appReveal [revealDelay]="100" data-aos-duration="1100">
         Websites that help customers find you.<br />Web apps that make your work easier.
       </p>
-      <p class="hero-intro">
+      <p class="hero-intro" appReveal [revealDelay]="150" data-aos-duration="1100">
         I’m Sue. I design and build practical websites, business apps, and interactive experiences
         for people with ideas and businesses to grow.
       </p>
-      <div class="hero-actions">
+      <div class="hero-actions" appReveal [revealDelay]="200" data-aos-duration="1100">
         <a class="button light" href="#contact"
           >Tell me your idea <span aria-hidden="true">↗</span></a
         ><a class="hero-work-link" href="#projects"
           >Explore my work <span aria-hidden="true">↓</span></a
         >
       </div>
-      <p class="hero-location">Based on Auckland’s North Shore. Working across New Zealand.</p>
+      <p class="hero-location" appReveal [revealDelay]="200" data-aos-duration="900">
+        Based on Auckland’s North Shore. Working across New Zealand.
+      </p>
     </div>
-    <div class="hero-showcase" appReveal revealEffect="zoom-in" [revealDelay]="100">
+    <div
+      class="hero-showcase"
+      appReveal
+      revealEffect="fade-left"
+      [revealDelay]="100"
+      data-aos-duration="1100"
+    >
       <div class="showcase-topline">
         <span>From idea to real website</span><span aria-hidden="true">✦</span>
       </div>
       <div class="browser-float">
-        <div class="browser-card">
+        <div class="browser-card gold-shine">
           <div class="browser-toolbar">
             <span class="browser-dots" aria-hidden="true">● ● ●</span><span>showerpower.co.nz</span
             ><span aria-hidden="true">↗</span>
@@ -47,7 +57,7 @@
           ><span aria-hidden="true">↗</span></a
         >
       </div>
-      <div class="showcase-note">
+      <div class="showcase-note gold-shine">
         <span class="note-icon" aria-hidden="true">✓</span>
         <p>A clear first impression.<br /><strong>A simple next step.</strong></p>
       </div>

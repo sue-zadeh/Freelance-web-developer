@@ -36,10 +36,13 @@ export class RevealService {
   private initialized = false;
   private queued = false;
   private destroyed = false;
+  private view?: Window;
+  private frame?: number;
 
   constructor() {
     inject(DestroyRef).onDestroy(() => {
       this.destroyed = true;
+      if (this.frame !== undefined) this.view?.cancelAnimationFrame(this.frame);
       this.motion?.removeEventListener('change', this.onMotionChange);
       this.targets.forEach((_, element) => this.clear(element));
       this.targets.clear();
@@ -49,6 +52,7 @@ export class RevealService {
   watch(element: HTMLElement, delay = 0, effect = 'fade-up'): () => void {
     const view = element.ownerDocument.defaultView;
     if (!view?.matchMedia) return () => {};
+    this.view = view;
     if (!this.motion) {
       this.motion = view.matchMedia('(prefers-reduced-motion: reduce)');
       this.motion.addEventListener('change', this.onMotionChange);
@@ -91,30 +95,55 @@ export class RevealService {
         this.aos.refreshHard();
         return;
       }
-      try {
-        this.targets.forEach(({ delay, effect }, element) => {
-          element.setAttribute('data-aos', effect);
-          element.setAttribute('data-aos-delay', String(delay));
-        });
-        if (!this.initialized) {
-          this.aos.init({
-            once: true,
-            duration: 750,
-            offset: 48,
-            easing: 'ease-out-cubic',
-            disableMutationObserver: true,
-          });
-          this.initialized = true;
-        } else this.aos.refreshHard();
-      } catch {
-        this.targets.forEach((_, element) => this.clear(element));
-      }
+      let fresh = false;
+      this.targets.forEach(({ delay, effect }, element) => {
+        if (!element.hasAttribute('data-aos')) {
+          element.classList.add('aos-init', 'aos-preparing');
+          fresh = true;
+        }
+        element.setAttribute('data-aos', effect);
+        element.setAttribute('data-aos-delay', String(delay));
+      });
+      if (fresh || !this.initialized) this.afterPaint();
+      else if (this.frame === undefined) this.refresh();
     });
+  }
+  /** Give the initial AOS state one paint before adding its final state. */
+  private afterPaint(): void {
+    if (this.frame !== undefined) return;
+    if (!this.view?.requestAnimationFrame) {
+      this.refresh();
+      return;
+    }
+    this.frame = this.view.requestAnimationFrame(() => {
+      this.frame = this.view!.requestAnimationFrame(() => {
+        this.frame = undefined;
+        this.refresh();
+      });
+    });
+  }
+  private refresh(): void {
+    if (this.destroyed || this.motion?.matches || !this.aos) return;
+    try {
+      this.targets.forEach((_, element) => element.classList.remove('aos-preparing'));
+      if (!this.initialized) {
+        this.aos.init({
+          once: true,
+          duration: 750,
+          offset: 48,
+          easing: 'ease-out-cubic',
+          disableMutationObserver: true,
+        });
+        this.initialized = true;
+      } else this.aos.refreshHard();
+    } catch {
+      this.targets.forEach((_, element) => this.clear(element));
+    }
   }
   private clear(element: HTMLElement): void {
     element.removeAttribute('data-aos');
     element.removeAttribute('data-aos-delay');
-    element.classList.remove('aos-init', 'aos-animate');
+    element.classList.remove('aos-init', 'aos-animate', 'aos-preparing');
   }
   private readonly onMotionChange = (event: MediaQueryListEvent): void => {
     if (event.matches) {

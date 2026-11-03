@@ -14,18 +14,43 @@
       [style.--food-tilt]="tilt() + 'deg'"
       aria-hidden="true"
     >
-      <div class="ingredient bread bread-bottom" style="--layer: 0; --height: 0px"></div>
-      <div class="ingredient lettuce" style="--layer: 1; --height: 14px"></div>
-      <div class="ingredient tomatoes" style="--layer: 2; --height: 26px">
-        <i></i><i></i><i></i>
-      </div>
-      <div class="ingredient cheese" style="--layer: 3; --height: 38px"></div>
-      <div class="ingredient cucumber" style="--layer: 4; --height: 50px">
-        <i></i><i></i><i></i>
-      </div>
-      <div class="ingredient bread bread-top" style="--layer: 5; --height: 68px">
-        <i></i><i></i><i></i><i></i><i></i><i></i>
-      </div>
+      @for (layer of layers; track layer.name) {
+        <div class="ingredient" [style.--layer]="$index" [style.--height]="layer.height + 'px'">
+          @if (layer.bread) {
+            @for (depth of breadDepths; track depth) {
+              <div
+                class="ingredient-face bread-depth"
+                [style.transform]="'translateZ(-' + depth + 'px)'"
+              >
+                <img
+                  class="ingredient-sheet"
+                  src="/images/sandwich-ingredients.webp"
+                  [alt]="layer.name"
+                  width="1200"
+                  height="800"
+                  loading="lazy"
+                  decoding="async"
+                  [style.left]="-layer.column * 100 + '%'"
+                  [style.top]="-layer.row * 100 + '%'"
+                />
+              </div>
+            }
+          }
+          <div class="ingredient-face">
+            <img
+              class="ingredient-sheet"
+              src="/images/sandwich-ingredients.webp"
+              [alt]="layer.name"
+              width="1200"
+              height="800"
+              loading="lazy"
+              decoding="async"
+              [style.left]="-layer.column * 100 + '%'"
+              [style.top]="-layer.row * 100 + '%'"
+            />
+          </div>
+        </div>
+      }
     </div>
   </div>
   <div class="food-caption">
