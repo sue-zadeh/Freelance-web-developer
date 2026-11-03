@@ -83,6 +83,8 @@ check('Sitemap contains the canonical page without duplicate section URLs', () =
 });
 check('Contact form is rendered and all displayed controls have labels', () => {
   assert.ok(document.querySelector('form'));
+  assert.equal(document.querySelector('form').getAttribute('method'), 'post');
+  assert.equal(document.querySelector('form').getAttribute('action'), '/api/contact');
   for (const control of document.querySelectorAll('input, select, textarea'))
     assert.ok(document.querySelector('label[for="' + control.id + '"]'), control.id);
 });
