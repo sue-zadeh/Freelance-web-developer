@@ -1,65 +1,41 @@
-<section class="about-section">
-  <div class="about-overlay"></div>
-
-  <div class="container position-relative about-content">
-    <div class="row align-items-center g-5">
-
-      <div class="col-lg-5">
-        <div class="about-image-wrap" data-aos="fade-right">
-          <img
-            src="/images/sue-linkedin.jpeg"
-            alt="About Sue Raisianz"
-            class="about-image"
-          />
-        </div>
-      </div>
-
-      <div class="col-lg-7">
-        <div class="about-text-box" data-aos="fade-left">
-          <span class="about-badge">About Me</span>
-
-          <h1 class="about-title mt-3">
-            Web developer focused on modern digital experiences that are clean, practical, and built to work
-          </h1>
-
-          <p class="about-text mt-4" data-aos="fade-left" data-aos-delay="100">
-            Based in Auckland, New Zealand, this work brings together web development,
-            interface design, structured problem-solving, and a strong focus on usability.
-            Projects range from business websites and service-based platforms to admin dashboards,
-            internal tools, and custom web applications.
-          </p>
-
-          <p class="about-text-secondary" data-aos="fade-right" data-aos-delay="100">
-            A background in applied computing, real client work, and hands-on project delivery
-            has shaped an approach that values clarity, responsiveness, maintainable structure,
-            and practical results. The goal is not just to make things look good, but to make
-            them useful, trustworthy, and easy to use.
-          </p>
-          <p class= "text-light fs-5">I’m also happy to collaborate with companies and project teams on practical web development work.
-          </p>
-
-          <div class="about-points mt-4">
-            @for (item of strengths; track item) {
-              <div class="about-point">
-                <span class="point-icon">✦</span>
-                <span>{{ item }}</span>
-              </div>
-            }
-          </div>
-        </div>
-      </div>
-
+<section id="about" class="section about-section" aria-labelledby="about-title">
+  <div class="shell about-layout">
+    <div class="portrait-wrap">
+      <img
+        src="/images/sue.webp"
+        alt="Sue Zadeh, independent web developer based in Auckland"
+        width="600"
+        height="750"
+        loading="lazy"
+        decoding="async"
+      />
+      <div class="portrait-caption"><span>Meet your developer</span><strong>Sue Zadeh</strong></div>
     </div>
-
-    <div class="row g-4 mt-5">
-      @for (item of highlights; track item.title) {
-        <div class="col-md-6 col-xl-4" data-aos="fade-up" data-aos-delay="0">
-          <div class="highlight-card fade-up">
-            <h3>{{ item.title }}</h3>
-            <p>{{ item.text }}</p>
-          </div>
-        </div>
-      }
+    <div class="about-copy">
+      <p class="eyebrow">A person behind your project</p>
+      <h2 id="about-title">Hi, I’m Sue.<br />I’ll be the one building it.</h2>
+      <p>
+        I’m a full-stack web developer based on Auckland’s North Shore. I work with businesses and
+        community organisations to turn their ideas into websites and web apps people can use.
+      </p>
+      <p>
+        My work includes business websites, fieldwork dashboards, membership platforms, and
+        bilingual applications. I can work across the interface, backend, database, testing, and
+        deployment.
+      </p>
+      <p>
+        I have a Master’s in Applied Computing from Lincoln University, with Microsoft Azure, ISTQB
+        testing, and Agile certifications. I like clear communication, useful features, and getting
+        the details right.
+      </p>
+      <ul class="about-points">
+        <li>One person to talk to, from the first idea to launch.</li>
+        <li>Real client work across different businesses and communities.</li>
+        <li>A clear plan and an agreed scope before development starts.</li>
+      </ul>
+      <a class="button light" href="#contact"
+        >Let’s talk about your idea <span aria-hidden="true">↗</span></a
+      >
     </div>
   </div>
 </section>

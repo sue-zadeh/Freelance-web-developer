@@ -1,55 +1,63 @@
-/* Footer Layout */
 .site-footer {
-  background-color: #111827;
-  color: #f9fafb;
-  padding: 28px 0;
+  background: #171724;
+  color: #b8afc4;
+  padding-top: 57px;
+  font-size: 12px;
 }
-
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr 0.65fr;
+  gap: 35px;
+  padding-bottom: 45px;
+}
 .footer-brand {
-  font-size: 1.1rem;
-  font-weight: 700;
+  color: #f1eafa;
+  font-size: 21px;
+  text-decoration: none;
 }
-
-.footer-text {
-  color: #d1d5db;
-  line-height: 1.7;
-  font-size: 0.95rem;
+.footer-brand strong {
+  font-weight: 600;
 }
-
-/* Contact Info Section */
-.footer-contact-info {
+.footer-brand span {
+  display: block;
+  color: #aba0bb;
+  font-size: 11px;
+  margin-top: 11px;
+}
+.footer-contact,
+nav {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  gap: 9px;
 }
-
-.contact-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.footer-icon {
-  width: 16px;
-  height: 16px;
-  fill: #60a5fa; /* Icon accent color */
-}
-
-.footer-link {
-  color: #f9fafb;
+a {
+  color: #d4c6e2;
   text-decoration: none;
-  font-size: 0.95rem;
-  transition: color 0.3s ease;
 }
-
-.footer-link:hover {
-  color: #60a5fa;
+a:hover {
+  color: white;
+  text-decoration: underline;
 }
-
-/* Mobile Responsiveness */
-@media (max-width: 767px) {
-  .footer-contact-info {
-    align-items: flex-end;
-    margin-top: 12px;
+.footer-bottom {
+  border-top: 1px solid #40374c;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 13px;
+  padding-block: 21px;
+  font-size: 10px;
+}
+@media (max-width: 700px) {
+  .footer-top {
+    grid-template-columns: 1fr;
+    gap: 29px;
+  }
+  nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px 23px;
+  }
+  .footer-bottom {
+    font-size: 10px;
   }
 }

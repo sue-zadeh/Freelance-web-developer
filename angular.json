@@ -25,13 +25,18 @@
                 "input": "public"
               }
             ],
-            "styles": [
-             "bootstrap/dist/css/bootstrap.min.css",
-               "src/styles.css"            ],
+            "styles": ["src/styles.css"],
             "server": "src/main.server.ts",
             "outputMode": "server",
             "security": {
-              "allowedHosts": []
+              "allowedHosts": [
+                "suewebstudio.com",
+                "www.suewebstudio.com",
+                "freelance-dev-sue.up.railway.app",
+                "localhost",
+                "127.0.0.1",
+                "terminal.local"
+              ]
             },
             "ssr": {
               "entry": "src/server.ts"
@@ -47,11 +52,19 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
+                  "maximumWarning": "6kB",
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                },
+                "fonts": false
+              }
             },
             "development": {
               "optimization": false,

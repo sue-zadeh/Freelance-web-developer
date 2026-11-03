@@ -1,12 +1,13 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './components/home/home';
-import { AboutComponent } from './components/about/about';
-import { ProjectsComponent } from './components/projects/projects';
-import { ContactComponent } from './components/contact/contact';
+import { StudioPageComponent } from './studio-page';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'about', component: AboutComponent },
-  { path: 'projects', component: ProjectsComponent },
-  { path: 'contact', component: ContactComponent }
+  { path: '', pathMatch: 'full', component: StudioPageComponent },
+  { path: 'about', redirectTo: '/#about', pathMatch: 'full' },
+  { path: 'projects', redirectTo: '/#projects', pathMatch: 'full' },
+  { path: 'contact', redirectTo: '/#contact', pathMatch: 'full' },
+  {
+    path: '**',
+    loadComponent: () => import('./not-found').then((module) => module.NotFoundComponent),
+  },
 ];

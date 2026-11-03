@@ -1,331 +1,117 @@
-// Import Angular SSR tools used to render the Angular app on the server
 import {
   AngularNodeAppEngine,
   createNodeRequestHandler,
   isMainModule,
   writeResponseToNodeResponse,
 } from '@angular/ssr/node';
-
 import express from 'express';
 import { join } from 'node:path';
-import cors from 'cors';
 import dotenv from 'dotenv';
 import { Pool } from 'pg';
-import { Resend } from 'resend';
+import { ContactData } from './shared/contact';
+import { createNotificationSender } from './server/notification';
+import { createHttpApp } from './server/http-app';
+dotenv.config({ quiet: true });
 
-dotenv.config();
-
-if (!process.env['RESEND_API_KEY']) {
-  console.warn('RESEND_API_KEY is missing. Contact form emails will not send.');
-}
-
-const browserDistFolder = join(import.meta.dirname, '../browser');
-const app = express();
-const angularApp = new AngularNodeAppEngine();
-
-const CONTACT_EMAIL = 'suezadeh@suewebstudio.com';
-const CONTACT_RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
-const CONTACT_RATE_LIMIT_MAX = 5;
-const contactRequestTimes = new Map<string, number[]>();
-
-const allowedProjectTypes = new Set([
-  'Business Website',
-  'Portfolio Website',
-  'Admin Dashboard',
-  'Custom Web App',
-  'API / Backend Integration',
-  'Website Redesign',
-  'Other',
-]);
-
-const allowedBudgets = new Set([
-  '',
-  'Under $1,000',
-  '$1,000 - $3,000',
-  '$3,000 - $6,000',
-  '$6,000+',
-  'Not sure yet',
-]);
-
-const allowedTimelines = new Set([
-  '',
-  'ASAP',
-  'Within 2 weeks',
-  'Within 1 month',
-  '1 to 3 months',
-  'Flexible',
-]);
-
-function getString(value: unknown): string | null {
-  return typeof value === 'string' ? value.trim() : null;
-}
-
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}
-
-function isValidEmail(value: string): boolean {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-}
-
-function contactRateLimit(req: express.Request, res: express.Response, next: express.NextFunction): void {
-  const now = Date.now();
-  const ip = req.ip || req.socket.remoteAddress || 'unknown';
-  const recent = (contactRequestTimes.get(ip) || []).filter(
-    (time) => now - time < CONTACT_RATE_LIMIT_WINDOW_MS,
-  );
-
-  if (recent.length >= CONTACT_RATE_LIMIT_MAX) {
-    res.setHeader('Retry-After', Math.ceil(CONTACT_RATE_LIMIT_WINDOW_MS / 1000).toString());
-    res.status(429).json({
-      message: 'Too many messages were sent from this connection. Please try again later.',
-    });
-    return;
-  }
-
-  recent.push(now);
-  contactRequestTimes.set(ip, recent);
-  next();
-}
-
-// Railway and other reverse proxies provide the real client IP through proxy headers.
-app.set('trust proxy', 1);
-
-// Do not advertise the Express framework in response headers.
-app.disable('x-powered-by');
-
-// Low-risk security headers that do not interfere with Angular SSR or external fonts/icons.
-app.use((_req, res, next) => {
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'DENY');
-  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
-  next();
-});
-
-app.use(
-  cors({
-    origin: process.env['CLIENT_ORIGIN'] || 'http://localhost:4200',
-    methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type'],
-  }),
-);
-
-// Keep request bodies small because the public API only accepts a short contact form.
-app.use(express.json({ limit: '20kb' }));
-
+const production = process.env['NODE_ENV'] === 'production';
+const databaseHost = process.env['PGHOST'] || 'localhost';
 const pool = new Pool({
-  host: process.env['PGHOST'] || 'localhost',
+  host: databaseHost,
   port: Number(process.env['PGPORT']) || 5432,
   user: process.env['PGUSER'],
   password: process.env['PGPASSWORD'],
   database: process.env['PGDATABASE'],
-  ssl: process.env['NODE_ENV'] === 'production' ? { rejectUnauthorized: false } : false,
+  max: 5,
+  connectionTimeoutMillis: 5000,
+  idleTimeoutMillis: 30000,
+  query_timeout: 5000,
+  // Railway private networking is encrypted by the platform. Public DB connections verify TLS.
+  ssl:
+    production && !databaseHost.endsWith('.railway.internal')
+      ? { rejectUnauthorized: true }
+      : false,
 });
+pool.on('error', () => console.error('Database connection error; check database availability.'));
+const apiKey = process.env['RESEND_API_KEY'];
+if (!apiKey)
+  console.warn(
+    'Email is not configured. Enquiries will be saved with notification_pending status.',
+  );
 
-app.get('/api/health', async (_req, res) => {
-  res.json({ message: 'API is running' });
-});
-
-app.post('/api/contact', contactRateLimit, async (req, res) => {
-  try {
-    const body = req.body ?? {};
-
-    const name = getString(body.name);
-    const email = getString(body.email);
-    const company = getString(body.company) ?? '';
-    const projectType = getString(body.projectType);
-    const budget = getString(body.budget) ?? '';
-    const timeline = getString(body.timeline) ?? '';
-    const message = getString(body.message);
-
-    // Hidden honeypot field. Real visitors never fill this in.
-    const website = getString(body.website) ?? '';
-    if (website) {
-      res.status(201).json({ message: 'Contact form submitted successfully.' });
-      return;
-    }
-
-    if (!name || !email || !projectType || !message) {
-      res.status(400).json({
-        message: 'Name, email, project type, and message are required.',
-      });
-      return;
-    }
-
-    if (
-      name.length > 100 ||
-      email.length > 150 ||
-      company.length > 150 ||
-      projectType.length > 100 ||
-      budget.length > 100 ||
-      timeline.length > 100 ||
-      message.length > 5000
-    ) {
-      res.status(400).json({ message: 'Some fields are too long.' });
-      return;
-    }
-
-    if (!isValidEmail(email)) {
-      res.status(400).json({ message: 'Please enter a valid email address.' });
-      return;
-    }
-
-    if (!allowedProjectTypes.has(projectType)) {
-      res.status(400).json({ message: 'Please select a valid project type.' });
-      return;
-    }
-
-    if (!allowedBudgets.has(budget) || !allowedTimelines.has(timeline)) {
-      res.status(400).json({ message: 'Please select valid form options.' });
-      return;
-    }
-
-    const sql = `
-      INSERT INTO contact
-      (
-        name,
-        email,
-        company,
-        project_type,
-        budget_range,
-        timeline,
-        message,
-        ip_address,
-        user_agent,
-        status
-      )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-      RETURNING id
-    `;
-
-    const values = [
-      name,
-      email,
-      company || null,
-      projectType,
-      budget || null,
-      timeline || null,
-      message,
-      req.ip,
-      (req.get('user-agent') || '').slice(0, 500) || null,
+async function saveContact(contact: ContactData): Promise<string> {
+  const result = await pool.query(
+    'INSERT INTO contact (name, email, company, project_type, budget_range, timeline, message, status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id',
+    [
+      contact.name,
+      contact.email,
+      contact.company || null,
+      contact.projectType,
+      contact.budget || null,
+      contact.timeline || null,
+      contact.message,
       'new',
-    ];
-
-    // Save first so a genuine lead is not lost if the email provider has a temporary problem.
-    const result = await pool.query(sql, values);
-    const contactId = result.rows[0].id;
-
-    const resendApiKey = process.env['RESEND_API_KEY'];
-
-    if (!resendApiKey) {
-      console.error(`Contact #${contactId} saved, but RESEND_API_KEY is missing.`);
-      res.status(202).json({
-        message: 'Your message was received successfully.',
-        id: contactId,
-      });
-      return;
-    }
-
-    const resend = new Resend(resendApiKey);
-
-    const safeName = escapeHtml(name);
-    const safeEmail = escapeHtml(email);
-    const safeCompany = escapeHtml(company || '-');
-    const safeProjectType = escapeHtml(projectType);
-    const safeBudget = escapeHtml(budget || '-');
-    const safeTimeline = escapeHtml(timeline || '-');
-    const safeMessage = escapeHtml(message).replace(/\n/g, '<br>');
-    const safeSubjectName = name.replace(/[\r\n]+/g, ' ').slice(0, 100);
-
-    try {
-      const { data, error } = await resend.emails.send({
-        from: 'Sue Web Studio <contact@suewebstudio.com>',
-        to: [CONTACT_EMAIL],
-        replyTo: email,
-        subject: `New project inquiry from ${safeSubjectName}`,
-        html: `
-          <h2>New Contact Form Submission</h2>
-          <p><strong>Reference:</strong> #${contactId}</p>
-          <p><strong>Name:</strong> ${safeName}</p>
-          <p><strong>Email:</strong> ${safeEmail}</p>
-          <p><strong>Company:</strong> ${safeCompany}</p>
-          <p><strong>Project Type:</strong> ${safeProjectType}</p>
-          <p><strong>Budget:</strong> ${safeBudget}</p>
-          <p><strong>Timeline:</strong> ${safeTimeline}</p>
-          <p><strong>Message:</strong></p>
-          <p>${safeMessage}</p>
-        `,
-      });
-
-      if (error) {
-        console.error(`Resend rejected contact #${contactId}:`, error);
-        res.status(202).json({
-          message: 'Your message was received successfully.',
-          id: contactId,
-        });
-        return;
-      }
-
-      console.log(`Contact #${contactId} notification sent:`, data?.id || 'sent');
-    } catch (emailError: any) {
-      console.error(
-        `Contact #${contactId} email notification failed:`,
-        emailError?.message || emailError,
-      );
-
-      res.status(202).json({
-        message: 'Your message was received successfully.',
-        id: contactId,
-      });
-      return;
-    }
-
-    res.status(201).json({
-      message: 'Contact form submitted successfully.',
-      id: contactId,
-    });
-    return;
-  } catch (error: any) {
-    console.error('Error handling contact form:', error);
-
-    res.status(500).json({
-      message: 'Something went wrong while submitting the contact form.',
-    });
-    return;
-  }
-});
-
-app.use(
-  express.static(browserDistFolder, {
-    maxAge: '1y',
-    index: false,
-    redirect: false,
-  }),
+    ],
+  );
+  return String(result.rows[0].id);
+}
+const sendNotification = createNotificationSender(apiKey);
+const app = createHttpApp(
+  {
+    saveContact,
+    sendNotification,
+    markNotification: async (reference, status) => {
+      await pool.query('UPDATE contact SET status = $1 WHERE id = $2', [status, reference]);
+    },
+    log: (message) => console.info(message),
+  },
+  { production, clientOrigin: process.env['CLIENT_ORIGIN'] },
 );
 
-app.use((req, res, next) => {
+const browserDistFolder = join(import.meta.dirname, '../browser');
+const angularApp = new AngularNodeAppEngine();
+app.use(
+  express.static(browserDistFolder, {
+    index: false,
+    redirect: false,
+    maxAge: '1h',
+    setHeaders: (response, filePath) => {
+      if (/[-.][A-Z0-9]{8,}\.(?:js|css)$/i.test(filePath))
+        response.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      if (/\.(?:html|txt|xml)$/i.test(filePath))
+        response.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+    },
+  }),
+);
+app.use((request, response, next) => {
   angularApp
-    .handle(req)
-    .then((response) => (response ? writeResponseToNodeResponse(response, res) : next()))
+    .handle(request)
+    .then((result) => (result ? writeResponseToNodeResponse(result, response) : next()))
     .catch(next);
 });
-
+app.use((_request, response) => {
+  response.status(404).send('Page not found. Visit https://suewebstudio.com/');
+});
+app.use(
+  (
+    _error: unknown,
+    _request: express.Request,
+    response: express.Response,
+    _next: express.NextFunction,
+  ) => {
+    console.error('Page rendering failed.');
+    response.status(500).send('This page is temporarily unavailable. Please try again.');
+  },
+);
 if (isMainModule(import.meta.url) || process.env['pm_id']) {
-  const port = process.env['PORT'] || 4000;
-
-  app.listen(port, (error) => {
-    if (error) {
-      throw error;
-    }
-
-    console.log(`Node Express server listening on http://localhost:${port}`);
+  const server = app.listen(process.env['PORT'] || 4000, () =>
+    console.info('Sue Web Studio server is listening.'),
+  );
+  server.requestTimeout = 20000;
+  server.headersTimeout = 15000;
+  process.on('SIGTERM', () => {
+    server.close(() => {
+      void pool.end();
+    });
   });
 }
-
 export const reqHandler = createNodeRequestHandler(app);
