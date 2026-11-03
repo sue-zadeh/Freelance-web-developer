@@ -28,7 +28,7 @@ npm run verify
 npm audit --omit=dev
 ```
 
-`verify` runs HTTP validation/security/contact tests against an isolated in-memory test double, Angular UI/form tests in jsdom, the production build, and checks of actual prerendered HTML. These tests do not contact a real database or send email. Live inbox delivery requires a separate test.
+`verify` runs HTTP validation/security/contact tests against an isolated in-memory test double, Angular UI/form tests in jsdom, the production build, checks of actual prerendered HTML, and HTTP checks against the running built production server. These tests do not contact a real database or send email. Live inbox delivery requires a separate test.
 
 The GitHub quality workflow runs verification and checks production dependencies for known moderate/high/critical advisories.
 
@@ -39,6 +39,7 @@ Keep the existing Railway service, PostgreSQL database, domain, and GitHub conne
 Required service variables:
 
 - `NODE_ENV=production`
+- `RAILPACK_NO_SPA=1`
 - `PGHOST`, `PGPORT`, `PGUSER`, `PGPASSWORD`, `PGDATABASE`
 - `RESEND_API_KEY`: a valid Resend sending key with the sender domain verified
 - `CLIENT_ORIGIN=https://suewebstudio.com` (optional; the canonical origin is always allowed)

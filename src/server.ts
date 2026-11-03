@@ -69,6 +69,14 @@ const app = createHttpApp(
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 const angularApp = new AngularNodeAppEngine();
+// Serve the verified prerendered document directly. Search engines and visitors
+// receive the complete page even if the hosting platform falls back to CSR.
+app.get('/', (_request, response, next) => {
+  response.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+  response.sendFile(join(browserDistFolder, 'index.html'), (error) => {
+    if (error) next(error);
+  });
+});
 app.use(
   express.static(browserDistFolder, {
     index: false,
@@ -83,6 +91,11 @@ app.use(
   }),
 );
 app.use((request, response, next) => {
+  // Missing assets must stay 404 instead of becoming a successful app shell.
+  if (/\.[^/]+$/.test(request.path)) {
+    response.status(404).type('text').send('File not found.');
+    return;
+  }
   angularApp
     .handle(request)
     .then((result) => (result ? writeResponseToNodeResponse(result, response) : next()))

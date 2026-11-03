@@ -33,6 +33,7 @@ Command: `npm run verify`.
 | Angular page, navigation, filters, 3D controls, form, and footer tests | 15 passed                    |
 | Production Angular build                                               | Passed; one page prerendered |
 | Built HTML / SEO checks                                                | 12 passed                    |
+| Running production-server HTTP checks                                  | 11 passed                    |
 | Production dependency audit                                            | 0 known vulnerabilities      |
 | Diff whitespace check                                                  | Passed                       |
 | Credential-pattern scan of source                                      | No matches                   |
@@ -73,3 +74,7 @@ These checks are not a real-device Safari/Firefox test, a formal WCAG certificat
 - Resend idempotency: https://resend.com/changelog/idempotency-keys
 - Google link guidance: https://developers.google.com/search/docs/crawling-indexing/links-crawlable
 - Google Search Essentials: https://developers.google.com/search/docs/essentials
+
+## Live verification follow-up
+
+Live HTTP checks caught a hosting fallback that returned the client shell rather than the prerendered document. The server now explicitly serves the verified prerendered home document, and the production environment sets NODE_ENV=production and RAILPACK_NO_SPA=1. The verify command also starts the built production server and checks actual HTTP HTML, headers, redirects, health, robots, sitemap, and missing pages. No database or email operation is performed by those checks.
