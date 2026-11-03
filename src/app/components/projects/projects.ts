@@ -1,9 +1,13 @@
 import { RevealDirective } from '../../shared/reveal';
 import { Component, signal } from '@angular/core';
 
+export type ProjectCategory =
+  'Business websites' | 'Organisations & communities' | 'Admin dashboards';
+export type ProjectFilter = 'All work' | ProjectCategory;
+
 export interface StudioProject {
   title: string;
-  category: 'Websites' | 'Web apps';
+  categories: readonly ProjectCategory[];
   image: string;
   description: string;
   built: string;
@@ -16,7 +20,7 @@ export interface StudioProject {
 export const STUDIO_PROJECTS: readonly StudioProject[] = [
   {
     title: 'SAMCT Villages',
-    category: 'Web apps',
+    categories: ['Business websites', 'Organisations & communities', 'Admin dashboards'],
     image: '/images/samct.webp',
     description:
       'A launched platform for two retirement villages, with a public website and separate portals for residents, village managers, and administration.',
@@ -30,7 +34,7 @@ export const STUDIO_PROJECTS: readonly StudioProject[] = [
   },
   {
     title: 'Lion & Sun Society NZ',
-    category: 'Web apps',
+    categories: ['Organisations & communities', 'Admin dashboards'],
     image: '/images/lionandsun.webp',
     description:
       'A bilingual community website with English and Persian layouts, news, events, galleries, a donation page, and forms that send enquiries to the organisation.',
@@ -44,7 +48,7 @@ export const STUDIO_PROJECTS: readonly StudioProject[] = [
   },
   {
     title: 'ShowerPower',
-    category: 'Websites',
+    categories: ['Business websites'],
     image: '/images/showerpower.webp',
     description:
       'A service website that helps customers explore shower services, view completed work, and request a quote.',
@@ -57,7 +61,7 @@ export const STUDIO_PROJECTS: readonly StudioProject[] = [
   },
   {
     title: 'FieldSafe',
-    category: 'Web apps',
+    categories: ['Admin dashboards', 'Organisations & communities'],
     image: '/images/fieldsafe.webp',
     description:
       'An operations dashboard for Conservation Volunteers New Zealand, bringing field activities, risks, staff, and volunteers into one workflow.',
@@ -69,7 +73,7 @@ export const STUDIO_PROJECTS: readonly StudioProject[] = [
   },
   {
     title: 'Lodge Matariki 476',
-    category: 'Web apps',
+    categories: ['Organisations & communities', 'Admin dashboards'],
     image: '/images/lodge.webp',
     description:
       'A community and membership website combining public information with tools for the organisation.',
@@ -82,7 +86,7 @@ export const STUDIO_PROJECTS: readonly StudioProject[] = [
   },
   {
     title: 'Smart Panel Homes',
-    category: 'Websites',
+    categories: ['Business websites'],
     image: '/images/smartpanel.webp',
     description:
       'A company website presenting panel home products, services, and visual examples for prospective customers.',
@@ -94,7 +98,7 @@ export const STUDIO_PROJECTS: readonly StudioProject[] = [
   },
   {
     title: 'Voting Center',
-    category: 'Web apps',
+    categories: ['Admin dashboards'],
     image: '/images/voting.webp',
     description:
       'A computing project covering voting workflows, user accounts, and administration.',
@@ -106,7 +110,7 @@ export const STUDIO_PROJECTS: readonly StudioProject[] = [
   },
   {
     title: 'TreeTalk',
-    category: 'Web apps',
+    categories: ['Organisations & communities'],
     image: '/images/treetalk.webp',
     description:
       'A community app with registration, sign-in, posts, replies, reactions, and image sharing.',
@@ -118,7 +122,7 @@ export const STUDIO_PROJECTS: readonly StudioProject[] = [
   },
   {
     title: 'Senior Healthcare Auckland',
-    category: 'Websites',
+    categories: ['Business websites'],
     image: '/images/healthcare.webp',
     description:
       'An in-progress care services website designed to help families understand the available support and make an enquiry.',
@@ -137,12 +141,16 @@ export const STUDIO_PROJECTS: readonly StudioProject[] = [
   styleUrl: './projects.css',
 })
 export class ProjectsComponent {
-  readonly categories = ['All work', 'Websites', 'Web apps', 'In progress'];
-  readonly selectedCategory = signal('All work');
+  readonly categories: readonly ProjectFilter[] = [
+    'All work',
+    'Business websites',
+    'Organisations & communities',
+    'Admin dashboards',
+  ];
+  readonly selectedCategory = signal<ProjectFilter>('All work');
   get filteredProjects(): readonly StudioProject[] {
     const category = this.selectedCategory();
     if (category === 'All work') return STUDIO_PROJECTS;
-    if (category === 'In progress') return STUDIO_PROJECTS.filter((project) => project.inProgress);
-    return STUDIO_PROJECTS.filter((project) => project.category === category);
+    return STUDIO_PROJECTS.filter((project) => project.categories.includes(category));
   }
 }

@@ -139,7 +139,7 @@ button:disabled {
   gap: 25px;
   min-height: 50px;
   border: 1px solid transparent;
-  border-radius: 7px;
+  border-radius: 25px;
   padding: 13px 23px;
   font-size: 14px;
   font-weight: 650;
@@ -183,54 +183,55 @@ button:disabled {
   text-decoration: none;
   padding-block: 8px;
 }
-/* Shared by every native button and link styled as a button. */
-:where(.button, button, .icon-button) {
+/* Reflected gold light crosses the surface; no animated outline or border. */
+:where(.button, button, .icon-button, .gold-shine) {
   position: relative;
   isolation: isolate;
   overflow: hidden;
 }
-:where(.button, button, .icon-button)::before {
+:where(.button, button, .icon-button, .gold-shine)::before,
+:where(.button, button, .icon-button, .gold-shine)::after {
   content: '';
   position: absolute;
   z-index: -1;
-  inset: -80% -30%;
+  inset: -90% -35%;
+  transform: translateX(-110%);
+  opacity: 0;
+  pointer-events: none;
+}
+:where(.button, button, .icon-button, .gold-shine)::before {
   background: linear-gradient(
     110deg,
-    transparent 38%,
-    #ffffff18 48%,
-    #ffffff30 50%,
-    transparent 62%
+    transparent 34%,
+    #e6b65716 44%,
+    #fff1c930 49%,
+    #ffffff24 51%,
+    transparent 64%
   );
-  transform: translateX(-100%);
-  pointer-events: none;
 }
-:where(.button, button, .icon-button)::after {
-  content: '';
-  position: absolute;
-  z-index: 1;
-  inset: 0;
-  padding: 3px;
-  border-radius: inherit;
-  background: linear-gradient(115deg, #20d9b4, #a78bfa, #ff79cf, #ffdc8c, #20d9b4);
-  background-size: 300% 300%;
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.2s;
-  pointer-events: none;
+:where(.button, button, .icon-button, .gold-shine)::after {
+  background: linear-gradient(
+    110deg,
+    transparent 49.7%,
+    #fff8dcbf 50%,
+    #edc46788 50.3%,
+    transparent 50.7%
+  );
 }
-:where(.button, button, .icon-button):is(:hover, :focus-visible):not(:disabled)::before {
-  animation: button-shine 2.2s ease-in-out infinite;
-}
-:where(.button, button, .icon-button):is(:hover, :focus-visible):not(:disabled)::after {
+:where(.button, button, .icon-button):is(:hover, :focus-visible):not(:disabled)::before,
+:where(.button, button, .icon-button):is(:hover, :focus-visible):not(:disabled)::after,
+.hero-showcase:is(:hover, :focus-within) .gold-shine::before,
+.hero-showcase:is(:hover, :focus-within) .gold-shine::after {
   opacity: 1;
-  animation: button-edge 2s linear infinite alternate;
+  animation: gold-sweep 2.5s cubic-bezier(0.3, 0.1, 0.2, 1) infinite;
+}
+.gold-shine::before,
+.gold-shine::after {
+  z-index: 2;
+}
+.showcase-note.gold-shine > * {
+  position: relative;
+  z-index: 3;
 }
 .button:is(:hover, :focus-visible):not(:disabled) {
   transform: translateY(-2px);
@@ -239,21 +240,13 @@ button:disabled {
 .button:active:not(:disabled) {
   transform: translateY(0);
 }
-@keyframes button-shine {
+@keyframes gold-sweep {
   0% {
-    transform: translateX(-100%);
+    transform: translateX(-110%);
   }
-  45%,
+  48%,
   100% {
-    transform: translateX(100%);
-  }
-}
-@keyframes button-edge {
-  from {
-    background-position: 0% 50%;
-  }
-  to {
-    background-position: 100% 50%;
+    transform: translateX(110%);
   }
 }
 /* The original About-card sweep, kept behind the content. */
@@ -438,7 +431,7 @@ button:disabled {
     translate: 0 0;
   }
   50% {
-    translate: 0 -16px;
+    translate: -5px 4px;
   }
 }
 @media (hover: hover) {
@@ -484,4 +477,9 @@ button:disabled {
     transform: none !important;
     pointer-events: auto !important;
   }
+}
+
+/* Prevent a fade-out while AOS prepares the first painted entrance frame. */
+[data-aos].aos-preparing {
+  transition: none !important;
 }

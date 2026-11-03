@@ -84,7 +84,7 @@
     background: transparent;
     color: var(--ink);
     padding: 10px 14px;
-    border-radius: 7px;
+    border-radius: 25px;
   }
   .nav-links {
     display: none;
