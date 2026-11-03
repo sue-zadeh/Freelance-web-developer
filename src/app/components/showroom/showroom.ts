@@ -10,6 +10,8 @@ import { SandwichComponent } from '../sandwich/sandwich';
   styleUrl: './showroom.css',
 })
 export class ShowroomComponent {
+  readonly tables = ['table-one', 'table-two', 'table-three'];
+  readonly plants = ['plant-one', 'plant-two'];
   readonly angle = signal(330);
   readonly tilt = signal(57);
   readonly evening = signal(false);

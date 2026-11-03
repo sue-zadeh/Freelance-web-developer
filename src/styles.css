@@ -129,6 +129,15 @@ button:disabled {
   max-width: 370px;
   font-size: 16px;
 }
+.section-heading.centered {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 22px;
+}
+.section-heading.centered > p {
+  max-width: 610px;
+}
 .button {
   position: relative;
   isolation: isolate;
@@ -183,55 +192,29 @@ button:disabled {
   text-decoration: none;
   padding-block: 8px;
 }
-/* Reflected gold light crosses the surface; no animated outline or border. */
-:where(.button, button, .icon-button, .gold-shine) {
+/* Same soft, single-pass hover sweep as ShowerPower's .sp-nav-cta. */
+:where(.button, button, .icon-button) {
   position: relative;
   isolation: isolate;
   overflow: hidden;
 }
-:where(.button, button, .icon-button, .gold-shine)::before,
-:where(.button, button, .icon-button, .gold-shine)::after {
+:where(.button, button, .icon-button)::after {
   content: '';
   position: absolute;
   z-index: -1;
-  inset: -90% -35%;
-  transform: translateX(-110%);
+  top: -40%;
+  left: -30%;
+  width: 40%;
+  height: 180%;
+  background: rgba(255, 255, 255, 0.45);
+  transform: rotate(18deg);
+  filter: blur(2px);
   opacity: 0;
   pointer-events: none;
 }
-:where(.button, button, .icon-button, .gold-shine)::before {
-  background: linear-gradient(
-    110deg,
-    transparent 34%,
-    #e6b65716 44%,
-    #fff1c930 49%,
-    #ffffff24 51%,
-    transparent 64%
-  );
-}
-:where(.button, button, .icon-button, .gold-shine)::after {
-  background: linear-gradient(
-    110deg,
-    transparent 49.7%,
-    #fff8dcbf 50%,
-    #edc46788 50.3%,
-    transparent 50.7%
-  );
-}
-:where(.button, button, .icon-button):is(:hover, :focus-visible):not(:disabled)::before,
-:where(.button, button, .icon-button):is(:hover, :focus-visible):not(:disabled)::after,
-.hero-showcase:is(:hover, :focus-within) .gold-shine::before,
-.hero-showcase:is(:hover, :focus-within) .gold-shine::after {
+:where(.button, button, .icon-button):is(:hover, :focus-visible):not(:disabled)::after {
   opacity: 1;
-  animation: gold-sweep 2.5s cubic-bezier(0.3, 0.1, 0.2, 1) infinite;
-}
-.gold-shine::before,
-.gold-shine::after {
-  z-index: 2;
-}
-.showcase-note.gold-shine > * {
-  position: relative;
-  z-index: 3;
+  animation: button-shine 0.9s ease forwards;
 }
 .button:is(:hover, :focus-visible):not(:disabled) {
   transform: translateY(-2px);
@@ -240,13 +223,12 @@ button:disabled {
 .button:active:not(:disabled) {
   transform: translateY(0);
 }
-@keyframes gold-sweep {
-  0% {
-    transform: translateX(-110%);
+@keyframes button-shine {
+  from {
+    left: -30%;
   }
-  48%,
-  100% {
-    transform: translateX(110%);
+  to {
+    left: 120%;
   }
 }
 /* The original About-card sweep, kept behind the content. */

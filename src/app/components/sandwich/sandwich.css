@@ -3,13 +3,14 @@
   height: 100%;
 }
 .sandwich-panel {
+  --orbit-ink: #d9cfc6;
   height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border: 1px solid #dacac0;
+  border: 1px solid #76645055;
   border-radius: 14px;
-  background: #f2e7da;
+  background: radial-gradient(ellipse at 50% 25%, #4b3b30, transparent 65%), #252027;
 }
 .food-topline {
   padding: 21px 20px;
@@ -19,10 +20,10 @@
   gap: 8px;
   font-size: 9px;
   letter-spacing: 0.07em;
-  color: #71513e;
+  color: #e1cbb2;
 }
 .food-badge {
-  border: 1px solid #c5ab95;
+  border: 1px solid #bca08666;
   border-radius: 20px;
   padding: 3px 9px;
   letter-spacing: 0;
@@ -83,7 +84,7 @@
 .food-caption {
   text-align: center;
   padding: 9px 18px 2px;
-  color: #6c4b36;
+  color: #f2e4d4;
 }
 .food-kicker {
   text-transform: uppercase;
@@ -98,19 +99,19 @@
   font-size: 11px;
 }
 .food-button {
-  background: #704c35;
-  color: #fff;
+  background: #d9bc98;
+  color: #30241d;
   border-radius: 25px;
   font-size: 11px;
   min-height: 44px;
   margin: auto 20px 0;
 }
 .food-button:is(:hover, :focus-visible) {
-  background: #593923;
-  color: #fff;
+  background: #ead0af;
+  color: #30241d;
 }
 .food-state {
-  color: #735640;
+  color: #cbb9a8;
   font-size: 10px;
   text-align: center;
   margin: 10px 18px 16px;

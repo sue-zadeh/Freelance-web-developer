@@ -4,20 +4,26 @@
       <p class="eyebrow">Made to be explored</p>
       <h2 id="demo-title">Turn an idea<br />into an experience.</h2>
       <p>
-        A place to look around. A product to take apart. Give people a closer look at what makes
-        your business different.
+        A place to look around. A product to take apart. Give people a closer
+        look at what makes your business different.
       </p>
       <p class="demo-note">
-        Turn the room with the orb. Explore the sandwich layer by layer. These little interactions
-        are a taste of what we could build for you.
+        Turn the room with the orb. Explore the sandwich layer by layer. These
+        little interactions are a taste of what we could build for you.
       </p>
       <a class="text-link" href="#contact"
         >Have something in mind? <span aria-hidden="true">↗</span></a
       >
     </div>
-    <div class="demo-panel" appReveal revealEffect="fade-right" [class.evening]="evening()">
+    <div
+      class="demo-panel"
+      appReveal
+      revealEffect="fade-right"
+      [class.evening]="evening()"
+    >
       <div class="demo-panel-top">
-        <span>STUDIO EXPERIMENT / 01</span><span class="concept-badge">Concept demo</span>
+        <span>STUDIO EXPERIMENT / 01</span
+        ><span class="concept-badge">Concept demo</span>
       </div>
       <div
         class="scene"
@@ -40,22 +46,86 @@
           [style.--tilt]="tilt() + 'deg'"
           aria-hidden="true"
         >
-          <div class="floor"></div>
-          <div class="wall wall-back">
-            <span>THE LITTLE<br /><b>TABLE</b><small>GOOD FOOD. GOOD COMPANY.</small></span>
+          <div class="floor">
+            <img
+              src="/images/cafe-floor.webp"
+              alt="Natural oak parquet floor"
+              width="512"
+              height="512"
+              loading="lazy"
+              decoding="async"
+              draggable="false"
+            />
           </div>
-          <div class="wall wall-side"><i></i><i></i><i></i></div>
-          <div class="rug"></div>
-          <div class="table table-one"><span></span><i></i><b></b></div>
-          <div class="table table-two"><span></span><i></i><b></b></div>
-          <div class="table table-three"><span></span><i></i><b></b></div>
-          <div class="plant plant-one">✦</div>
-          <div class="plant plant-two">✦</div>
-          <div class="counter"><span>coffee & conversations</span></div>
+          <div class="wall wall-back">
+            <img
+              src="/images/cafe-back-wall.webp"
+              alt="Sage café wall with oak shelves, pottery and brass lights"
+              width="512"
+              height="254"
+              loading="lazy"
+              decoding="async"
+              draggable="false"
+            />
+          </div>
+          <div class="wall wall-side">
+            <img
+              src="/images/cafe-window-wall.webp"
+              alt="Lime plaster wall and black-framed courtyard windows"
+              width="512"
+              height="257"
+              loading="lazy"
+              decoding="async"
+              draggable="false"
+            />
+          </div>
+          @for (position of tables; track position) {
+          <div [class]="'table ' + position">
+            <span class="table-leg"></span><i></i><b></b>
+            <div class="tabletop">
+              <img
+                src="/images/cafe-table.webp"
+                alt="Walnut café table set with coffee and breakfast"
+                width="384"
+                height="384"
+                loading="lazy"
+                decoding="async"
+                draggable="false"
+              />
+            </div>
+          </div>
+          } @for (position of plants; track position) {
+          <div [class]="'plant ' + position">
+            <img
+              src="/images/cafe-plant.webp"
+              alt="Lush green café plant"
+              width="256"
+              height="256"
+              loading="lazy"
+              decoding="async"
+              draggable="false"
+            />
+          </div>
+          }
+          <div class="counter">
+            <div class="counter-front"></div>
+            <div class="counter-end"></div>
+            <div class="counter-top">
+              <img
+                src="/images/cafe-counter.webp"
+                alt="Stone coffee counter with espresso machine and pastries"
+                width="512"
+                height="220"
+                loading="lazy"
+                decoding="async"
+                draggable="false"
+              />
+            </div>
+          </div>
         </div>
       </div>
       <p id="room-help" class="scene-help">
-        A little room for imagination · Turn it all the way around
+        A café worth a closer look · Turn it all the way around
       </p>
       <app-orbit-control
         controlId="room-orbit"
@@ -66,10 +136,18 @@
       />
       <div class="demo-toolbar">
         <div class="view-presets" role="group" aria-label="Room view presets">
-          <button type="button" [attr.aria-pressed]="tilt() === 0" (click)="setView(0)">
+          <button
+            type="button"
+            [attr.aria-pressed]="tilt() === 0"
+            (click)="setView(0)"
+          >
             Top view
           </button>
-          <button type="button" [attr.aria-pressed]="tilt() === 57" (click)="setView(57)">
+          <button
+            type="button"
+            [attr.aria-pressed]="tilt() === 57"
+            (click)="setView(57)"
+          >
             Perspective
           </button>
           <button type="button" (click)="resetView()">
@@ -87,7 +165,8 @@
         </button>
       </div>
       <p class="concept-note">
-        Illustrative browser demo. Custom models and full virtual tours are quoted separately.
+        Illustrative browser demo. Custom models and full virtual tours are
+        quoted separately.
       </p>
     </div>
     <app-sandwich appReveal revealEffect="fade-left" [revealDelay]="100" />
