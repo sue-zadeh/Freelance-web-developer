@@ -1,9 +1,10 @@
 import { RevealDirective } from '../../shared/reveal';
 import { Component } from '@angular/core';
 import { ShowroomComponent } from '../showroom/showroom';
+import { WorkShowcaseComponent } from '../work-showcase/work-showcase';
 @Component({
   selector: 'app-home',
-  imports: [ShowroomComponent, RevealDirective],
+  imports: [ShowroomComponent, RevealDirective, WorkShowcaseComponent],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })

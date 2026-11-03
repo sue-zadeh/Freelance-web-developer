@@ -25,43 +25,12 @@
         Based on Auckland’s North Shore. Working across New Zealand.
       </p>
     </div>
-    <div
-      class="hero-showcase"
+    <app-work-showcase
       appReveal
       revealEffect="fade-left"
       [revealDelay]="100"
       data-aos-duration="1100"
-    >
-      <div class="showcase-topline">
-        <span>From idea to real website</span><span aria-hidden="true">✦</span>
-      </div>
-      <div class="browser-float">
-        <div class="browser-card">
-          <div class="browser-toolbar">
-            <span class="browser-dots" aria-hidden="true">● ● ●</span><span>showerpower.co.nz</span
-            ><span aria-hidden="true">↗</span>
-          </div>
-          <img
-            src="/images/showerpower.webp"
-            alt="ShowerPower website showing shower installation services and a quote enquiry"
-            width="1200"
-            height="800"
-            fetchpriority="high"
-            decoding="async"
-          />
-        </div>
-      </div>
-      <div class="showcase-caption">
-        <div><span class="mini-label">Selected client work</span><strong>ShowerPower</strong></div>
-        <a class="icon-button" href="#projects" aria-label="Explore the ShowerPower project"
-          ><span aria-hidden="true">↗</span></a
-        >
-      </div>
-      <div class="showcase-note">
-        <span class="note-icon" aria-hidden="true">✓</span>
-        <p>A clear first impression.<br /><strong>A simple next step.</strong></p>
-      </div>
-    </div>
+    />
   </div>
   <div class="shell hero-bottom">
     <span>Thoughtful design.</span><span>Frontend to backend.</span
@@ -84,23 +53,22 @@
     </div>
     <div class="service-grid">
       @for (service of services; track service.number) {
-        <article class="service-card shine-card" appReveal [revealDelay]="$index * 65">
-          <div class="service-top">
-            <span>{{ service.number }}</span
-            ><span aria-hidden="true">↗</span>
-          </div>
-          <p class="service-name">{{ service.name }}</p>
-          <h3>{{ service.title }}</h3>
-          <p class="service-text">{{ service.text }}</p>
-          <ul>
-            @for (item of service.items; track item) {
-              <li>{{ item }}</li>
-            }
-          </ul>
-          <a class="text-link" href="#contact"
-            >{{ service.link }} <span aria-hidden="true">→</span></a
-          >
-        </article>
+      <article class="service-card shine-card" appReveal [revealDelay]="$index * 65">
+        <div class="service-top">
+          <span>{{ service.number }}</span><span aria-hidden="true">↗</span>
+        </div>
+        <p class="service-name">{{ service.name }}</p>
+        <h3>{{ service.title }}</h3>
+        <p class="service-text">{{ service.text }}</p>
+        <ul>
+          @for (item of service.items; track item) {
+          <li>{{ item }}</li>
+          }
+        </ul>
+        <a class="text-link" href="#contact"
+          >{{ service.link }} <span aria-hidden="true">→</span></a
+        >
+      </article>
       }
     </div>
     <p class="services-note">
