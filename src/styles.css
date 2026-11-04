@@ -333,16 +333,50 @@ button:disabled {
 .process-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 30px;
+  gap: 22px;
   padding: 0;
   list-style: none;
 }
 .process-grid li {
-  padding-top: 22px;
-  border-top: 1px solid #8d719d88;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 26px 22px 28px;
+  border: 1px solid #816995;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #3b2e4b, #32283f);
+  box-shadow: 0 12px 28px #130e2026;
+}
+/* A corner-to-corner colour reveal, beneath the readable step content. */
+.process-grid li::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(135deg, #603d7f, #4d365f 65%, #41304f);
+  clip-path: circle(0% at 0 0);
+  transition: clip-path 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .process-grid li:hover {
+    border-color: #c59be2;
+    box-shadow: 0 16px 34px #130e2040;
+  }
+  .process-grid li:hover::before {
+    clip-path: circle(150% at 0 0);
+  }
 }
 .process-grid span {
-  color: #d6afea;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 36px;
+  border: 1px solid #a07eb466;
+  border-radius: 11px;
+  background: #251b3580;
+  color: #e4c6f7;
   font-size: 12px;
   font-weight: 700;
 }

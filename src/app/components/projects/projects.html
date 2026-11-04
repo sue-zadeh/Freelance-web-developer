@@ -27,7 +27,7 @@
       @for (project of filteredProjects; track project.title) {
         <article
           class="project-card shine-card"
-          revealEffect="zoom-in"
+          [revealEffect]="$index % 2 === 0 ? 'fade-right' : 'fade-left'"
           [class.featured]="project.featured"
           appReveal
           [revealDelay]="($index % 3) * 65"
