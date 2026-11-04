@@ -44,6 +44,36 @@ describe('Contact form', () => {
     expect(fixture.nativeElement.querySelectorAll('.field-error')).toHaveLength(4);
     http.expectNone('/api/contact');
   });
+  it('opens privacy information in the form without submitting or losing a draft', () => {
+    fixture.componentInstance.formData.message = 'Please keep this draft.';
+    fixture.detectChanges();
+    const details = fixture.nativeElement.querySelector('.form-privacy') as HTMLDetailsElement;
+    const summary = details.querySelector('summary')!;
+    expect(details.open).toBe(false);
+    summary.click();
+    expect(details.open).toBe(true);
+    expect(details.textContent).toContain('Enquiries are stored in the website’s database');
+    expect(fixture.componentInstance.formData.message).toBe('Please keep this draft.');
+    summary.click();
+    expect(details.open).toBe(false);
+    http.expectNone('/api/contact');
+  });
+  it('opens privacy for hash navigation and when loading a direct privacy URL', async () => {
+    const originalUrl = window.location.href;
+    try {
+      window.history.replaceState(null, '', '#privacy');
+      window.dispatchEvent(new HashChangeEvent('hashchange'));
+      expect(fixture.nativeElement.querySelector('.form-privacy').open).toBe(true);
+      fixture.destroy();
+      fixture = TestBed.createComponent(ContactComponent);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(fixture.nativeElement.querySelector('.form-privacy').open).toBe(true);
+      http.expectNone('/api/contact');
+    } finally {
+      window.history.replaceState(null, '', originalUrl);
+    }
+  });
   it('rejects an invalid email in the browser', async () => {
     await fillAndSubmit('broken');
     http.expectNone('/api/contact');

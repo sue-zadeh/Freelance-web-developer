@@ -16,7 +16,8 @@
       </p>
       <div class="hero-actions" appReveal [revealDelay]="200" data-aos-duration="1100">
         <a class="button light" href="#contact"
-          >Tell me your idea <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10" /></svg></a
+          >Tell me your idea
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10" /></svg></a
         ><a class="hero-work-link" href="#projects"
           >Explore projects <span aria-hidden="true">↓</span></a
         >
@@ -25,8 +26,13 @@
         Based on Auckland’s North Shore. Working across New Zealand.
       </p>
       <a class="hero-team-link" href="#team-opportunities" appReveal [revealDelay]="200">
-        Hiring a developer? I’m open to a permanent role.
-        <span aria-hidden="true">→</span>
+        <span
+          ><strong>Hiring a developer?</strong
+          ><span>I’m open to a full-time, permanent role.</span></span
+        >
+        <svg class="arrow-icon" aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M7 17 17 7M7 7h10v10" />
+        </svg>
       </a>
     </div>
     <app-work-showcase
@@ -56,22 +62,26 @@
     </div>
     <div class="service-grid">
       @for (service of services; track service.number) {
-      <article class="service-card shine-card" appReveal [revealDelay]="$index * 65">
-        <div class="service-top">
-          <span>{{ service.number }}</span><span aria-hidden="true"><svg class="arrow-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10" /></svg></span>
-        </div>
-        <p class="service-name">{{ service.name }}</p>
-        <h3>{{ service.title }}</h3>
-        <p class="service-text">{{ service.text }}</p>
-        <ul>
-          @for (item of service.items; track item) {
-          <li>{{ item }}</li>
-          }
-        </ul>
-        <a class="text-link" href="#contact"
-          >{{ service.link }} <span aria-hidden="true">→</span></a
-        >
-      </article>
+        <article class="service-card shine-card" appReveal [revealDelay]="$index * 65">
+          <div class="service-top">
+            <span>{{ service.number }}</span
+            ><span aria-hidden="true"
+              ><svg class="arrow-icon" aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M7 17 17 7M7 7h10v10" /></svg
+            ></span>
+          </div>
+          <p class="service-name">{{ service.name }}</p>
+          <h3>{{ service.title }}</h3>
+          <p class="service-text">{{ service.text }}</p>
+          <ul>
+            @for (item of service.items; track item) {
+              <li>{{ item }}</li>
+            }
+          </ul>
+          <a class="text-link" href="#contact"
+            >{{ service.link }} <span aria-hidden="true">→</span></a
+          >
+        </article>
       }
     </div>
     <p class="services-note">

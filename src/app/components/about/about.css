@@ -93,13 +93,13 @@
 }
 .team-invitation > p:not(.eyebrow) {
   color: #ddd3e8;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.8;
   margin-top: 13px;
 }
 .team-invitation .text-link {
   color: #e2c9ff;
-  font-size: 13px;
+  font-size: 15px;
   margin-top: 12px;
 }
 @media (max-width: 900px) {

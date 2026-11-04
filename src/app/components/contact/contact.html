@@ -10,7 +10,10 @@
         where to start.
       </p>
       <a class="contact-email" href="mailto:suezadeh@suewebstudio.com"
-        >suezadeh&#64;suewebstudio.com <span aria-hidden="true"><svg class="arrow-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10" /></svg></span></a
+        >suezadeh&#64;suewebstudio.com
+        <span aria-hidden="true"
+          ><svg class="arrow-icon" aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M7 17 17 7M7 7h10v10" /></svg></span></a
       ><a class="contact-phone" href="tel:+64212049836">021 204 9836</a>
       <p class="contact-location">
         Auckland’s North Shore · New Zealand<br />Remote projects welcome.
@@ -171,9 +174,23 @@
             </div>
           </div>
         </details>
-        <p class="form-privacy">
-          I’ll use your details to reply about your project. <a href="#privacy">Privacy details</a>
-        </p>
+        <p class="form-privacy-intro">I’ll use your details to reply about your project.</p>
+        <details class="form-privacy" #privacyDetails>
+          <summary>How I use your details</summary>
+          <div id="privacy" class="privacy-copy">
+            <p>
+              Sue Web Studio uses the details you submit to respond to your enquiry and discuss your
+              project. Enquiries are stored in the website’s database and sent to my business inbox
+              through an email provider. Hosting and email providers process this information to run
+              the service, and may store it outside New Zealand. Please don’t include passwords,
+              payment details, or sensitive personal information. Your details aren’t added to a
+              marketing list or sold. To ask about, correct, or delete an enquiry, email
+              <a href="mailto:suezadeh@suewebstudio.com">suezadeh&#64;suewebstudio.com</a>. Basic
+              request information is used to limit spam. This website doesn’t use advertising or
+              analytics cookies.
+            </p>
+          </div>
+        </details>
         @if (successMessage()) {
           <div class="form-notice" [class.delayed]="notificationDelayed()" role="status">
             {{ successMessage() }}
@@ -184,25 +201,12 @@
         }
         <button class="button primary submit-button" type="submit" [disabled]="isSubmitting()">
           {{ isSubmitting() ? 'Sending your enquiry…' : 'Send your enquiry' }}
-          <span aria-hidden="true"><svg class="arrow-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10" /></svg></span>
+          <span aria-hidden="true"
+            ><svg class="arrow-icon" aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M7 17 17 7M7 7h10v10" /></svg
+          ></span>
         </button>
       </form>
     </div>
-  </div>
-  <div id="privacy" class="shell privacy-note">
-    <details>
-      <summary>How I handle your enquiry</summary>
-      <p>
-        Sue Web Studio uses the details you submit to respond to your enquiry and discuss your
-        project. Enquiries are stored in the website’s database and sent to my business inbox
-        through an email provider. Hosting and email providers process this information to run the
-        service, and may store it outside New Zealand. Please don’t include passwords, payment
-        details, or sensitive personal information. Your details aren’t added to a marketing list or
-        sold. To ask about, correct, or delete an enquiry, email
-        <a href="mailto:suezadeh@suewebstudio.com">suezadeh&#64;suewebstudio.com</a>. Basic request
-        information is used to limit spam. This website doesn’t use advertising or analytics
-        cookies.
-      </p>
-    </details>
   </div>
 </section>

@@ -1,5 +1,14 @@
 import { RevealDirective } from '../../shared/reveal';
-import { Component, inject, signal } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import {
+  afterNextRender,
+  Component,
+  ElementRef,
+  HostListener,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { finalize, timeout } from 'rxjs/operators';
@@ -19,6 +28,8 @@ import {
 })
 export class ContactComponent {
   private readonly http = inject(HttpClient);
+  private readonly document = inject(DOCUMENT);
+  private readonly privacyDetails = viewChild<ElementRef<HTMLDetailsElement>>('privacyDetails');
   readonly projectTypes = PROJECT_TYPES;
   readonly budgets = BUDGETS.filter(Boolean);
   readonly timelines = TIMELINES.filter(Boolean);
@@ -28,6 +39,19 @@ export class ContactComponent {
   readonly successMessage = signal('');
   readonly errorMessage = signal('');
   readonly notificationDelayed = signal(false);
+
+  constructor() {
+    afterNextRender(() => this.onPrivacyNavigation());
+  }
+
+  @HostListener('window:hashchange')
+  onPrivacyNavigation(): void {
+    if (this.document.location?.hash !== '#privacy') return;
+    const details = this.privacyDetails()?.nativeElement;
+    if (!details) return;
+    details.open = true;
+    details.scrollIntoView?.({ block: 'start' });
+  }
 
   onSubmit(contactForm: NgForm): void {
     if (this.isSubmitting()) return;

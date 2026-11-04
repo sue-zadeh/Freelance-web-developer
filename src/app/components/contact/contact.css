@@ -1,5 +1,5 @@
 .contact-section {
-  background: #ddd2e4;
+  background: var(--section-raised);
 }
 .contact-layout {
   display: grid;
@@ -14,10 +14,10 @@
 .contact-copy h2 em {
   font-family: Georgia, serif;
   font-weight: 400;
-  color: #79578d;
+  color: #d8b6ee;
 }
 .contact-copy > p:not(.eyebrow) {
-  color: #5b5068;
+  color: var(--section-muted);
   font-size: 15px;
   margin-top: 25px;
   max-width: 370px;
@@ -26,7 +26,7 @@
   display: flex;
   align-items: center;
   gap: 18px;
-  color: #4b315e;
+  color: #f0dcff;
   font-size: clamp(14px, 1.5vw, 18px);
   font-weight: 550;
   margin-top: 31px;
@@ -35,7 +35,7 @@
 }
 .contact-phone {
   display: inline-block;
-  color: #4b315e;
+  color: #f0dcff;
   font-size: 18px;
   text-decoration: none;
   margin-top: 10px;
@@ -47,27 +47,28 @@
   display: flex;
   align-items: start;
   gap: 15px;
-  border-top: 1px solid #cfc7d9;
+  border-top: 1px solid var(--section-line);
   padding-top: 25px;
   margin-top: 34px;
 }
 .next-step > span {
-  color: var(--purple);
+  color: #d6b1ed;
   font-size: 25px;
   line-height: 1;
 }
 .next-step p {
   font-size: 12px;
-  color: #5f526a;
+  color: var(--section-muted);
   max-width: 330px;
 }
 .next-step strong {
   display: block;
-  color: #44314e;
+  color: #f4eafb;
   font-size: 13px;
   margin-bottom: 7px;
 }
 .form-card {
+  color: var(--ink);
   background: #fffefa;
   border: 1px solid #d9d3df;
   border-radius: 12px;
@@ -78,8 +79,8 @@
   font-size: 24px;
 }
 .form-intro {
-  font-size: 11px;
-  color: #7b7183;
+  font-size: 12px;
+  color: #62576e;
   margin-top: 10px;
   margin-bottom: 25px;
 }
@@ -142,13 +143,33 @@ textarea::placeholder {
 .optional-grid {
   margin-top: 12px;
 }
+.form-privacy-intro {
+  color: #62576e;
+  font-size: 13px;
+  margin-top: 17px;
+}
 .form-privacy {
-  color: #7a7083;
-  font-size: 10px;
-  margin-block: 17px 19px;
+  margin-block: 4px 19px;
+  font-size: 13px;
+  color: #554163;
+}
+.form-privacy summary {
+  min-height: 44px;
+  padding-block: 10px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.privacy-copy {
+  padding: 15px 16px;
+  border: 1px solid #dfd2e9;
+  border-radius: 8px;
+  background: #f5eef9;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
 }
 .form-privacy a {
-  color: #67457f;
+  color: #5c3577;
 }
 .submit-button {
   width: 100%;
@@ -179,22 +200,6 @@ textarea::placeholder {
   height: 1px;
   overflow: hidden;
   clip-path: inset(100%);
-}
-.privacy-note {
-  border-top: 1px solid #d1c8dc;
-  margin-top: 53px;
-  padding-top: 20px;
-  font-size: 11px;
-  color: #5e526b;
-}
-.privacy-note summary {
-  display: list-item;
-  padding-block: 8px;
-  min-height: 40px;
-}
-.privacy-note p {
-  padding-block: 12px;
-  max-width: 850px;
 }
 @media (max-width: 1000px) {
   .contact-layout {
