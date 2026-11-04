@@ -5,7 +5,7 @@
   z-index: 100;
 }
 .site-header {
-  background: #eee4f5f5;
+  background: #e2d4edf5;
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(16px);
 }

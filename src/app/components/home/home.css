@@ -72,6 +72,19 @@ h1 em {
   margin-top: 26px;
   font-size: 11px;
 }
+.hero-team-link {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: #d3c2e9;
+  font-size: 12px;
+  margin-top: 14px;
+  text-decoration-thickness: 1px;
+}
+.hero-team-link:hover {
+  color: #f4effd;
+}
 .hero-bottom {
   display: flex;
   align-items: center;

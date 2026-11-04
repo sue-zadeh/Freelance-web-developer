@@ -76,6 +76,32 @@
 .about-copy .button {
   font-size: 12px;
 }
+.team-invitation {
+  margin-top: 30px;
+  padding: 24px;
+  border: 1px solid #a48ab65c;
+  border-left: 3px solid #bda0df;
+  border-radius: 12px;
+  background: #30283f;
+}
+.team-invitation .eyebrow {
+  margin-bottom: 10px;
+  font-size: 10px;
+}
+.team-invitation h3 {
+  font-size: 24px;
+}
+.team-invitation > p:not(.eyebrow) {
+  color: #ddd3e8;
+  font-size: 14px;
+  line-height: 1.8;
+  margin-top: 13px;
+}
+.team-invitation .text-link {
+  color: #e2c9ff;
+  font-size: 13px;
+  margin-top: 12px;
+}
 @media (max-width: 900px) {
   .about-layout {
     gap: 45px;

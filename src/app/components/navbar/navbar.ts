@@ -20,18 +20,36 @@ export class NavbarComponent {
   constructor() {
     afterNextRender(() => {
       if (typeof IntersectionObserver === 'undefined') return;
-      const observer = new IntersectionObserver(
-        (entries) => {
-          for (const entry of entries) {
-            if (entry.isIntersecting) this.activeSection.set(entry.target.id);
-          }
-        },
-        { rootMargin: '-90px 0px -65% 0px', threshold: 0 },
-      );
-      this.document
-        .querySelectorAll('main section[id]')
-        .forEach((section) => observer.observe(section));
-      this.destroyRef.onDestroy(() => observer.disconnect());
+      const viewport = this.document.defaultView;
+      let observer: IntersectionObserver;
+      const attachSections = () => {
+        const sections = this.document.querySelectorAll('main section[id]');
+        if (!sections.length) return;
+        sections.forEach((section) => observer.observe(section));
+        pageObserver.disconnect();
+      };
+      const pageObserver = new MutationObserver(attachSections);
+      pageObserver.observe(this.document.body, { childList: true, subtree: true });
+      const observeSections = () => {
+        observer?.disconnect();
+        const bottomInset = Math.max(0, (viewport?.innerHeight ?? 800) - 200);
+        observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) this.activeSection.set(entry.target.id);
+            }
+          },
+          { rootMargin: `-90px 0px -${bottomInset}px 0px`, threshold: 0 },
+        );
+        attachSections();
+      };
+      observeSections();
+      viewport?.addEventListener('resize', observeSections);
+      this.destroyRef.onDestroy(() => {
+        observer.disconnect();
+        pageObserver.disconnect();
+        viewport?.removeEventListener('resize', observeSections);
+      });
     });
   }
   closeNavbar(section: string): void {

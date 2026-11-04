@@ -17,6 +17,13 @@
     </button>
     <div id="main-navigation" class="nav-links" [class.is-open]="menuOpen()">
       <a
+        href="/#home"
+        [class.active]="activeSection() === 'home'"
+        [attr.aria-current]="activeSection() === 'home' ? 'location' : null"
+        (click)="closeNavbar('home')"
+        >Home</a
+      >
+      <a
         href="/#services"
         [class.active]="activeSection() === 'services'"
         [attr.aria-current]="activeSection() === 'services' ? 'location' : null"
