@@ -1,4 +1,4 @@
-import { afterNextRender, Component, DestroyRef, inject, signal } from '@angular/core';
+import { afterNextRender, Component, computed, DestroyRef, inject, signal } from '@angular/core';
 
 interface ShowcaseProject {
   id: string;
@@ -52,17 +52,37 @@ export class WorkShowcaseComponent {
       status: 'Launched platform',
       summary: 'A public website and portals for residents and village teams.',
     },
+    {
+      id: 'smart-panel-homes',
+      title: 'Smart Panel Homes',
+      address: 'smartpanelhomes.co.nz',
+      image: '/images/smartpanel.webp',
+      alt: 'Smart Panel Homes website presenting insulated panel homes and building services',
+      width: 1200,
+      height: 620,
+      status: 'Business website',
+      summary: 'Home products, building services and a visual project showcase.',
+    },
+    {
+      id: 'lodge-matariki',
+      title: 'Lodge Matariki 476',
+      address: 'lodgematariki476.co.nz',
+      image: '/images/lodge.webp',
+      alt: 'Lodge Matariki 476 community and membership website',
+      width: 1200,
+      height: 675,
+      status: 'Website & member tools',
+      summary: 'Public information, member features and administration tools.',
+    },
   ];
   readonly activeIndex = signal(0);
-  readonly turning = signal(false);
+  readonly phase = signal<'idle' | 'outgoing' | 'settling'>('idle');
+  readonly turning = computed(() => this.phase() !== 'idle');
   readonly ready = signal(false);
   readonly announcement = signal('');
-  private hovered = false;
-  private focused = false;
   private reducedMotion = false;
-  private autoTimer?: ReturnType<typeof setTimeout>;
   private turnTimer?: ReturnType<typeof setTimeout>;
-  private pendingTurn?: { index: number; manual: boolean };
+  private pendingIndex?: number;
 
   constructor() {
     const destroyRef = inject(DestroyRef);
@@ -71,14 +91,10 @@ export class WorkShowcaseComponent {
       this.reducedMotion = motionQuery?.matches ?? false;
       const motionChanged = (event: MediaQueryListEvent) => {
         this.reducedMotion = event.matches;
-        this.stopAutoTurn();
         if (event.matches) this.finishTurn();
-        else this.scheduleAutoTurn();
       };
       const visibilityChanged = () => {
         if (document.hidden) {
-          this.hovered = false;
-          this.stopAutoTurn();
           this.finishTurn();
         }
       };
@@ -86,7 +102,6 @@ export class WorkShowcaseComponent {
       document.addEventListener('visibilitychange', visibilityChanged);
       this.ready.set(true);
       destroyRef.onDestroy(() => {
-        this.stopAutoTurn();
         clearTimeout(this.turnTimer);
         motionQuery?.removeEventListener('change', motionChanged);
         document.removeEventListener('visibilitychange', visibilityChanged);
@@ -98,81 +113,39 @@ export class WorkShowcaseComponent {
     return (index - this.activeIndex() + this.projects.length) % this.projects.length;
   }
 
-  onPointerEnter(event: PointerEvent): void {
-    if (event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;
-    this.hovered = true;
-    this.scheduleAutoTurn();
-  }
-
-  onPointerLeave(): void {
-    this.hovered = false;
-    this.stopAutoTurn();
-  }
-
-  onFocusIn(): void {
-    this.focused = true;
-    this.stopAutoTurn();
-    this.finishTurn();
-  }
-
-  onFocusOut(event: FocusEvent): void {
-    const container = event.currentTarget as HTMLElement;
-    if (event.relatedTarget instanceof Node && container.contains(event.relatedTarget)) return;
-    this.focused = false;
-    this.scheduleAutoTurn();
-  }
-
   move(direction: number): void {
     if (!this.ready() || this.turning()) return;
-    this.stopAutoTurn();
-    this.startTurn(direction, true);
-  }
-
-  private startTurn(direction: number, manual: boolean): void {
-    const index = (this.activeIndex() + direction + this.projects.length) % this.projects.length;
-    this.pendingTurn = { index, manual };
+    this.pendingIndex =
+      (this.activeIndex() + direction + this.projects.length) % this.projects.length;
     if (this.reducedMotion) {
       this.finishTurn();
       return;
     }
-    this.turning.set(true);
-    this.turnTimer = setTimeout(() => this.finishTurn(), 550);
+    this.phase.set('outgoing');
+    this.turnTimer = setTimeout(() => {
+      this.showNextPage();
+      this.phase.set('settling');
+      this.turnTimer = setTimeout(() => {
+        this.turnTimer = undefined;
+        this.phase.set('idle');
+      }, 550);
+    }, 550);
+  }
+
+  private showNextPage(): void {
+    const index = this.pendingIndex;
+    if (index === undefined) return;
+    this.pendingIndex = undefined;
+    this.activeIndex.set(index);
+    this.announcement.set(
+      `${this.projects[index].title}, project ${index + 1} of ${this.projects.length}`,
+    );
   }
 
   private finishTurn(): void {
     clearTimeout(this.turnTimer);
     this.turnTimer = undefined;
-    const pending = this.pendingTurn;
-    if (!pending) return;
-    this.pendingTurn = undefined;
-    this.activeIndex.set(pending.index);
-    this.turning.set(false);
-    if (pending.manual)
-      this.announcement.set(
-        `${this.projects[pending.index].title}, project ${pending.index + 1} of ${this.projects.length}`,
-      );
-    this.scheduleAutoTurn(3600);
-  }
-
-  private scheduleAutoTurn(delay = 2800): void {
-    this.stopAutoTurn();
-    if (
-      !this.ready() ||
-      !this.hovered ||
-      this.focused ||
-      this.reducedMotion ||
-      document.hidden ||
-      this.turning()
-    )
-      return;
-    this.autoTimer = setTimeout(() => {
-      this.autoTimer = undefined;
-      this.startTurn(1, false);
-    }, delay);
-  }
-
-  private stopAutoTurn(): void {
-    clearTimeout(this.autoTimer);
-    this.autoTimer = undefined;
+    this.showNextPage();
+    this.phase.set('idle');
   }
 }

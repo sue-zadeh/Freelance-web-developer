@@ -1,5 +1,5 @@
 .contact-section {
-  background: #ece9f1;
+  background: #ddd2e4;
 }
 .contact-layout {
   display: grid;
@@ -17,7 +17,7 @@
   color: #79578d;
 }
 .contact-copy > p:not(.eyebrow) {
-  color: #625a70;
+  color: #5b5068;
   font-size: 15px;
   margin-top: 25px;
   max-width: 370px;
@@ -58,7 +58,7 @@
 }
 .next-step p {
   font-size: 12px;
-  color: #6c6077;
+  color: #5f526a;
   max-width: 330px;
 }
 .next-step strong {
@@ -185,7 +185,7 @@ textarea::placeholder {
   margin-top: 53px;
   padding-top: 20px;
   font-size: 11px;
-  color: #73657e;
+  color: #5e526b;
 }
 .privacy-note summary {
   display: list-item;

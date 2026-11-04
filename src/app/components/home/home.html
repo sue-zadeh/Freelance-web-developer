@@ -24,6 +24,10 @@
       <p class="hero-location" appReveal [revealDelay]="200" data-aos-duration="900">
         Based on Auckland’s North Shore. Working across New Zealand.
       </p>
+      <a class="hero-team-link" href="#team-opportunities" appReveal [revealDelay]="200">
+        Hiring a developer? I’m open to a permanent role.
+        <span aria-hidden="true">→</span>
+      </a>
     </div>
     <app-work-showcase
       appReveal
@@ -54,7 +58,7 @@
       @for (service of services; track service.number) {
       <article class="service-card shine-card" appReveal [revealDelay]="$index * 65">
         <div class="service-top">
-          <span>{{ service.number }}</span><span aria-hidden="true">↗</span>
+          <span>{{ service.number }}</span><span aria-hidden="true"><svg class="arrow-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10" /></svg></span>
         </div>
         <p class="service-name">{{ service.name }}</p>
         <h3>{{ service.title }}</h3>

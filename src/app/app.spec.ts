@@ -40,6 +40,16 @@ describe('One-page studio experience', () => {
     button.click();
     fixture.detectChanges();
     expect(button.getAttribute('aria-expanded')).toBe('true');
+    const home = fixture.nativeElement.querySelector(
+      '#main-navigation a[href="/#home"]',
+    ) as HTMLAnchorElement;
+    expect(home.textContent?.trim()).toBe('Home');
+    home.click();
+    fixture.detectChanges();
+    expect(button.getAttribute('aria-expanded')).toBe('false');
+    expect(home.getAttribute('aria-current')).toBe('location');
+    button.click();
+    fixture.detectChanges();
     fixture.componentInstance.onEscape();
     fixture.detectChanges();
     expect(button.getAttribute('aria-expanded')).toBe('false');
@@ -51,6 +61,72 @@ describe('One-page studio experience', () => {
     expect(page.querySelector('a[href="/#projects"]')).toBeTruthy();
     expect(page.querySelector('a[href="/#contact"]')).toBeTruthy();
     expect(page.querySelectorAll('[data-bs-toggle]')).toHaveLength(0);
+  });
+  it('updates the active section after a jump, rebuilds tracking on resize, and cleans up', async () => {
+    const observers: {
+      observe: ReturnType<typeof vi.fn>;
+      disconnect: ReturnType<typeof vi.fn>;
+      options: IntersectionObserverInit;
+    }[] = [];
+    const callbacks: IntersectionObserverCallback[] = [];
+    const page = document.createElement('main');
+    vi.stubGlobal(
+      'IntersectionObserver',
+      class {
+        observe = vi.fn();
+        disconnect = vi.fn();
+        constructor(
+          callback: IntersectionObserverCallback,
+          readonly options: IntersectionObserverInit,
+        ) {
+          callbacks.push(callback);
+          observers.push(this);
+        }
+      },
+    );
+    try {
+      const fixture = TestBed.createComponent(NavbarComponent);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      const about = document.createElement('section');
+      about.id = 'about';
+      page.append(about);
+      document.body.append(page);
+      await Promise.resolve();
+      expect(observers[0].observe).toHaveBeenCalledWith(about);
+      callbacks[0](
+        [
+          {
+            target: about,
+            isIntersecting: true,
+            time: 0,
+            intersectionRatio: 1,
+            boundingClientRect: about.getBoundingClientRect(),
+            intersectionRect: about.getBoundingClientRect(),
+            rootBounds: null,
+          },
+        ],
+        {} as IntersectionObserver,
+      );
+      fixture.detectChanges();
+      expect(
+        fixture.nativeElement.querySelector('a[href="/#about"]').getAttribute('aria-current'),
+      ).toBe('location');
+      const margin = observers[0].options.rootMargin!.split(' ').map(Number.parseFloat);
+      expect(observers[0].options.rootMargin).not.toContain('%');
+      expect(window.innerHeight + margin[0] + margin[2]).toBeGreaterThan(0);
+      window.dispatchEvent(new Event('resize'));
+      expect(observers).toHaveLength(2);
+      expect(observers[0].disconnect).toHaveBeenCalledOnce();
+      fixture.destroy();
+      expect(observers[1].disconnect).toHaveBeenCalledOnce();
+      window.dispatchEvent(new Event('resize'));
+      expect(observers).toHaveLength(2);
+    } finally {
+      page.remove();
+      TestBed.resetTestingModule();
+      vi.unstubAllGlobals();
+    }
   });
   it('filters actual website projects and includes all nine projects initially', () => {
     const fixture = TestBed.createComponent(ProjectsComponent);

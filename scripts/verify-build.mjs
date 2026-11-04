@@ -56,7 +56,10 @@ check(
   'Project previews start with Lion & Sun and link to a real Projects section without JavaScript',
   () => {
     const showcase = document.querySelector('app-work-showcase');
-    assert.equal(showcase.querySelectorAll('.browser-card').length, 3);
+    assert.equal(showcase.querySelectorAll('.browser-card').length, 5);
+    assert.equal(showcase.querySelector('.browser-stack').tagName, 'BUTTON');
+    assert.ok(showcase.querySelector('img[src="/images/smartpanel.webp"]'));
+    assert.ok(showcase.querySelector('img[src="/images/lodge.webp"]'));
     assert.equal(
       showcase.querySelector('[data-position="0"] img').getAttribute('src'),
       '/images/lionandsun.webp',

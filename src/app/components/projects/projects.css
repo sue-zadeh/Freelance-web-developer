@@ -1,5 +1,5 @@
 .projects-section {
-  background: #f3edf7;
+  background: #e7ddec;
 }
 .filter-row {
   display: flex;
@@ -22,7 +22,7 @@
 }
 .project-count {
   font-size: 11px;
-  color: #79737f;
+  color: #62596d;
   margin-block: 15px 23px;
 }
 .project-grid {
