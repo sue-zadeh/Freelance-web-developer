@@ -1,7 +1,7 @@
 @import 'aos/dist/aos.css';
 
 :root {
-  --paper: #e9e0ef;
+  --paper: #292237;
   --ink: #252638;
   --muted: #575363;
   --purple: #6844b3;
@@ -9,6 +9,11 @@
   --teal: #205b54;
   --line: #dedde4;
   --night: #1b1b2d;
+  --section-base: #2a2236;
+  --section-raised: #32273f;
+  --section-text: #f5effb;
+  --section-muted: #d4c6e1;
+  --section-line: #82699466;
 }
 *,
 *::before,
@@ -323,7 +328,7 @@ button:disabled {
   top: 14px;
 }
 .process-section {
-  background: #dcd3e5;
+  background: var(--section-base);
 }
 .process-grid {
   display: grid;
@@ -334,10 +339,10 @@ button:disabled {
 }
 .process-grid li {
   padding-top: 22px;
-  border-top: 1px solid #c7bcd7;
+  border-top: 1px solid #8d719d88;
 }
 .process-grid span {
-  color: var(--purple);
+  color: #d6afea;
   font-size: 12px;
   font-weight: 700;
 }
@@ -345,7 +350,7 @@ button:disabled {
   margin-block: 24px 14px;
 }
 .process-grid p {
-  color: #575364;
+  color: var(--section-muted);
   font-size: 14px;
 }
 .faq-layout {
@@ -355,12 +360,13 @@ button:disabled {
 }
 .faq-layout .text-link {
   margin-top: 25px;
+  color: #e2c9ff;
 }
 .faq-list details {
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--section-line);
 }
 .faq-list details:first-child {
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--section-line);
 }
 .faq-list summary {
   padding: 23px 24px 23px 0;
@@ -369,7 +375,7 @@ button:disabled {
 }
 .faq-list details p {
   padding: 0 16px 24px 0;
-  color: var(--muted);
+  color: var(--section-muted);
   font-size: 15px;
 }
 @media (max-width: 900px) {
@@ -421,10 +427,22 @@ button:disabled {
 }
 
 .services-section {
-  background: #ddd0e8;
+  background: var(--section-base);
 }
 .faq-section {
-  background: #d7e3db;
+  background: var(--section-base);
+}
+:is(.services-section, .projects-section, .process-section, .faq-section, .contact-section) {
+  color: var(--section-text);
+}
+:is(.services-section, .projects-section, .process-section, .faq-section, .contact-section)
+  .eyebrow {
+  color: #d5b4f0;
+}
+:is(.services-section, .projects-section, .process-section, .faq-section, .contact-section)
+  .section-heading
+  > p {
+  color: var(--section-muted);
 }
 /* AOS classes are added after the local module loads. No-JS and failures remain visible. */
 [data-aos]:not(.aos-init) {
