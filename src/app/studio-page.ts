@@ -14,7 +14,7 @@ import { ContactComponent } from './components/contact/contact';
     <app-about />
     <section id="process" class="section process-section" aria-labelledby="process-title">
       <div class="shell">
-        <div class="section-heading" appReveal>
+        <div class="section-heading centered" appReveal>
           <div>
             <p class="eyebrow">A clear way forward</p>
             <h2 id="process-title">From your idea<br />to something useful.</h2>
