@@ -28,18 +28,18 @@
         [class.active]="activeSection() === 'projects'"
         [attr.aria-current]="activeSection() === 'projects' ? 'location' : null"
         (click)="closeNavbar('projects')"
-        >My work</a
+        >Projects</a
       >
       <a
         href="/#about"
         [class.active]="activeSection() === 'about'"
         [attr.aria-current]="activeSection() === 'about' ? 'location' : null"
         (click)="closeNavbar('about')"
-        >About Sue</a
+        >About</a
       >
       <a class="nav-phone" href="tel:+64212049836">021 204 9836</a>
       <a class="button primary nav-cta" href="/#contact" (click)="closeNavbar('contact')"
-        >Let’s talk <span aria-hidden="true">↗</span></a
+        >Let’s talk <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10" /></svg></a
       >
     </div>
   </nav>

@@ -30,9 +30,9 @@ Command: `npm run verify`.
 | Check                                                                  | Result                       |
 | ---------------------------------------------------------------------- | ---------------------------- |
 | Server validation, HTTP/security, and outbound email payload tests     | 40 passed                    |
-| Angular page, navigation, filters, 3D controls, form, and footer tests | 31 passed                    |
+| Angular page, navigation, filters, 3D controls, form, and footer tests | 39 passed                    |
 | Production Angular build                                               | Passed; one page prerendered |
-| Built HTML / SEO checks                                                | 14 passed                    |
+| Built HTML / SEO checks                                                | 15 passed                    |
 | Running production-server HTTP checks                                  | 11 passed                    |
 | Production dependency audit                                            | 0 known vulnerabilities      |
 | Diff whitespace check                                                  | Passed                       |
@@ -182,3 +182,19 @@ The showcase is a small standalone Angular component, keeping its styles and the
 `npm run verify` passed all 96 checks: 40 server, 31 Angular UI, 14 built HTML/SEO, and 11 production HTTP checks. The build passed without budget warnings at 412.51 kB initial raw / 103.78 kB estimated transfer, plus the separate lazy AOS chunk. The whitespace check passed. No redundant unit tests were added for this reversible visual change.
 
 The managed preview relay remains unavailable. This release therefore uses the published page for visual review of the overlap, shadows, inward-facing rotation, bottom-forward pitch, caption clearance and project link. Mobile-specific CSS preserves a proportional stack with smaller toolbar text and gentler horizontal movement; physical-device testing is not claimed.
+
+## Turning project preview pages — 4 November 2026
+
+The hero now starts with Lion & Sun Society NZ above ShowerPower and SAMCT Villages. Three existing optimized screenshots give visitors a view of community websites, service businesses, and larger platforms. Lion & Sun remains labelled in progress; SAMCT remains a launched platform. The caption gives each project a short, useful description rather than implying all three are finished or accepting live donations.
+
+Hovering the picture stack starts a page turn after 2.8 seconds, then leaves 3.6 seconds between turns. Each outgoing page rotates inward and returns behind the next page. The front page retains a negative Y rotation and positive X rotation, with separate shadows and no picture shine. Moving to the caption or controls stops automatic turning. Keyboard focus pauses it; previous/next buttons work with native keyboard activation and on touch screens. Reduced motion disables automatic turns and makes manual changes immediate. Hiding the tab stops the sequence until the pointer enters again. Timers and listeners are cleaned up on component destruction. Only manual changes produce screen-reader status announcements.
+
+“Learn more” is a native link to the existing Projects section. All three preview images, the first caption, and that link are prerendered, so the destination still works without JavaScript. The initial Lion & Sun image has high fetch priority; the other two have low priority and are available for the first turn. No dependency, generated image, external asset destination, or backend change was added.
+
+Navigation now says Projects and About, and the footer's personal creator credit is removed. The homepage project link and footer project link use the same naming. No “See roles” or “View roles” action was present in the source; the redundant “See what I can help with” link was removed, and every remaining local section link has a real target. Meaningful descriptions of staff access and project permissions remain. Three hero button arrows were changed to inline SVG after browser QA caught missing font glyphs.
+
+Automated checks passed: 40 server/security/email tests, 39 Angular UI tests, 15 built HTML/SEO checks, and 11 running production-server HTTP checks (105 total). Eight new UI tests cover initial state, both browsing directions and wrapping, rapid activation, hover timing and cancellation, keyboard focus, touch hover, reduced motion changes, tab visibility, and destruction during queued/active turns. A new build check verifies the server-rendered Lion & Sun preview, honest status, and native Projects link. The production build passed without budget warnings at 417.12 kB initial raw / 104.92 kB estimated transfer. The separate lazy AOS chunk remains 4.53 kB estimated transfer. The production dependency audit found zero known vulnerabilities, and the whitespace check passed. No real enquiry was submitted.
+
+The managed preview became available again for this update. Chromium QA exercised hover turning, previous/next controls, Enter activation, the Learn more jump, the renamed navbar, and the footer cleanup. All three images loaded. The desktop page had one H1, nine project cards, one form, and no horizontal overflow. The header stayed at top 0 after the Projects jump, with the section at approximately 104 px below it. The front face's measured normal pointed inward (negative X), while the bottom edge projected forward. Caption clearance remained positive in both resting and active states. No site console warnings or errors were found; browser-extension metadata messages were excluded.
+
+Static responsive frames used the exact final prerendered markup/CSS at 375 px and 768 px outer widths (360 px and 753 px content widths). Both stacks, captions and Learn more links fit without horizontal document overflow; arrow targets remained 44 × 44 px, with approximately 22 px and 38 px of caption clearance. These frames check layout without running Angular. Interactive behaviour was checked separately in Chromium and unit tests; physical-device and cross-browser testing is not claimed. The temporary QA fixture is confined to ignored build output and is removed before publication. Deployment and live verification are recorded in the associated pull request.

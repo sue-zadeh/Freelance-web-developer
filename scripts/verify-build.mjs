@@ -52,6 +52,20 @@ check('All portfolio projects are rendered for search engines', () => {
   assert.equal(document.querySelectorAll('.project-card').length, 9);
   assert.ok(html.includes('Lion &amp; Sun Society NZ'));
 });
+check(
+  'Project previews start with Lion & Sun and link to a real Projects section without JavaScript',
+  () => {
+    const showcase = document.querySelector('app-work-showcase');
+    assert.equal(showcase.querySelectorAll('.browser-card').length, 3);
+    assert.equal(
+      showcase.querySelector('[data-position="0"] img').getAttribute('src'),
+      '/images/lionandsun.webp',
+    );
+    assert.equal(showcase.querySelector('.preview-link').getAttribute('href'), '#projects');
+    assert.ok(document.getElementById('projects'));
+    assert.ok(showcase.querySelector('.showcase-caption').textContent.includes('In progress'));
+  },
+);
 check('Portfolio launch status, ordering and owner features survive prerendering', () => {
   const cards = document.querySelectorAll('.project-card');
   assert.equal(cards[0].querySelector('h3').textContent, 'SAMCT Villages');
