@@ -193,6 +193,16 @@ button:disabled {
   padding-block: 8px;
 }
 /* Same soft, single-pass hover sweep as ShowerPower's .sp-nav-cta. */
+.button svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
 :where(.button, button, .icon-button) {
   position: relative;
   isolation: isolate;
@@ -390,41 +400,6 @@ button:disabled {
     font-size: 2.7rem;
   }
 }
-/* Preview motion shares the same reduced-motion switch as the controls. */
-.browser-float {
-  animation: showcase-welcome 4.8s ease-in-out 1;
-}
-@keyframes showcase-welcome {
-  0%,
-  100% {
-    translate: 0 0;
-  }
-  25%,
-  75% {
-    translate: 0 -13px;
-  }
-  50% {
-    translate: 0 4px;
-  }
-}
-@keyframes showcase-float {
-  0%,
-  100% {
-    translate: 0 0;
-  }
-  50% {
-    translate: -5px 4px;
-  }
-}
-@media (hover: hover) {
-  .hero-showcase:hover .browser-float {
-    animation: showcase-float 3.2s ease-in-out infinite;
-  }
-}
-.hero-showcase:focus-within .browser-float {
-  animation: showcase-float 3.2s ease-in-out infinite;
-}
-
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

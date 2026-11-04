@@ -89,13 +89,6 @@ h1 em {
   color: #beabd8;
   margin-right: 13px;
 }
-.hero-bottom a {
-  color: #e3d6f3;
-  text-decoration: none;
-}
-.hero-bottom a span {
-  margin-left: 14px;
-}
 .service-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -220,10 +213,6 @@ h1 em {
   }
   .hero-copy .eyebrow {
     font-size: 9px;
-  }
-  .hero-bottom > a {
-    flex-basis: 100%;
-    padding-top: 10px;
   }
   .hero-bottom > span {
     font-size: 10px;

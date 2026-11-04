@@ -1,53 +1,78 @@
-<div class="hero-showcase">
+<div
+  class="hero-showcase"
+  role="group"
+  aria-roledescription="carousel"
+  aria-label="Featured projects"
+  (focusin)="onFocusIn()"
+  (focusout)="onFocusOut($event)"
+>
   <div class="showcase-topline">
-    <span>Two live projects. Different possibilities.</span><span aria-hidden="true">✦</span>
+    <span>Three projects. Different possibilities.</span><span aria-hidden="true">✦</span>
   </div>
-  <div class="browser-float">
-    <div class="browser-stack">
-      <div class="browser-card browser-back">
+  <div
+    class="browser-stack"
+    (pointerenter)="onPointerEnter($event)"
+    (pointerleave)="onPointerLeave()"
+  >
+    @for (project of projects; track project.id; let index = $index) {
+      <div
+        class="browser-card"
+        [attr.data-position]="position(index)"
+        [class.is-turning]="turning() && position(index) === 0"
+        [attr.aria-hidden]="position(index) !== 0 ? 'true' : null"
+      >
         <div class="browser-toolbar">
           <span class="browser-dots" aria-hidden="true">● ● ●</span>
-          <span>samplvillages.org.nz</span>
+          <span>{{ project.address }}</span>
           <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10" /></svg>
         </div>
         <img
-          src="/images/samct.webp"
-          alt="SAMCT Villages public website for a launched retirement village platform"
-          width="920"
-          height="912"
-          loading="lazy"
-          fetchpriority="low"
+          [src]="project.image"
+          [alt]="project.alt"
+          [width]="project.width"
+          [height]="project.height"
+          [attr.fetchpriority]="index === 0 ? 'high' : 'low'"
           decoding="async"
         />
       </div>
-      <div class="browser-card browser-front">
-        <div class="browser-toolbar">
-          <span class="browser-dots" aria-hidden="true">● ● ●</span>
-          <span>showerpower.co.nz</span>
-          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10" /></svg>
-        </div>
-        <img
-          src="/images/showerpower.webp"
-          alt="ShowerPower website showing shower installation services and a quote enquiry"
-          width="1200"
-          height="587"
-          fetchpriority="high"
-          decoding="async"
-        />
-      </div>
-    </div>
+    }
   </div>
   <div class="showcase-caption">
-    <div>
-      <span class="mini-label">Selected live work</span>
-      <strong>ShowerPower + SAMCT Villages</strong>
+    <span class="mini-label">{{ projects[activeIndex()].status }}</span>
+    <strong id="preview-project-title">{{ projects[activeIndex()].title }}</strong>
+    <p>{{ projects[activeIndex()].summary }}</p>
+  </div>
+  <div class="showcase-actions">
+    <div class="page-controls" role="group" aria-label="Browse featured projects">
+      <button
+        type="button"
+        class="icon-button"
+        aria-label="Previous project"
+        [disabled]="!ready() || turning()"
+        (click)="move(-1)"
+      >
+        <span aria-hidden="true">←</span>
+      </button>
+      <span class="page-count" aria-hidden="true"
+        >{{ activeIndex() + 1 }} / {{ projects.length }}</span
+      >
+      <button
+        type="button"
+        class="icon-button"
+        aria-label="Next project"
+        [disabled]="!ready() || turning()"
+        (click)="move(1)"
+      >
+        <span aria-hidden="true">→</span>
+      </button>
     </div>
     <a
-      class="icon-button"
+      class="button preview-link"
       href="#projects"
-      aria-label="Explore the ShowerPower and SAMCT Villages projects"
+      [attr.aria-label]="'Learn more about ' + projects[activeIndex()].title"
+      >Learn more <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10" /></svg></a
     >
-      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10" /></svg>
-    </a>
   </div>
+  <p class="hover-hint" aria-hidden="true">Hover over the previews to turn the pages</p>
+  <p class="sr-only" role="status">{{ announcement() }}</p>
 </div>
