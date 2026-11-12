@@ -244,3 +244,11 @@ Static responsive checks used the exact built process markup and CSS in 320 and 
 ## Centred process introduction — 5 November 2026
 
 Applied the existing centred section-heading layout to the process introduction. The eyebrow and title now sit above the centred introduction, followed by the four existing cards. Managed Chromium confirmed that the title and introduction share the same horizontal centre, with a 22 px gap below the title. The production build, 15 built HTML/SEO checks and diff whitespace checks passed. Publication and CI results are recorded in the associated pull request.
+
+## Worldwide availability and test commands — 12 November 2026
+
+The site now describes remote work worldwide in its page copy, FAQ, contact section and search metadata. The sharing card, portrait description, privacy wording and project labels were updated. Five portfolio previews use crops of the existing screenshots to remove embedded place names. The displayed phone number uses its international format. Project links and the enquiry form’s NZD budget currency retain their original meaning.
+
+`npm test` runs both test suites once and exits. `npm run verify` adds the build and production checks. All 111 checks passed, including the new check for location wording in the rendered copy and metadata. The production build had no budget warnings. Chromium loaded all nine project images and opened the revised FAQ and privacy details. Text recognition on the nine displayed previews and sharing card found no matching location wording.
+
+The homepage returned HTTP 200 with a self-canonical URL. The sitemap lists only the homepage. The three old page URLs redirect to their corresponding sections, and the HTTP and hosting aliases lead to the HTTPS homepage. The Search Console emails describe redirect and 404 exclusions without listing their example URLs. The exact examples and Google’s current index status require the signed-in report.

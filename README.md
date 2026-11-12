@@ -23,6 +23,8 @@ Copy `.env.example` to an ignored `.env` for local settings. Set up a **separate
 
 ## Verification
 
+Run `npm test` for the server and Angular tests. The command exits when they finish.
+
 ```sh
 npm run verify
 npm audit --omit=dev

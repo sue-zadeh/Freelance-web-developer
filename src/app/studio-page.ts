@@ -104,9 +104,9 @@ export class StudioPageComponent {
         'I build clear, search-friendly content and take care of the technical foundations. Search ranking also depends on competition, useful content, genuine reviews, and links to your business. No one can promise a first-place result.',
     },
     {
-      title: 'Do I have to be in Auckland?',
+      title: 'Can we work together remotely?',
       answer:
-        'No. I’m based on Auckland’s North Shore and can work with businesses across New Zealand remotely. We can discuss your project by email, phone, or video call.',
+        'Yes. I work with clients worldwide. We can discuss your project by email, phone, or video call.',
     },
   ];
 }

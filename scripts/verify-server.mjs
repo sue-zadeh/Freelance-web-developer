@@ -41,7 +41,7 @@ try {
   assert.equal(root.status, 200);
   assert.equal(document.querySelectorAll('h1').length, 1);
   assert.equal(document.querySelectorAll('.project-card').length, 9);
-  assert.ok(document.body.textContent.includes('Lion & Sun Society NZ'));
+  assert.ok(document.body.textContent.includes('Lion & Sun Society'));
   console.log('PASS Running production server sends the full prerendered page');
   passed++;
   assert.equal(root.headers.get('strict-transport-security'), 'max-age=31536000');
