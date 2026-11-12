@@ -33,7 +33,7 @@ export const STUDIO_PROJECTS: readonly StudioProject[] = [
     featured: true,
   },
   {
-    title: 'Lion & Sun Society NZ',
+    title: 'Lion & Sun Society',
     categories: ['Organisations & communities', 'Admin dashboards'],
     image: '/images/lionandsun.webp',
     description:
@@ -64,7 +64,7 @@ export const STUDIO_PROJECTS: readonly StudioProject[] = [
     categories: ['Admin dashboards', 'Organisations & communities'],
     image: '/images/fieldsafe.webp',
     description:
-      'An operations dashboard for Conservation Volunteers New Zealand, bringing field activities, risks, staff, and volunteers into one workflow.',
+      'An operations dashboard for conservation teams, bringing field activities, risks, staff, and volunteers into one workflow.',
     built:
       'React and TypeScript, Node.js APIs, MySQL, role-based access, AWS deployment, and offline PWA features using IndexedDB.',
     value:
@@ -121,7 +121,7 @@ export const STUDIO_PROJECTS: readonly StudioProject[] = [
     tags: ['Community app', 'Member features', 'Full stack'],
   },
   {
-    title: 'Senior Healthcare Auckland',
+    title: 'Senior Healthcare',
     categories: ['Business websites'],
     image: '/images/healthcare.webp',
     description:

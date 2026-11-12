@@ -29,7 +29,7 @@ describe('One-page studio experience', () => {
     ])
       expect(page.querySelector('#' + section)).toBeTruthy();
     expect(page.querySelectorAll('[data-aos]')).toHaveLength(0);
-    expect(page.textContent).toContain('Lion & Sun Society NZ');
+    expect(page.textContent).toContain('Lion & Sun Society');
     expect(page.textContent).not.toContain('Hello, sue-portfolio');
   });
   it('opens and closes the mobile menu with matching accessibility state', async () => {
@@ -140,7 +140,7 @@ describe('One-page studio experience', () => {
     expect(fixture.nativeElement.querySelectorAll('article')).toHaveLength(4);
     expect(fixture.nativeElement.textContent).toContain('SAMCT Villages');
     expect(fixture.nativeElement.textContent).toContain('ShowerPower');
-    expect(fixture.nativeElement.textContent).not.toContain('Lion & Sun Society NZ');
+    expect(fixture.nativeElement.textContent).not.toContain('Lion & Sun Society');
     expect(button.getAttribute('aria-pressed')).toBe('true');
   });
   it('shows in-progress project status and uses accessible real project links', () => {
@@ -161,7 +161,7 @@ describe('One-page studio experience', () => {
     expect(cards[0].querySelector('.project-category')?.textContent).toContain('Launched');
     expect(cards[0].querySelector('a')?.getAttribute('href')).toBe('https://samplvillages.org.nz/');
     expect(cards[0].querySelector('a')?.textContent).toContain('Visit website');
-    expect(cards[8].querySelector('h3')?.textContent).toBe('Senior Healthcare Auckland');
+    expect(cards[8].querySelector('h3')?.textContent).toBe('Senior Healthcare');
     const lion = cards[1];
     expect(lion.textContent).toContain('donation page');
     expect(lion.textContent).toContain('email notifications');
@@ -172,9 +172,9 @@ describe('One-page studio experience', () => {
     filter.click();
     fixture.detectChanges();
     expect(page.textContent).toContain('SAMCT Villages');
-    expect(page.textContent).toContain('Lion & Sun Society NZ');
+    expect(page.textContent).toContain('Lion & Sun Society');
     expect(page.textContent).toContain('FieldSafe');
-    expect(page.textContent).not.toContain('Senior Healthcare Auckland');
+    expect(page.textContent).not.toContain('Senior Healthcare');
   });
 });
 

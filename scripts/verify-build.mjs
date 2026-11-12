@@ -35,11 +35,26 @@ check('Canonical URL, title and description are complete', () => {
     document.querySelector('link[rel=canonical]')?.getAttribute('href'),
     'https://suewebstudio.com/',
   );
-  assert.ok(document.title.includes('Auckland'));
+  assert.ok(document.title.includes('Sue Web Studio'));
   assert.ok(document.title.length < 65);
   const description =
     document.querySelector('meta[name=description]')?.getAttribute('content') || '';
   assert.ok(description.length > 100 && description.length < 165);
+});
+check('Public text and metadata describe worldwide availability', () => {
+  const publicText = [
+    document.documentElement.lang,
+    document.title,
+    document.body.textContent,
+    document.querySelector('script[type="application/ld+json"]').textContent,
+  ];
+  for (const attribute of ['alt', 'aria-label', 'title', 'content']) {
+    for (const element of document.querySelectorAll('[' + attribute + ']')) {
+      publicText.push(element.getAttribute(attribute));
+    }
+  }
+  assert.doesNotMatch(publicText.join('\n'), /\b(?:auckland|new zealand|north shore)\b|(?<!\.)\bnz\b/i);
+  assert.match(document.querySelector('#home').textContent, /remote projects worldwide/i);
 });
 check('Every internal section link has a target', () => {
   for (const anchor of document.querySelectorAll('a[href]')) {
@@ -50,7 +65,7 @@ check('Every internal section link has a target', () => {
 });
 check('All portfolio projects are rendered for search engines', () => {
   assert.equal(document.querySelectorAll('.project-card').length, 9);
-  assert.ok(html.includes('Lion &amp; Sun Society NZ'));
+  assert.ok(html.includes('Lion &amp; Sun Society'));
 });
 check(
   'Project previews start with Lion & Sun and link to a real Projects section without JavaScript',
@@ -74,7 +89,7 @@ check('Portfolio launch status, ordering and owner features survive prerendering
   assert.equal(cards[0].querySelector('h3').textContent, 'SAMCT Villages');
   assert.equal(cards[0].querySelector('a').getAttribute('href'), 'https://samplvillages.org.nz/');
   assert.ok(cards[0].querySelector('.project-category').textContent.includes('Launched'));
-  assert.equal(cards[8].querySelector('h3').textContent, 'Senior Healthcare Auckland');
+  assert.equal(cards[8].querySelector('h3').textContent, 'Senior Healthcare');
   assert.ok(cards[1].textContent.includes('email notifications'));
   assert.ok(cards[1].textContent.includes('private owner area'));
   assert.ok(cards[1].textContent.includes('donation page'));

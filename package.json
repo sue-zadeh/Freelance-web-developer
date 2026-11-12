@@ -6,13 +6,13 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "test": "npm run test:server && npm run test:unit",
     "serve:ssr:sue-portfolio": "node dist/sue-portfolio/server/server.mjs",
     "start:prod": "node dist/sue-portfolio/server/server.mjs",
     "dev": "node scripts/preview-server.mjs",
     "test:unit": "ng test --watch=false --include=\"src/app/**/*.spec.ts\"",
     "test:server": "vitest run --config vitest.server.config.ts",
-    "verify": "npm run test:server && npm run test:unit && npm run build && node scripts/verify-build.mjs && node scripts/verify-server.mjs"
+    "verify": "npm test && npm run build && node scripts/verify-build.mjs && node scripts/verify-server.mjs"
   },
   "private": true,
   "packageManager": "npm@11.6.3",
